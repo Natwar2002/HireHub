@@ -1,8 +1,10 @@
-import express from "express";
-import authRouter from './auth.js'
+import { Router } from "express";
+import adminRouter from "./adminRouter";
 
-const router = express.Router();
 
-router.use('/auth', authRouter);
+const v1Router = Router();
 
-export default router;
+v1Router.use('/v1',adminRouter);
+v1Router.use('/v1', authRouter);
+
+export default v1Router;

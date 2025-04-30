@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
         enum: ['User', 'Admin', 'HR'],
         default: 'User',
     },
+    adminApproval:{
+        type:String,
+        enum:['requested','rejected', 'approved','pending'],
+        default:'pending'
+    },
     userDetails: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserDetails',

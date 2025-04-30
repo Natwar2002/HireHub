@@ -1,0 +1,36 @@
+import { adminAuthService, adminInviteService, adminSignInService } from "../services/adminAuthService"
+
+export const adminInviteController = async(req, res)=>{
+    try {
+        const { email } = req.body
+        const response = await adminInviteService(email);
+        res.status(200).json({
+            success:true,
+            data:response
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const adminAuthApproveController = async(req, res)=>{
+    try {
+        const { type } = req.body
+        const response = await adminAuthService(type);
+        res.status(200).json({
+            success:true,
+            data:response
+        })
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+export const adminSingInController = async(req,res)=>{
+    try {
+        const response = await adminSignInService(req.body);
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
+}
