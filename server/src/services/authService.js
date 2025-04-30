@@ -8,10 +8,10 @@ export const signupService = async (data) => {
         return user;
     } catch (error) {
         if (error.name === 'MongoServerError' && error.code === 11000) {
-            const duplicatedFeild = Object.keys(error.keyValue)[0];
-            console.log(`A user with same ${duplicatedFeild} already exists`);
+            const duplicatedField = Object.keys(error.keyValue)[0];
+            console.log(`A user with same ${duplicatedField} already exists`);
             throw {
-                message: `A user with same ${duplicatedFeild} already exists`,
+                message: `A user with same ${duplicatedField} already exists`,
                 status: 400,
             }
         }

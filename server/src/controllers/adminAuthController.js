@@ -15,8 +15,8 @@ export const adminInviteController = async (req, res) => {
 
 export const adminAuthApproveController = async (req, res) => {
     try {
-        const { type } = req.body
-        const response = await adminAuthService(type);
+        const data = req.body
+        const response = await adminAuthService(data);
         res.status(200).json({
             success: true,
             data: response
@@ -29,7 +29,10 @@ export const adminAuthApproveController = async (req, res) => {
 export const adminSingInController = async (req, res) => {
     try {
         const response = await adminSignInService(req.body);
-        return response;
+        res.status(200).json({
+            success:true,
+            data:response
+        });
     } catch (error) {
         console.log(error)
     }

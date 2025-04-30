@@ -1,10 +1,9 @@
 import userRepository from "../repositories/userRepository.js";
-import { createJWT } from "../utils/authUtils.js";
+import { createAdminJWT } from "../utils/authUtils.js";
 
 
-export const adminInviteService = async (data) => {
+export const adminInviteService = async (email) => {
     try {
-        const { email } = data;
         if (!email) {
             throw new Error("email required")
         };
@@ -12,7 +11,8 @@ export const adminInviteService = async (data) => {
         if (!isUserExist) {
             throw new Error("User not exist please sign up")
         };
-        const response = await userRepository.update(id, { adminApproval: 'requested' });
+        console.log( isUserExist.id)
+        const response = await userRepository.update(isUserExist.id, { adminApproval: 'requested' });
         return response
     } catch (error) {
         console.log(error);
@@ -21,8 +21,8 @@ export const adminInviteService = async (data) => {
 
 export const adminAuthService = async (data) => {
     try {
-        const { userId, type } = data;
-        if (!type || userId) {
+        const { id, type } = data;
+        if (!type || !id) {
             throw new Error("input required")
         };
         const response = await userRepository.update(id, { adminApproval: type });
@@ -41,7 +41,7 @@ export const adminSignInService = async (data) => {
         if (isValidUser.adminApproval !== 'approved') throw new Error('now allowed to sing in contact relevant authority');
         const response = await userRepository.update(isValidUser._id, { role: 'Admin' }, { new: true });
         return {
-            token: createJWT({ email }),
+            token: createAdminJWT({ email }),
             data: response
         }
     } catch (error) {
