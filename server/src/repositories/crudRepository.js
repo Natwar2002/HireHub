@@ -6,5 +6,6 @@ export default function crudRepository (modal){
         getByEmail:async(email)=> await modal.findById(email),
         update:async(id,data)=> await modal.findByIdAndUpdate({id},{data}),
         delete:async(data)=> await modal.create({data}),
-    }
+        getAll: async() => await modal.find()
+        }
 }
