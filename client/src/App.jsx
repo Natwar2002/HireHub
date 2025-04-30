@@ -1,13 +1,14 @@
-
-import { Button } from '@heroui/button';
-import SwitchButton from './component/Switch/SwitchButton';
+import { AppRoutes } from './Routes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+
+  const queryClient = new QueryClient();
+
   return (
-    <>
-      <Button>here</Button>
-      <SwitchButton/>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <AppRoutes />
+    </QueryClientProvider>
   )
 }
 

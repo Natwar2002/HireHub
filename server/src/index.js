@@ -1,9 +1,13 @@
-import express from "express"
+import express from "express";
 import { connectDB } from "./config/dbConfig.js";
 import appRouter from './routes/appRouter.js';
+import cors from 'cors';
 
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));

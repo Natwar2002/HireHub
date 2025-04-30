@@ -10,7 +10,7 @@ export const validate = (schema) => {
                 errorMessage.push(`${key.path[0]}: ${key.message}`)
             });
             res.status(400).json({
-                message: 'Validation error',
+                message: 'Invalid data',
                 explanation: errorMessage,
                 success: false
             })

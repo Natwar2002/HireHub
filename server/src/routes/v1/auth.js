@@ -5,7 +5,7 @@ import { validate } from "../../validators/zodValidator.js";
 
 const router = express.Router();
 
-router.post('/signup', validate(signupSchema), signupController);
-router.post('/signin', validate(signinSchema), signinController);
+router.post('/users/signup', validate(signupSchema), signupController);
+router.post('/users/signin', validate(signinSchema), signinController);
 
 export default router;

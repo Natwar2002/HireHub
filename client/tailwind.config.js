@@ -4,7 +4,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/theme/dist/components/(button|toggle|ripple|spinner).js"
+    "./node_modules/@heroui/theme/dist/components/(button|input|toggle|toast|ripple|spinner|form).js"
   ],
   theme: {
     extend: {},
