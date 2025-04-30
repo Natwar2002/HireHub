@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { adminAuthApproveController, adminInviteController, adminSingInController } from '../../controllers/adminAuthController';
+import { adminAuthApproveController, adminInviteController, adminSingInController } from '../../controllers/adminAuthController.js';
 
 const adminRouter = Router();
 
