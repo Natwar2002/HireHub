@@ -1,4 +1,4 @@
-import { adminAuthService, adminInviteService } from "../services/adminAuthService"
+import { adminAuthService, adminInviteService, adminSignInService } from "../services/adminAuthService"
 
 export const adminInviteController = async(req, res)=>{
     try {
@@ -21,6 +21,15 @@ export const adminAuthApproveController = async(req, res)=>{
             success:true,
             data:response
         })
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+export const adminSingInController = async(req,res)=>{
+    try {
+        const response = await adminSignInService(req.body);
+        return response;
     } catch (error) {
         console.log(error)
     }

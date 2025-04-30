@@ -1,4 +1,5 @@
 import { userRepository } from "../repositories/userRepository";
+import { createJWT } from "../utils/authUtils";
 
 
 export const adminInviteService = async (data)=>{
@@ -28,5 +29,22 @@ export const adminAuthService = async (data)=>{
         return response
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const adminSignInService = async(data)=>{
+    try {
+        const {email, password} = data
+        if(!email || !password) throw new Error("email and password is required");
+        const isValidUser = await userRepository.getByEmail(email);
+        if(!isValidUser) throw new Error('user is not exist');
+        if(isValidUser.adminApproval !== 'approved') throw new Error('now allowed to sing in contact relevant authority');
+        const response = await userRepository.update(isValidUser._id,{role:'Admin'},{new:true});
+        return {
+            token:createJWT({email}),
+            data:response
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
