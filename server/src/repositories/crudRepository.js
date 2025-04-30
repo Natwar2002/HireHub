@@ -1,24 +1,11 @@
-export default function crudRepository(model) {
+
+export default function crudRepository (modal){
     return {
-        create: async function (data) {
-            const newDoc = await model.create(data);
-            return newDoc;
-        },
-        getAll: async function () {
-            const allDocs = await model.find();
-            return allDocs;
-        },
-        getById: async function (id) {
-            const doc = await model.findById(id);
-            return doc;
-        },
-        update: async function (id, data) {
-            const updatedDoc = await model.findByIdAndUpdate(id, data, { new: true });
-            return updatedDoc;
-        },
-        delete: async function (id) {
-            const response = await model.findByIdAndDelete(id);
-            return response;
-        },
-    }
+        create:async(data)=> await modal.create({data}),
+        getById:async(id)=> await modal.findById(id),
+        getByEmail:async(email)=> await modal.findById(email),
+        update:async(id,data)=> await modal.findByIdAndUpdate({id},{data}),
+        delete:async(data)=> await modal.create({data}),
+        getAll: async() => await modal.find()
+        }
 }
