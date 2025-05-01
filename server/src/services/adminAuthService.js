@@ -1,3 +1,4 @@
+import argon2  from "argon2";
 import userRepository from "../repositories/userRepository.js";
 import { createAdminJWT } from "../utils/authUtils.js";
 
@@ -26,6 +27,10 @@ export const adminAuthService = async (data) => {
             throw new Error("input required")
         };
         const response = await userRepository.update(id, { adminApproval: type });
+        const isApproved = response.adminApproval;
+        if(isApproved === 'approved'){
+            await userRepository.update(id, {role:"Admin"})
+        }
         return response
     } catch (error) {
         console.log(error);
@@ -38,8 +43,9 @@ export const adminSignInService = async (data) => {
         if (!email || !password) throw new Error("email and password is required");
         const isValidUser = await userRepository.getByEmail(email);
         if (!isValidUser) throw new Error('user is not exist');
-        if (isValidUser.adminApproval !== 'approved') throw new Error('now allowed to sing in contact relevant authority');
-        const response = await userRepository.update(isValidUser._id, { role: 'Admin' }, { new: true });
+        if (isValidUser.adminApproval !== 'approved' && isValidUser.role !== "Admin") throw new Error('not allowed to sing in contact relevant authority');
+        const isMatched = await argon2.verify(password, isValidUser.password);
+        if(isMatched) throw new Error("wrong password")
         return {
             token: createAdminJWT({ email }),
             data: response
