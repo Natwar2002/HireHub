@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 
 export default function SwitchButton() {
     const [currentTheme, setCurrentTheme] = useState(localStorage.getItem('theme')=="dark")
-    const { theme,setTheme } = useTheme();
+    const { setTheme } = useTheme();
 
     useEffect(()=>{
       if(currentTheme){
@@ -32,7 +32,6 @@ export default function SwitchButton() {
         isSelected={currentTheme}
         onChange={()=>setCurrentTheme((pre)=>!pre)}
       >
-        {theme}
       </Switch>
     );
   }
