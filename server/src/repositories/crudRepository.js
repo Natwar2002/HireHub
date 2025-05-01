@@ -4,8 +4,8 @@ export default function crudRepository(modal) {
         create: async (data) => await modal.create(data),
         getById: async (id) => await modal.findById(id),
         getByEmail: async (email) => await modal.findById(email),
-        update: async (id, data) => await modal.findByIdAndUpdate({ id }, { data }),
-        delete: async (data) => await modal.create(data),
+        update: async (id, data) => await modal.findByIdAndUpdate(id, data),
+        delete: async (id) => await modal.findByIdAndDelete(id),
         getAll: async () => await modal.find()
     }
 }
