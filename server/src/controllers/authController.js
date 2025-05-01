@@ -16,11 +16,9 @@ export const signupController = async (req, res) => {
                 error: error.message,
             });
         }
-        console.log(error)
         res.status(500).json({
             success: false,
-            message: 'Signup failed due to internal server error',
-            error:error
+            error:error.message
         });
     }
 }
