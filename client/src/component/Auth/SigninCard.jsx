@@ -3,7 +3,7 @@ import { LucideLoader, TriangleAlert } from "lucide-react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
 
-export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPending, isSuccess, error }) => {
+export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPending, isSuccess, error, validationError }) => {
 
     const navigate = useNavigate();
 
@@ -13,7 +13,12 @@ export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPe
                 <h1 className="text-2xl font-semibold">Sign In</h1>
                 <p className="text-xs">Welcom Back, Login to explore the jobs</p>
             </div>
-            
+            {validationError && (
+                <div className='bg-destructive/15 px-4 py-2 rounded-md flex items-center gap-x-2 text-sm mb-6 text-red-600'>
+                    <TriangleAlert className='size-5' />
+                    <p>{validationError.message}</p>
+                </div>
+            )}
             {error && (
                 <div className='bg-destructive/15 px-4 py-2 rounded-md flex items-center gap-x-2 text-sm text-red-600 mb-6'>
                     <TriangleAlert className='size-5' />
@@ -32,7 +37,7 @@ export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPe
                     size="sm"
                     label="Email" 
                     type="email" 
-                    // isRequired
+                    isRequired
                     errorMessage="Please enter a valid email"
                     disabled={isPending}
                     onChange={(e) => setSigninForm({...signinForm, email: e.target.value })}
@@ -41,7 +46,7 @@ export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPe
                     size="sm"
                     label="Password" 
                     type="password" 
-                    // isRequired
+                    isRequired
                     disabled={isPending}
                     onChange={(e) => setSigninForm({...signinForm, password: e.target.value })}
                 /> 

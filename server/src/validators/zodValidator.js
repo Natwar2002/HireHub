@@ -5,13 +5,15 @@ export const validate = (schema) => {
             next();
         } catch (error) {
             console.log('Zod Validation error', error.errors);
-            let errorMessage = [];
+            let errorMessage = ''
+            let explanation = [];
             error.errors.forEach(key => {
-                errorMessage.push(`${key.path[0]}: ${key.message}`)
+                explanation.push(key.path[0] + ' ' + key.message);
+                errorMessage += ': ' + key.path[0] + ' ' + key.message;
             });
             res.status(400).json({
-                message: 'Invalid data',
-                explanation: errorMessage,
+                message: 'Validation error' + errorMessage,
+                explanation: explanation,
                 success: false
             })
         }

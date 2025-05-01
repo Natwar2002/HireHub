@@ -11,17 +11,27 @@ export const SigninContainer = () => {
         password: ''
     });
     const navigate = useNavigate();
+    const [validationError, setValidationError] = useState(null);
 
     async function onSigninFormSubmit(e) {
         e.preventDefault();
-        console.log(signinForm);
         try {
+            if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(signinForm.email)) {
+                setValidationError({ message: 'Please enter a valid email' });
+                console.log("Validation Error: Invalid email");
+                return;
+            }
+            if(signinForm.password.length <= 3) {
+                setValidationError({ message: 'Password should be at least 3 characters long' });
+                console.log("Password should be at least 4 characters long");
+                return;               
+            }
             await signinMutation({
                 email: signinForm.email,
                 password: signinForm.password
             })
         } catch (error) {
-            console.log('Error in login', error.message);
+            console.log('Error in login', error.error);
         }
     }
 
@@ -35,6 +45,7 @@ export const SigninContainer = () => {
 
     return (
         <SigninCard 
+            validationError={validationError}
             signinForm={signinForm}
             setSigninForm={setSigninForm}
             onSigninFormSubmit={onSigninFormSubmit}

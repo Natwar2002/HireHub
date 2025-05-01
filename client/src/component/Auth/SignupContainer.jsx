@@ -16,21 +16,28 @@ export const SignupContainer = () => {
     const [validationError, setValidationError] = useState(null);
 
     async function onSignupFormSubmit(e) {
-        e.preventDefault();
-
-        if(signupForm.password.length < 3) {
-            setValidationError({ message: 'Password should be at least 3 characters long' });
-            console.log("Password should be at least 3 characters long");
-            return;               
-        }
-        
-        try {
+        e.preventDefault(); 
+        try { 
+            if(signupForm.username.length < 3) {
+                setValidationError({ message: 'Username should be at least 3 characters long' });
+                console.log("Username should be at least 3 characters long");
+                return;
+            }
+            if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(signupForm.email)) {
+                setValidationError({ message: 'Please enter a valid email' });
+                console.log("Validation Error: Invalid email");
+                return;
+            }
+            if(signupForm.password.length < 3) {
+                setValidationError({ message: 'Password should be at least 3 characters long' });
+                console.log("Password should be at least 3 characters long");
+                return;               
+            }
             if(signupForm.password !== signupForm.confirmPassword) {
                 setValidationError({ message: 'Password does not match' });
                 console.log('Password does not match');
                 return;
-            }
-            
+            }                
             setValidationError(null);
             await signupMutation({
                 email: signupForm.email,

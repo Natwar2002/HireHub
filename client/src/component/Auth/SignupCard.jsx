@@ -68,10 +68,11 @@ export const SignupCard = ({ signupForm, setSignupForm, validationError, isPendi
                 />
                 <button 
                     type="submit" 
-                    className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2"
+                    className="text-white bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2 flex justify-center items-center gap-5"
                     disabled={isPending}
                 >
-                    Sign Up
+                    { isPending || isSuccess ? `Signing up...` : 'Sign up' }
+                    { isPending || isSuccess && (<LucideLoader className='animate-spin ml-2' />)}
                 </button>
             </form>
 
