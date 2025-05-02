@@ -10,6 +10,10 @@ export const adminInviteController = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        res.status(400).json({
+            success:false,
+            error:error.message
+        })
     }
 }
 
@@ -22,7 +26,11 @@ export const adminAuthApproveController = async (req, res) => {
             data: response
         })
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(400).json({
+            success:false,
+            error:error.message
+        })
     }
 };
 
@@ -34,6 +42,10 @@ export const adminSingInController = async (req, res) => {
             data:response
         });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(400).json({
+            success:false,
+            error:error.message
+        })
     }
 }
