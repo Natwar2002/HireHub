@@ -1,11 +1,41 @@
 import { Input } from "@heroui/input";
 import { LucideLoader, TriangleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
+import { useAdminSignIn } from "../../hooks/admin/useAdminSignUp";
 
-export const AdminSigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPending, isSuccess, error }) => {
+export const AdminSigninCard = () => {
 
     const navigate = useNavigate();
+
+    const { isPending, isSuccess, error, adminSignIn } = useAdminSignIn();
+    const [signinForm, setSigninForm] = useState({
+        email: '',
+        password: ''
+    });
+
+    async function onSigninFormSubmit(e) {
+        e.preventDefault();
+        console.log(signinForm);
+        try {
+            await adminSignIn({
+                email: signinForm.email,
+                password: signinForm.password
+            })
+        } catch (error) {
+            console.log('Error in login', error.message);
+        }
+    }
+
+    useEffect(()=> {
+        if(isSuccess) {
+            setTimeout(() => {
+                navigate('/home');
+            }, 1000);
+        }
+    }, [isSuccess, navigate]);
+    
 
     return (
         <div className="">
