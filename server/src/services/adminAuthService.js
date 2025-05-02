@@ -17,6 +17,7 @@ export const adminInviteService = async (email) => {
         return response
     } catch (error) {
         console.log(error);
+        throw new Error(error.message || error)
     }
 }
 
@@ -34,6 +35,7 @@ export const adminAuthService = async (data) => {
         return response
     } catch (error) {
         console.log(error);
+        throw new Error(error.message || error)
     }
 };
 
@@ -44,13 +46,17 @@ export const adminSignInService = async (data) => {
         const isValidUser = await userRepository.getByEmail(email);
         if (!isValidUser) throw new Error('user is not exist');
         if (isValidUser.adminApproval !== 'approved' && isValidUser.role !== "Admin") throw new Error('not allowed to sing in contact relevant authority');
-        const isMatched = await argon2.verify(password, isValidUser.password);
-        if(isMatched) throw new Error("wrong password")
+        const isMatched = await argon2.verify(isValidUser.password,password);
+        if(!isMatched) throw new Error("wrong password")
         return {
             token: createAdminJWT({ email }),
-            data: response
+            data: {
+                username:isValidUser.username,
+                email:isValidUser.email,
+            }
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        throw new Error(error.message || error)
     }
 }
