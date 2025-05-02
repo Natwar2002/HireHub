@@ -3,39 +3,39 @@ import userRepository from "../repositories/userRepository.js";
 import { createAdminJWT } from "../utils/authUtils.js";
 
 
-export const adminInviteService = async (email) => {
-    try {
-        if (!email) {
-            throw new Error("email required")
-        };
-        const isUserExist = await userRepository.getByEmail(email);
-        if (!isUserExist) {
-            throw new Error("User not exist please sign up")
-        };
-        console.log( isUserExist.id)
-        const response = await userRepository.update(isUserExist.id, { adminApproval: 'requested' });
-        return response
-    } catch (error) {
-        console.log(error);
-    }
-}
+// export const adminInviteService = async (email) => {
+//     try {
+//         if (!email) {
+//             throw new Error("email required")
+//         };
+//         const isUserExist = await userRepository.getByEmail(email);
+//         if (!isUserExist) {
+//             throw new Error("User not exist please sign up")
+//         };
+//         console.log( isUserExist.id)
+//         const response = await userRepository.update(isUserExist.id, { adminApproval: 'requested' });
+//         return response
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
-export const adminAuthService = async (data) => {
-    try {
-        const { id, type } = data;
-        if (!type || !id) {
-            throw new Error("input required")
-        };
-        const response = await userRepository.update(id, { adminApproval: type });
-        const isApproved = response.adminApproval;
-        if(isApproved === 'approved'){
-            await userRepository.update(id, {role:"Admin"})
-        }
-        return response
-    } catch (error) {
-        console.log(error);
-    }
-};
+// export const adminAuthService = async (data) => {
+//     try {
+//         const { id, type } = data;
+//         if (!type || !id) {
+//             throw new Error("input required")
+//         };
+//         const response = await userRepository.update(id, { adminApproval: type });
+//         const isApproved = response.adminApproval;
+//         if(isApproved === 'approved'){
+//             await userRepository.update(id, {role:"Admin"})
+//         }
+//         return response
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
 
 export const adminSignInService = async (data) => {
     try {
@@ -51,6 +51,7 @@ export const adminSignInService = async (data) => {
             data: response
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        
     }
 }
