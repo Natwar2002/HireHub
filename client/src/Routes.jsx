@@ -7,6 +7,7 @@ import SiteLoader from "./component/SiteLoader/SiteLoader"
 import { AdminSigninCard } from "./component/Auth/AdminAuth"
 import { AdminRequest } from "./component/Auth/AdminRequest"
 import { ProtectedRoute } from "./component/ProtectedRoute/ProtectedRoute"
+import { AdminLayout } from "./pages/AdminDashboard/AdminLayout"
 
 export const AppRoutes = () => {
     return (
@@ -17,6 +18,7 @@ export const AppRoutes = () => {
             <Route path='/admin/signin' element={<Auth><AdminSigninCard /></Auth>} />
             <Route path='/admin/invite' element={<Auth><AdminRequest /></Auth>} />
             <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/admin/dashboard" element={<AdminLayout /> } />
         </Routes>
     )
 }

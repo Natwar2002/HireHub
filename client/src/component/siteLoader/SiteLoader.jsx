@@ -20,11 +20,12 @@ export default function SiteLoader() {
   }, [value]);
 
   useEffect(()=>{
-    if(value===100){
-      navigate('/auth/signin')
-    }
-    if(value===100 && user && token) {
-      navigate('/home');
+    if(value===100) {
+      if(user && token){
+        navigate('/home');
+      } else {
+        navigate('/auth/signin')
+      }
     }
   },[navigate, token, user, value])
 
