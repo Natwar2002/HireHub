@@ -6,6 +6,7 @@ import { Home } from "./pages/Home/Home"
 import SiteLoader from "./component/siteLoader/SiteLoader"
 import { AdminSigninCard } from "./component/Auth/AdminAuth"
 import { AdminRequest } from "./component/Auth/AdminRequest"
+import Admin from "./component/Admin"
 
 export const AppRoutes = () => {
     return (
@@ -15,6 +16,7 @@ export const AppRoutes = () => {
             <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
             <Route path='/admin/signin' element={<Auth><AdminSigninCard /></Auth>} />
             <Route path='/admin/invite' element={<Auth><AdminRequest /></Auth>} />
+            <Route path='/admin/dashboard' element={<Admin/>} />
             <Route path='/home' element={<Home />} />
         </Routes>
     )

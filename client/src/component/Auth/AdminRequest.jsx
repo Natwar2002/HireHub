@@ -2,11 +2,38 @@ import { Input } from "@heroui/input";
 import { LucideLoader, TriangleAlert } from "lucide-react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
+import { useAdminInvite } from "../../hooks/admin/useAdminInvite";
+import { useEffect, useState } from "react";
 
-export const AdminRequest = ({ signinForm, setSigninForm, onSigninFormSubmit, isPending, isSuccess, error }) => {
+export const AdminRequest = () => {
 
     const navigate = useNavigate();
 
+    const { isPending, isSuccess, error, adminInvite } = useAdminInvite();
+    const [signinForm, setSigninForm] = useState({
+        email: '',
+    });
+
+    async function onSigninFormSubmit(e) {
+        e.preventDefault();
+        console.log(signinForm);
+        try {
+            await adminInvite({
+                email: signinForm.email
+            })
+        } catch (error) {
+            console.log('Error in login', error.message);
+        }
+    }
+
+    useEffect(()=> {
+        if(isSuccess) {
+            setTimeout(() => {
+                navigate('/');
+            }, 1000);
+        }
+    }, [isSuccess, navigate]);
+    
     return (
         <div className="">
             <div className="flex flex-col justify-center items-center gap-1 mb-5">

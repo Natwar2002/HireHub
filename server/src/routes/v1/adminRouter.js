@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { adminAuthApproveController, adminInviteController, adminSingInController } from '../../controllers/adminAuthController.js';
+import { adminAuthApproveController, adminInviteController, adminSignInController } from '../../controllers/adminAuthController.js';
 
 const adminRouter = Router();
 
 adminRouter.post('/invite', adminInviteController);
 adminRouter.post('/request', adminAuthApproveController);
-adminRouter.post('/signin', adminSingInController);
+adminRouter.post('/signin', adminSignInController);
 
 export default adminRouter;
