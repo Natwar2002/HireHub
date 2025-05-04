@@ -1,6 +1,7 @@
 import userRepository from "../repositories/userRepository.js";
 import argon2 from "argon2";
 import { createJWT } from '../utils/authUtils.js';
+import ClientError from "../utils/erros/clientError.js";
 
 export const signupService = async (data) => {
     try {
@@ -23,17 +24,19 @@ export const signinService = async (data) => {
     try {
         const user = await userRepository.getByEmail(data.email);
         if (!user) {
-            throw {
-                message: 'No registered user found with this email',
+            throw new ClientError({
+                explanation: "Invalid data sent from the client",
+                message: "No registered user found with this email",
                 status: 400
-            }
+            });
         }
         const isMatch = await argon2.verify(user.password, data.password);
         if (!isMatch) {
-            throw {
-                message: 'Invalid password, please try again',
+            throw new ClientError({
+                explanation: "Invalid data sent from the client",
+                message: "Invalid password, please try again",
                 status: 400
-            }
+            });
         }
         return {
             username: user.username,

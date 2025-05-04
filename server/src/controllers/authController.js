@@ -3,7 +3,7 @@ import { signinService, signupService } from "../services/authService.js";
 export const signupController = async (req, res) => {
     try {
         const response = await signupService(req.body);
-        if(req.body.username) throw new Error("username is required")
+        if (req.body.username) throw new Error("username is required")
         return res.status(201).json({
             success: true,
             message: 'User signed up successfully',
@@ -18,7 +18,7 @@ export const signupController = async (req, res) => {
         }
         res.status(500).json({
             success: false,
-            error:error.message
+            error: error.message
         });
     }
 }
