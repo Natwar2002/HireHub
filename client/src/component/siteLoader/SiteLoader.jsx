@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import {  Progress } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
-import store from '../../redux/store';
 
 export default function SiteLoader() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
-  const { user, token } = store.getState().auth;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,13 +19,9 @@ export default function SiteLoader() {
 
   useEffect(()=>{
     if(value===100) {
-      if(user && token){
-        navigate('/home');
-      } else {
-        navigate('/auth/signin')
-      }
+      navigate('/home');
     }
-  },[navigate, token, user, value])
+  },[navigate, value])
 
   return (
     <div className="w-full h-screen flex items-center justify-center relative">

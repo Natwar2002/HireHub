@@ -6,8 +6,8 @@ import { Home } from "./pages/Home/Home"
 import SiteLoader from "./component/SiteLoader/SiteLoader"
 import { AdminSigninCard } from "./component/Auth/AdminAuth"
 import { AdminRequest } from "./component/Auth/AdminRequest"
-import { ProtectedRoute } from "./component/ProtectedRoute/ProtectedRoute"
 import { AdminLayout } from "./pages/AdminDashboard/AdminLayout"
+import NotFound from "./pages/NotFound/NotFound"
 
 export const AppRoutes = () => {
     return (
@@ -17,8 +17,9 @@ export const AppRoutes = () => {
             <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
             <Route path='/admin/signin' element={<Auth><AdminSigninCard /></Auth>} />
             <Route path='/admin/invite' element={<Auth><AdminRequest /></Auth>} />
-            <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path='/home' element={<Home />} />
             <Route path="/admin/dashboard" element={<AdminLayout /> } />
+            <Route path="/*" element={<NotFound />} />
         </Routes>
     )
 }
