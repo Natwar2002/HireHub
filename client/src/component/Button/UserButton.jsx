@@ -1,16 +1,17 @@
 import { Avatar } from "@heroui/avatar"
 
-export const UserButton = ({ onUserClick, link }) => {
+export const UserButton = ({ link, onClick }) => {
     return (
-        <div 
-            className="flex gap-4 items-center"
-            onClick={onUserClick}
+        <button
+            type="button"
+            onClick={onClick}
+            className="flex items-center gap-4 focus:outline-none"
         >
             <Avatar 
                 isBordered 
                 color="secondary" 
                 src={link} 
             />
-        </div>
+        </button>
     )
 }
