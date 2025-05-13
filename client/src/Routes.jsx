@@ -18,7 +18,6 @@ export const AppRoutes = () => {
             <Route path='/admin/signin' element={<Auth><AdminSigninCard /></Auth>} />
             <Route path='/admin/invite' element={<Auth><AdminRequest /></Auth>} />
             <Route path='/home' element={<Home />} />
-            {/* <Route path='' */}
             <Route path="/admin/dashboard" element={<AdminLayout /> } />
             <Route path="/*" element={<NotFound />} />
         </Routes>
