@@ -25,7 +25,7 @@ export default function SwitchButton() {
     return (
       <Switch
         defaultSelected
-        color="success"
+        color="secondary"
         endContent={<MoonIcon />}
         size="lg"
         startContent={<SunIcon />}

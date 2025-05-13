@@ -7,8 +7,68 @@ import companiesImage from "../../assets/Group (5).png";
 import PeoplesImage from "../../assets/Group (6).png";
 import Logo from "../../assets/job-search.png";
 import JobCard from "../../component/JobCard/JobCard";
+import store from "../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+const jobs = [
+  {
+    id: 1,
+    title: "Frontend Developer",
+    company: "Physics Wallah Pvt limited",
+    tags: ["Frontend", "Full stack"],
+    type: "Full Time",
+    mode: "OnSite",
+    salary: "6-10LPA",
+    applied: 24,
+  },
+  {
+    id: 2,
+    title: "Backend Developer",
+    company: "Scaler",
+    tags: ["Backend"],
+    type: "Part Time",
+    mode: "Remote",
+    salary: "10-15LPA",
+    applied: 40,
+  },
+  {
+    id: 3,
+    title: "Full Stack Developer",
+    company: "Coding Ninjas",
+    tags: ["Full stack", "Frontend", "Backend"],
+    type: "Internship",
+    mode: "Hybrid",
+    salary: "3-5LPA",
+    applied: 10,
+  },
+];
 
 export const Home = () => {
+
+  const navigate = useNavigate();
+  const [selectedTag, setSelectedTag] = useState("All Recent");
+  const tags = ["All Recent", "Full stack", "Frontend", "Backend", "Software Developer"];
+  const { user, token } = store.getState().auth;
+
+  const filteredJobs = selectedTag === "All Recent" ? jobs : jobs.filter(job => job.tags.includes(selectedTag));
+
+  function handleGetStartedClick() {
+    if(user && token) {
+      navigate('/jobs');
+    } else {
+      navigate('/auth/signin');
+    }
+  }
+
+  function handleHireFromUsClick() {
+    if(user && token) {
+      navigate('/hr/signin');
+    } else {
+      navigate('/auth/signin');
+    }
+  }
+
   return (
     <>
       <NavBar />
@@ -25,7 +85,10 @@ export const Home = () => {
           <span>let us help you find a job that suits you the best!</span>
         </div>
         <div className="flex items-center gap-10">
-          <CommonButton text={"Get Started"} />
+          <CommonButton 
+            onClickHandler={handleGetStartedClick}
+            text={"Get Started"} 
+          />
           <div className="flex items-center">
             <img src={PlayIcon} alt="play-icon" />
             <p>Our Story</p>
@@ -69,7 +132,10 @@ export const Home = () => {
             Land your dream role with determination, showcasing skills and
             confidence every single time
           </p>
-          <CommonButton text={"Get Started"} />
+          <CommonButton
+            onClickHandler={handleGetStartedClick} 
+            text={"Get Started"} 
+          />
         </div>
       </div>
       <div className="mt-40">
@@ -82,20 +148,21 @@ export const Home = () => {
             application
           </p>
           <div className="flex justify-center gap-6">
-            <span>All Recent</span>
-            <span>Full stack</span>
-            <span>Frontend</span>
-            <span>Backend</span>
-            <span>Software Developer</span>
+            { tags.map(tag => (
+              <span
+                key={tag}
+                onClick={() => setSelectedTag(tag)}
+                className={`cursor-pointer px-3 py-1 rounded-md ${selectedTag === tag ? "bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0]" : "" }`}
+              >
+                {tag}
+              </span>
+            )) }
           </div>
         </div>
         <div className="w-[80vw] max-xl:w-[90vw] m-auto mt-20 flex flex-wrap items-center justify-center gap-8">
-          <JobCard />
-          <JobCard />
-          <JobCard />
-          <JobCard />
-          <JobCard />
-          <JobCard />
+          {filteredJobs.map(job => (
+            <JobCard key={job.id} job={job} />
+          ))}
         </div>
       </div>
       <div className="text-center mt-40">
@@ -152,7 +219,10 @@ export const Home = () => {
             Land your dream role with determination, showcasing skills and
             confidence every single time
           </p>
-          <CommonButton text={"Post A Job"} />
+          <CommonButton 
+            onClickHandler={handleHireFromUsClick}
+            text={"Hire From Us"} 
+          />
         </div>
         <div className="">
           <img src={PeoplesImage} alt="" />

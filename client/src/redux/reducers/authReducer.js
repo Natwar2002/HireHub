@@ -1,8 +1,8 @@
 import { FINISH_LOADING, LOGOUT, SET_AUTH } from '../constants/authConstants';
 
 const auth = {
-    user: null,
-    token: null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem('token') || null,
     isLoading: true,
 }
 

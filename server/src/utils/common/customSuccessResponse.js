@@ -1,7 +1,6 @@
-export const customSuccessResponse = (status, message, response = {}) => {
+export const customSuccessResponse = (response = {}, message) => {
     return {
         success: true,
-        status: status,
         message: message,
         data: response
     }

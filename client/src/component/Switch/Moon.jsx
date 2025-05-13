@@ -1,5 +1,3 @@
-import {Switch} from "@heroui/react";
-
 export const MoonIcon = (props) => {
   return (
     <svg
