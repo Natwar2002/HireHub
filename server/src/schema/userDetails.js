@@ -16,7 +16,6 @@ const userDetailsSchema = new mongoose.Schema({
         {
             title: String,
             company: String,
-            designation: String,
         }
     ],
     skills: {
@@ -62,7 +61,7 @@ const userDetailsSchema = new mongoose.Schema({
     },
     resume: {
         type: String,
-        required: true
+        // required: true
     }
 }, { timestamps: true });
 

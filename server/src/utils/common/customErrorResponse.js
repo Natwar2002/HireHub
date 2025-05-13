@@ -1,7 +1,6 @@
-export const customErrorResponse = (status, message, error = {}) => {
+export const customErrorResponse = (message, error = {}) => {
     return {
         success: false,
-        status: status,
         message: message,
         error: error.message
     }
