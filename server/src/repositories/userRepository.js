@@ -5,8 +5,7 @@ const userRepository = {
     ...crudRepository(User),
 
     getUserWithDetails: async function (id) {
-        // const user = await User.findById(id).populate({ path: 'userDetails', populate: { path: 'projects' }});
-        const user = await User.findById(id).populate({ path: 'userDetails' });
+        const user = await User.findById(id).populate({ path: 'userDetails', populate: { path: 'projects' } });
         return user;
     },
 

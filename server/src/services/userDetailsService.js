@@ -1,5 +1,6 @@
 import userRepository from "../repositories/userRepository.js";
 import userDetailsRepository from '../repositories/userDetailsRepository.js';
+import ClientError from "../utils/erros/clientError.js";
 
 export const createUserDetails = async ({ id, userDetailsData }) => {
     try {
