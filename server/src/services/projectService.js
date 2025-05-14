@@ -14,6 +14,13 @@ export const createProjectService = async (id, data) => {
             });
         }
         const userDetails = await userDetailsRepository.getById(user.userDetails);
+        if (!userDetails) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "User details doesnt exist, please create it first",
+                status: 400
+            });
+        }
         const project = await projectRepository.create(data);
         project.userId = id;
         userDetails.projects.push(project);
