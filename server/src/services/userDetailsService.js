@@ -7,14 +7,14 @@ export const createUserDetails = async ({ id, userDetailsData }) => {
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "User with this id doesnt exist",
+                explanation: "User with this id doesnt exist",
                 status: 400
             });
         }
         if (user.userDetails) {
             throw new ClientError({
                 message: "Invalid request",
-                explantion: "User details already exist of this user",
+                explanation: "User details already exist of this user",
                 status: 400
             });
         }
@@ -34,14 +34,14 @@ export const getUserDetails = async (userid) => {
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "User with this id doesnt exist",
+                explanation: "User with this id doesnt exist",
                 status: 400
             });
         }
         if (!user.userDetails) {
             throw new ClientError({
                 message: "Invalid request",
-                explantion: "User details not found for this user",
+                explanation: "User details not found for this user",
                 status: 400
             });
         }
@@ -58,14 +58,14 @@ export const updateUserDetails = async (id, userDetailsData) => {
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "User with this id doesnt exist",
+                explanation: "User with this id doesnt exist",
                 status: 400
             });
         }
         if (user.userDetails == null) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "User details doesnt exist, please create it first",
+                explanation: "User details doesnt exist, please create it first",
                 status: 400
             });
         }
@@ -85,14 +85,14 @@ export const deleteUserDetails = async (userid) => {
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "User with this id doesnt exist",
+                explanation: "User with this id doesnt exist",
                 status: 400
             });
         }
         if (!user.userDetails) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explantion: "No UserDetails to delete for this user",
+                explanation: "No UserDetails to delete for this user",
                 status: 400
             });
         }
