@@ -54,23 +54,10 @@ export const JobDetails = ({ job, isOpen, onOpenChange }) => {
         <Drawer 
             isOpen={isOpen} 
             onOpenChange={onOpenChange}
-            size="lg" 
+            size="xl" 
             placement="bottom" 
             backdrop="opaque"
-            motionProps={{
-                variants: {
-                    enter: {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.3,
-                    },
-                    exit: {
-                    x: 100,
-                    opacity: 0,
-                    duration: 0.3,
-                },
-            },
-        }} >
+        >
             <DrawerContent>
             {() => (
                 <>
