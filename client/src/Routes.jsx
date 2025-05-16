@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound/NotFound"
 import { HRSigninCard } from "./component/Auth/HRAuth"
 import { HRRequest } from "./component/Auth/HRRequest"
 import PricePage from "./pages/PricingPage/PricePage"
+import QuizContestPage from "./pages/ContestPage/ContestPage"
 
 export const AppRoutes = () => {
     return (
@@ -20,6 +21,7 @@ export const AppRoutes = () => {
             <Route path='/recruiter/invite' element={<Auth><HRRequest /></Auth>} />
             <Route path='/home' element={<Home />} />
             <Route path='/premium' element={<PricePage />} />
+            <Route path='/contests' element={<QuizContestPage />} />
             <Route path="/recruiter/dashboard" element={<AdminLayout /> } />
             <Route path="/*" element={<NotFound />} />
         </Routes>
