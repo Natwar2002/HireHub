@@ -1,6 +1,9 @@
-import React from 'react'
+import { useNavigate } from "react-router-dom"
 
 export default function ContestCard({quiz}) {
+
+  const navigate = useNavigate()
+
   return (
      <div key={quiz.id} className="relative group">
             <div
@@ -27,6 +30,7 @@ export default function ContestCard({quiz}) {
               </div>
 
               <button
+                onClick={()=>navigate('/contests/start')}
                 className="mt-6 w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition duration-200"
               >
                 Start Quiz
