@@ -24,10 +24,38 @@ export const createProjectService = async (id, data) => {
         const project = await projectRepository.create(data);
         project.userId = id;
         userDetails.projects.push(project);
-        await user.save();
+        await userDetails.save();
         return project;
     } catch (error) {
         console.log("Error in create project service", error);
+        throw error;
+    }
+}
+
+export const updateProjectService = async (id, projectId, data) => {
+    try {
+        const user = await userRepository.getUserWithDetails(id);
+        if (!user) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "User with this id doesnt exist",
+                status: 400
+            });
+        }
+
+        console.log(user);
+
+        const project = await projectRepository.getById(projectId)
+        if (!project) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "Project with this id doesnt exist",
+                status: 400
+            });
+        }
+
+    } catch (error) {
+        console.log("Error in update projects service", error);
         throw error;
     }
 }
