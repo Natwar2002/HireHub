@@ -10,6 +10,8 @@ import QuizContestPage from "./pages/ContestPage/ContestPage"
 import PricePage from "./pages/PricingPage/PricePage"
 import { RecruiterSigninCard } from "./component/Auth/RecruiterSignIn"
 import { RecruiterSignUpCard } from "./component/Auth/RecruiterSignUpCard"
+import QuizInstructionsPage from "./pages/ContestPage/QuizInstructionsPage"
+import QuizPage from "./pages/ContestPage/QuizPage"
 
 export const AppRoutes = () => {
     return (
@@ -22,6 +24,8 @@ export const AppRoutes = () => {
             <Route path='/home' element={<Home />} />
             <Route path='/premium' element={<PricePage />} />
             <Route path='/contests' element={<QuizContestPage />} />
+            <Route path="/contests/start" element={<QuizInstructionsPage /> } />
+            <Route path="/contests/quiz" element={<QuizPage /> } />
             <Route path="/recruiter/dashboard" element={<AdminLayout /> } />
             <Route path="/*" element={<NotFound />} />
         </Routes>
