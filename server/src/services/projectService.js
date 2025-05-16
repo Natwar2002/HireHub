@@ -1,0 +1,33 @@
+import userRepository from '../repositories/userRepository.js';
+import projectRepository from '../repositories/projectRepository.js';
+import userDetailsRepository from '../repositories/userDetailsRepository.js';
+import ClientError from '../utils/erros/clientError.js';
+
+export const createProjectService = async (id, data) => {
+    try {
+        const user = await userRepository.getById(id);
+        if (!user) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "User with this id doesnt exist",
+                status: 400
+            });
+        }
+        const userDetails = await userDetailsRepository.getById(user.userDetails);
+        if (!userDetails) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "User details doesnt exist, please create it first",
+                status: 400
+            });
+        }
+        const project = await projectRepository.create(data);
+        project.userId = id;
+        userDetails.projects.push(project);
+        await user.save();
+        return project;
+    } catch (error) {
+        console.log("Error in create project service", error);
+        throw error;
+    }
+}

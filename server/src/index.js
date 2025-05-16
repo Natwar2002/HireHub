@@ -3,7 +3,6 @@ import { connectDB } from "./config/dbConfig.js";
 import appRouter from './routes/appRouter.js';
 import cors from 'cors';
 
-
 const app = express();
 
 app.use(cors({
