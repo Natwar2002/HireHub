@@ -63,7 +63,7 @@ export const Home = () => {
 
   function handleHireFromUsClick() {
     if(user && token) {
-      navigate('/hr/signin');
+      navigate('/recruiter/signin');
     } else {
       navigate('/auth/signin');
     }

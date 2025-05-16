@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useAdminInvite } from "../../hooks/admin/useAdminInvite";
 import { useEffect, useState } from "react";
 
-export const AdminRequest = () => {
+export const HRRequest = () => {
 
     const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ export const AdminRequest = () => {
         <div className="">
             <div className="flex flex-col justify-center items-center gap-1 mb-5">
                 <h1 className="text-2xl font-semibold">Admin Invitation Request</h1>
-                <p className="text-xs">Welcom Back, Login to explore the jobs</p>
+                <p className="text-xs">Welcome Back, Login to explore the jobs</p>
             </div>
             
             {error && (
@@ -77,7 +77,7 @@ export const AdminRequest = () => {
 
             <p className='text-sm text-muted-foreground mt-4'>
                 already have an account? 
-                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/admin/signin')}> Sign in</span>
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signin')}> Sign in</span>
             </p>
         </div>
     )

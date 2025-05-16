@@ -5,7 +5,7 @@ import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
 import { useAdminSignIn } from "../../hooks/admin/useAdminSignUp";
 
-export const AdminSigninCard = () => {
+export const HRSigninCard = () => {
 
     const navigate = useNavigate();
 
@@ -40,8 +40,8 @@ export const AdminSigninCard = () => {
     return (
         <div className="">
             <div className="flex flex-col justify-center items-center gap-1 mb-5">
-                <h1 className="text-2xl font-semibold">Admin Sign In</h1>
-                <p className="text-xs">Welcom Back, Login to explore the jobs</p>
+                <h1 className="text-2xl font-semibold">Recruiter Sign In</h1>
+                <p className="text-xs">Welcome Back, Login to post the jobs</p>
             </div>
             
             {error && (
@@ -87,7 +87,7 @@ export const AdminSigninCard = () => {
 
             <p className='text-sm text-muted-foreground mt-4'>
                 Don't have an account? 
-                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/admin/invite')}> - Request Access</span>
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/invite')}> - Request Access</span>
             </p>
         </div>
     )

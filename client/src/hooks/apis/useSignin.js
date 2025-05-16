@@ -11,9 +11,9 @@ export const useSignin = () => {
             const userObject = JSON.stringify(data)
             
             localStorage.setItem('user', userObject);
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('token', data.token);
             
-            store.dispatch(setAuth(userObject, data.token));
+            store.dispatch(setAuth(data, data.token));
         },
         onError: (error) => {
             console.log('Failed to sign in: ', error);
