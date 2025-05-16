@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import {  adminInviteRequestUpdate } from '../../apis/admin auth/admin';
+import { recruiterSingUpRequest } from '../../apis/Recruiter auth/recruiter';
 
 
-export const useAdminRequest = () => {
+export const useRecruiterSignUp = () => {
     const { isPending, isSuccess, error, mutateAsync: adminInviteUpdate } = useMutation({
-        mutationFn: (email,type)=>adminInviteRequestUpdate(email,type),
+        mutationFn: (email,type)=>recruiterSingUpRequest(email,type),
         onSuccess: (data) => {
             console.log('Successfully updated', data);
         },

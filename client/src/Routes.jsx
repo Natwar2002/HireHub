@@ -6,10 +6,10 @@ import { Home } from "./pages/Home/Home"
 import SiteLoader from "./component/SiteLoader/SiteLoader"
 import { AdminLayout } from "./pages/AdminDashboard/AdminLayout"
 import NotFound from "./pages/NotFound/NotFound"
-import { HRSigninCard } from "./component/Auth/HRAuth"
-import { HRRequest } from "./component/Auth/HRRequest"
-import PricePage from "./pages/PricingPage/PricePage"
 import QuizContestPage from "./pages/ContestPage/ContestPage"
+import PricePage from "./pages/PricingPage/PricePage"
+import { RecruiterSigninCard } from "./component/Auth/RecruiterSignIn"
+import { RecruiterSignUpCard } from "./component/Auth/RecruiterSignUpCard"
 
 export const AppRoutes = () => {
     return (
@@ -17,8 +17,8 @@ export const AppRoutes = () => {
             <Route path='/' element={<SiteLoader/>} />
             <Route path='/auth/signup' element={<Auth><SignupContainer /></Auth>} />
             <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
-            <Route path='/recruiter/signin' element={<Auth><HRSigninCard /></Auth>} />
-            <Route path='/recruiter/invite' element={<Auth><HRRequest /></Auth>} />
+            <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
+            <Route path='/recruiter/signup' element={<Auth><RecruiterSignUpCard/></Auth>} />
             <Route path='/home' element={<Home />} />
             <Route path='/premium' element={<PricePage />} />
             <Route path='/contests' element={<QuizContestPage />} />
