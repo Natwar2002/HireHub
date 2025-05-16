@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema({
         enum: ['User', 'Admin', 'HR'],
         default: 'User',
     },
-    adminApproval:{
+    roleUpdateRequest:{
         type:String,
-        enum:['requested','rejected', 'approved','pending'],
+        enum:['none','HR'],
         default:'pending'
     },
     userDetails: {

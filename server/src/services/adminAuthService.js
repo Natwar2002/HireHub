@@ -57,6 +57,6 @@ export const adminSignInService = async (data) => {
         }
     } catch (error) {
         console.log(error);
-        throw new Error(error.message || error)
+        throw error
     }
 }
