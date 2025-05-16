@@ -8,7 +8,7 @@ import {
   Avatar,
   Divider,
   Input,
-} from "@heroui/react";
+} from "@heroui/react"
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { BsPencilSquare } from "react-icons/bs";
@@ -19,9 +19,11 @@ import { useUpdateUser } from '../../hooks/user/useUpdateUser';
 
 export const UserModal = ({ isOpen, onClose, link }) => {
 
-  const { user } = store.getState().auth;
+  const  user  = store.getState().auth.user;
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.username);
+
+
 
   const [confirmAction, setConfirmAction] = useState(null); 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -93,7 +95,7 @@ export const UserModal = ({ isOpen, onClose, link }) => {
                       <BsPencilSquare className="cursor-pointer" onClick={handleEditToggle} />
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground p-2">{user?.email}</p>
+                  <p className="text-sm text-muted-foreground p-2">{user.email}</p>
                 </div>
                 <Divider />
               </ModalBody>
