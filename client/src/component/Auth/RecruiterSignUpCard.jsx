@@ -1,25 +1,28 @@
 import { Input } from "@heroui/input";
 import { LucideLoader, TriangleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
-import { useAdminInvite } from "../../hooks/admin/useAdminInvite";
-import { useEffect, useState } from "react";
+import { useRecruiterSignUp } from "../../hooks/admin/useRecruiterRequest";
 
-export const HRRequest = () => {
+export const RecruiterSignUpCard = () => {
 
     const navigate = useNavigate();
 
-    const { isPending, isSuccess, error, adminInvite } = useAdminInvite();
+    const { isPending, isSuccess, error, adminSignIn } = useRecruiterSignUp();
     const [signinForm, setSigninForm] = useState({
+        username:"",
         email: '',
+        password: ''
     });
 
     async function onSigninFormSubmit(e) {
         e.preventDefault();
         console.log(signinForm);
         try {
-            await adminInvite({
-                email: signinForm.email
+            await adminSignIn({
+                email: signinForm.email,
+                password: signinForm.password
             })
         } catch (error) {
             console.log('Error in login', error.message);
@@ -29,16 +32,17 @@ export const HRRequest = () => {
     useEffect(()=> {
         if(isSuccess) {
             setTimeout(() => {
-                navigate('/');
+                navigate('/home');
             }, 1000);
         }
     }, [isSuccess, navigate]);
     
+
     return (
         <div className="">
             <div className="flex flex-col justify-center items-center gap-1 mb-5">
-                <h1 className="text-2xl font-semibold">Admin Invitation Request</h1>
-                <p className="text-xs">Welcome Back, Login to explore the jobs</p>
+                <h1 className="text-2xl font-semibold">Recruiter Sign Up</h1>
+                <p className="text-xs">Welcome Back, Login to post the jobs</p>
             </div>
             
             {error && (
@@ -57,6 +61,15 @@ export const HRRequest = () => {
             <form onSubmit={onSigninFormSubmit} className="flex flex-col w-full h-full gap-4">
                 <Input 
                     size="sm"
+                    label="Username" 
+                    type="username" 
+                    // isRequired
+                    errorMessage="Please enter a valid email"
+                    disabled={isPending}
+                    onChange={(e) => setSigninForm({...signinForm, username: e.target.value })}
+                />
+                <Input 
+                    size="sm"
                     label="Email" 
                     type="email" 
                     // isRequired
@@ -64,20 +77,27 @@ export const HRRequest = () => {
                     disabled={isPending}
                     onChange={(e) => setSigninForm({...signinForm, email: e.target.value })}
                 />
-                
+                <Input 
+                    size="sm"
+                    label="Password" 
+                    type="password" 
+                    // isRequired
+                    disabled={isPending}
+                    onChange={(e) => setSigninForm({...signinForm, password: e.target.value })}
+                /> 
                 <button 
                     type="submit" 
                     className="text-white bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0] hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2 flex justify-center items-center gap-5"
                     disabled={isPending}
                 >
-                    { isPending || isSuccess ? `Sending Request...` : 'Send Invite' }
+                    { isPending || isSuccess ? `Signing in...` : 'Sign in' }
                     { isPending || isSuccess && (<LucideLoader className='animate-spin ml-2' />)}
                 </button>
             </form>
 
             <p className='text-sm text-muted-foreground mt-4'>
-                already have an account? 
-                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signin')}> Sign in</span>
+                Already have an account? 
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signin')}> - recruiter sing up</span>
             </p>
         </div>
     )

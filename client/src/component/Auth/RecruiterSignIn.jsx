@@ -3,13 +3,13 @@ import { LucideLoader, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
-import { useAdminSignIn } from "../../hooks/admin/useAdminSignUp";
+import { useRecruiterSignIn } from "../../hooks/admin/useRecruiterSignUp";
 
-export const HRSigninCard = () => {
+export const RecruiterSigninCard = () => {
 
     const navigate = useNavigate();
 
-    const { isPending, isSuccess, error, adminSignIn } = useAdminSignIn();
+    const { isPending, isSuccess, error, adminSignIn } = useRecruiterSignIn();
     const [signinForm, setSigninForm] = useState({
         email: '',
         password: ''
@@ -87,7 +87,7 @@ export const HRSigninCard = () => {
 
             <p className='text-sm text-muted-foreground mt-4'>
                 Don't have an account? 
-                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/invite')}> - Request Access</span>
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signup')}> - recruiter sing up</span>
             </p>
         </div>
     )
