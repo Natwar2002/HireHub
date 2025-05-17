@@ -10,48 +10,15 @@ import JobCard from "../../component/JobCard/JobCard";
 import store from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-const jobs = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "Physics Wallah Pvt limited",
-    tags: ["Frontend", "Full stack"],
-    type: "Full Time",
-    mode: "OnSite",
-    salary: "6-10LPA",
-    applied: 24,
-  },
-  {
-    id: 2,
-    title: "Backend Developer",
-    company: "Scaler",
-    tags: ["Backend"],
-    type: "Part Time",
-    mode: "Remote",
-    salary: "10-15LPA",
-    applied: 40,
-  },
-  {
-    id: 3,
-    title: "Full Stack Developer",
-    company: "Coding Ninjas",
-    tags: ["Full stack", "Frontend", "Backend"],
-    type: "Internship",
-    mode: "Hybrid",
-    salary: "3-5LPA",
-    applied: 10,
-  },
-];
+import { jobsHome, tags } from "../../utils/constants";
 
 export const Home = () => {
 
   const navigate = useNavigate();
-  const [selectedTag, setSelectedTag] = useState("All Recent");
-  const tags = ["All Recent", "Full stack", "Frontend", "Backend", "Software Developer"];
+  const [selectedTag, setSelectedTag] = useState("All");
   const { user, token } = store.getState().auth;
 
-  const filteredJobs = selectedTag === "All Recent" ? jobs : jobs.filter(job => job.tags.includes(selectedTag));
+  const filteredJobs = selectedTag === "All" ? jobsHome : jobsHome.filter((job) => job.tag === selectedTag);
 
   function handleGetStartedClick() {
     if(user && token) {
@@ -71,7 +38,6 @@ export const Home = () => {
 
   return (
     <>
-      <NavBar />
       <div className="w-full h-screen mt-12 flex flex-col items-center justify-center relative">
         <div className="text-center ">
           <h2 className="font-cabinet text-9xl max-xl:text-7xl font-bold ">
@@ -140,26 +106,30 @@ export const Home = () => {
       </div>
       <div className="mt-40">
         <div className="text-center ">
-          <h3 className="text-4xl font-cabinet font-bold mb-4">
+          <h3 className="text-4xl font-cabinet font-bold">
             Newest <span className="text-purple-400">Jobs</span> for You
           </h3>
           <p className="mb-4 font-extralight">
             Get the fastest application so that your name is above other
             application
           </p>
-          <div className="flex justify-center gap-6">
-            { tags.map(tag => (
+          <div className="flex justify-center flex-wrap gap-4 mb-8 my-12">
+            {tags.map((tag) => (
               <span
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`cursor-pointer px-3 py-1 rounded-md ${selectedTag === tag ? "bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0]" : "" }`}
+                className={`cursor-pointer px-4 py-1 rounded-full transition-all duration-300 ${
+                  selectedTag === tag
+                    ? "bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0] text-white"
+                    : "bg-[#343750] hover:bg-[#454866]"
+                }`}
               >
                 {tag}
               </span>
-            )) }
-          </div>
+            ))}
         </div>
-        <div className="w-[80vw] max-xl:w-[90vw] m-auto mt-20 flex flex-wrap items-center justify-center gap-8">
+        </div>
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto mt-12">
           {filteredJobs.map(job => (
             <JobCard key={job.id} job={job} />
           ))}
@@ -235,7 +205,7 @@ export const Home = () => {
         </div>
         <div>
             <p className="font-cabinet font-light">We are Always Happy To Help</p>
-            <p>HireHib@gmail.com</p>
+            <p>HireHub@gmail.com</p>
         </div>
       </div>
       <hr className="w-[80vw] m-auto "/>

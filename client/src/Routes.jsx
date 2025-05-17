@@ -12,6 +12,8 @@ import { RecruiterSigninCard } from "./component/Auth/RecruiterSignIn"
 import { RecruiterSignUpCard } from "./component/Auth/RecruiterSignUpCard"
 import QuizInstructionsPage from "./pages/ContestPage/QuizInstructionsPage"
 import QuizPage from "./pages/ContestPage/QuizPage"
+import MainLayout from "./component/Layouting/Layout"
+import JobsPage from "./pages/JobsPage/JobsPage"
 
 export const AppRoutes = () => {
     return (
@@ -21,11 +23,14 @@ export const AppRoutes = () => {
             <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
             <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
             <Route path='/recruiter/signup' element={<Auth><RecruiterSignUpCard/></Auth>} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/premium' element={<PricePage />} />
-            <Route path='/contests' element={<QuizContestPage />} />
+            <Route path="/" element={<MainLayout />} >
+                <Route path='/home' element={<Home />} />
+                <Route path='/premium' element={<PricePage />} />
+                <Route path='/contests' element={<QuizContestPage />} />
+                <Route path="/contests/quiz" element={<QuizPage /> } />
+                <Route path="/jobs" element={<JobsPage />} />
+            </Route>
             <Route path="/contests/start" element={<QuizInstructionsPage /> } />
-            <Route path="/contests/quiz" element={<QuizPage /> } />
             <Route path="/recruiter/dashboard" element={<AdminLayout /> } />
             <Route path="/*" element={<NotFound />} />
         </Routes>
