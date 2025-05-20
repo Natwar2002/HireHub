@@ -1,8 +1,6 @@
 import userRepository from '../repositories/userRepository.js';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/serverConfig.js';
-import ClientError from '../utils/erros/clientError.js';
-import { customErrorResponse } from '../utils/common/customErrorResponse.js';
 
 export const isAuthenticated = async (req, res, next) => {
     try {

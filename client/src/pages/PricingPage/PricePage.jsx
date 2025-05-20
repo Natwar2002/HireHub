@@ -7,7 +7,7 @@ const plans = [
   {
     id: 'free',
     title: 'Free',
-    price: '₹0',
+    price: '0',
     features: [
       'Apply to jobs',
       'See application updates',
@@ -16,7 +16,7 @@ const plans = [
   {
     id: 'pro',
     title: 'Pro',
-    price: '₹199/mo',
+    price: '449',
     features: [
       'Everything in Free',
       'Early access to job posts',
@@ -26,7 +26,7 @@ const plans = [
   {
     id: 'premium',
     title: 'Premium',
-    price: '₹499/mo',
+    price: '999',
     features: [
       'Everything in Pro',
       'Contact recruiter via email or phone',
@@ -52,7 +52,7 @@ export default function PricePage() {
           const isActive = plan.id === selectedPlan;
 
           return (
-           <PriceCard isActive={isActive} plan={plan} setSelectedPlan={setSelectedPlan}/>
+           <PriceCard isActive={isActive} plan={plan} setSelectedPlan={setSelectedPlan} key={plan.id}/>
           );
         })}
       </div>

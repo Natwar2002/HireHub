@@ -6,22 +6,11 @@ import store from "../../redux/store";
 import { NavItem } from './NavItem'
 import { useDisclosure } from "@heroui/modal";
 import { UserModal } from "../Modal/UserModal";
-import { useEffect } from "react";
 export default function NavBar() {
 
   const navigate = useNavigate();
   const { user, token } = store.getState().auth;
   const {isOpen, onOpen, onClose} = useDisclosure();
-
-    useEffect(()=>{
-      if(user){
-        console.log(user)
-        console.log(user.username);
-        console.log(user.email)
-        // setUsername(user.username);
-        // setEmail(user.email);
-      }
-    },[user]);
 
   function handleInternClick() {
     if(!user && !token) {
