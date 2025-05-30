@@ -1,5 +1,4 @@
 import { Avatar } from "@heroui/avatar"
-import { Button } from "@heroui/button"
 import { Divider } from "@heroui/divider"
 import { Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader } from "@heroui/drawer"
 import { IoBag } from "react-icons/io5";

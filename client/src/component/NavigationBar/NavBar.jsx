@@ -12,12 +12,12 @@ export default function NavBar() {
   const { user, token } = store.getState().auth;
   const {isOpen, onOpen, onClose} = useDisclosure();
 
-  function handleInternClick() {
+  function handleAppliedJobsClick() {
     if(!user && !token) {
       navigate('/auth/signin');
       return;
     } else {
-      navigate('/internships');
+      navigate('/applied-jobs');
     }
   }
 
@@ -50,7 +50,7 @@ export default function NavBar() {
         isOpen={isOpen}
         link={'https://i.pravatar.cc/150?u=a042581f4e29026704d'}
       />
-      <div className="w-[80vw] h-10 flex items-center justify-between mx-auto mt-10 ">
+      <div className="w-[80vw] h-10 flex items-center justify-between mx-auto mt-10">
         <div className="flex items-center max-xl:flex-col max-xl:items-start ">
           <div className="flex items-center gap-2">
             <img src={Logo} alt="logo" className="w-10" />
@@ -62,8 +62,8 @@ export default function NavBar() {
               onClickHandler={() => navigate('/home')}
             />
             <NavItem 
-              label='Internships'
-              onClickHandler={handleInternClick}
+              label='Applied Jobs'
+              onClickHandler={handleAppliedJobsClick}
             />
             <NavItem 
               label='Contests'

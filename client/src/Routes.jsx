@@ -14,6 +14,7 @@ import QuizInstructionsPage from "./pages/ContestPage/QuizInstructionsPage"
 import QuizPage from "./pages/ContestPage/QuizPage"
 import MainLayout from "./component/Layouting/Layout"
 import JobsPage from "./pages/JobsPage/JobsPage"
+import { AppliedJobs } from "./pages/AppliedJobs/AppliedJobs"
 
 export const AppRoutes = () => {
     return (
@@ -29,6 +30,7 @@ export const AppRoutes = () => {
                 <Route path='/contests' element={<QuizContestPage />} />
                 <Route path="/contests/quiz" element={<QuizPage /> } />
                 <Route path="/jobs" element={<JobsPage />} />
+                <Route path="/applied-jobs" element={<AppliedJobs />} />
             </Route>
             <Route path="/contests/start" element={<QuizInstructionsPage /> } />
             <Route path="/recruiter/dashboard" element={<AdminLayout /> } />
