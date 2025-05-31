@@ -13,23 +13,24 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   User,
   Pagination,
+  useDisclosure,
 } from "@heroui/react";
+import PostJobModal from "../../../component/Modal/PostJobModal";
 
 export const columns = [
-  {name: "ID", uid: "id", sortable: true},
-  {name: "NAME", uid: "name", sortable: true},
-  {name: "ROLE", uid: "role", sortable: true},
-  {name: "JOBS", uid: "jobs", sortable: true},
-  {name: "ACTIONS", uid: "actions"},
+  { name: "No", uid: "id", sortable: true },
+  { name: "CANDIDATE NAME", uid: "name", sortable: true },
+  { name: "RESUME/CV", uid: "role", sortable: true },
+  { name: "ROLE", uid: "jobs", sortable: true },
+  { name: "ACTIONS", uid: "actions" },
 ];
 
 export const jobsOptions = [
-  {name: "200", uid: "200"},
-  {name: "30", uid: "30"},
-  {name: "3", uid: "3"},
+  { name: "200", uid: "200" },
+  { name: "30", uid: "30" },
+  { name: "3", uid: "3" },
 ];
 
 export const users = [
@@ -239,7 +240,7 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export const PlusIcon = ({size = 24, width, height, ...props}) => {
+export const PlusIcon = ({ size = 24, width, height, ...props }) => {
   return (
     <svg
       aria-hidden="true"
@@ -265,7 +266,7 @@ export const PlusIcon = ({size = 24, width, height, ...props}) => {
   );
 };
 
-export const VerticalDotsIcon = ({size = 24, width, height, ...props}) => {
+export const VerticalDotsIcon = ({ size = 24, width, height, ...props }) => {
   return (
     <svg
       aria-hidden="true"
@@ -315,7 +316,7 @@ export const SearchIcon = (props) => {
   );
 };
 
-export const ChevronDownIcon = ({strokeWidth = 1.5, ...otherProps}) => {
+export const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }) => {
   return (
     <svg
       aria-hidden="true"
@@ -339,10 +340,11 @@ export const ChevronDownIcon = ({strokeWidth = 1.5, ...otherProps}) => {
   );
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "jobs", "actions", 'id'];
+const INITIAL_VISIBLE_COLUMNS = ["name", "role", "jobs", "actions", "id"];
 
 export default function AdminDashboard() {
   const [filterValue, setFilterValue] = React.useState("");
+  const { isOpen, onOpenChange } = useDisclosure();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [jobsFilter] = React.useState("all");
@@ -358,7 +360,9 @@ export default function AdminDashboard() {
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -366,12 +370,15 @@ export default function AdminDashboard() {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
+        user.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (jobsFilter !== "all" && Array.from(jobsFilter).length !== jobsOptions.length) {
+    if (
+      jobsFilter !== "all" &&
+      Array.from(jobsFilter).length !== jobsOptions.length
+    ) {
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(jobsFilter).includes(user.jobs),
+        Array.from(jobsFilter).includes(user.jobs)
       );
     }
 
@@ -404,7 +411,7 @@ export default function AdminDashboard() {
       case "name":
         return (
           <User
-            avatarProps={{radius: "lg", src: user.avatar}}
+            avatarProps={{ radius: "lg", src: user.avatar }}
             description={user.email}
             name={cellValue}
           >
@@ -415,7 +422,9 @@ export default function AdminDashboard() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {user.team}
+            </p>
           </div>
         );
       case "actions":
@@ -485,13 +494,19 @@ export default function AdminDashboard() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button color="primary" endContent={<PlusIcon />}>
-              Add New
+            <Button
+              onPress={onOpenChange}
+              color="primary"
+              endContent={<PlusIcon />}
+            >
+              Add Job Post
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
+          <span className="text-default-400 text-small">
+            Total {users.length} users
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -506,7 +521,7 @@ export default function AdminDashboard() {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange, onClear]);
+  }, [filterValue, onSearchChange, onOpenChange, onRowsPerPageChange, onClear]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -521,10 +536,20 @@ export default function AdminDashboard() {
           onChange={setPage}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onPreviousPage}
+          >
             Previous
           </Button>
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onNextPage}
+          >
             Next
           </Button>
         </div>
@@ -533,39 +558,44 @@ export default function AdminDashboard() {
   }, [page, pages, onPreviousPage, onNextPage]);
 
   return (
-    <Table
-      isHeaderSticky
-      aria-label="Example table with custom cells, pagination and sorting"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[71vh]",
-      }}
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <Table
+        isHeaderSticky
+        aria-label="Example table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "max-h-[71vh]",
+        }}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No users found"} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <PostJobModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+    </>
   );
 }
