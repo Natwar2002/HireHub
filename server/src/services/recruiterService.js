@@ -1,12 +1,13 @@
 import argon2 from "argon2";
 import userRepository from "../repositories/userRepository.js";
-import { createAdminJWT } from "../utils/authUtils.js";
+import { createRecruiterJWT } from "../utils/authUtils.js";
 
-export const recruiterInviteService = async (data) => {
+
+export const recruiterSignupService = async (data) => {
   try {
     const { username, email, password } = data;
     if (!username || !email || !password) {
-      throw new Error("email and password required");
+      throw new Error("username, email and password required");
     }
     const isUserExist = await userRepository.getByEmail(email);
     if (!isUserExist) {
@@ -17,28 +18,20 @@ export const recruiterInviteService = async (data) => {
         roleUpdateRequest: "HR",
       });
       return response;
+    };
+    if(isUserExist.roleUpdateRequest == "HR"){
+      return isUserExist;
+    }else{
+      const response = await userRepository.update(isUserExist.id, {
+        roleUpdateRequest: "HR",
+      });
+      return response;
     }
-    const response = await userRepository.update(isUserExist.id, {
-      roleUpdateRequest: "HR",
-    });
-    return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const recruiterApprovalService = async (data) => {
-  try {
-    const { id, type } = data;
-    if (!type || !id) {
-      throw new Error("input required");
-    }
-    const response = await userRepository.update(id, { role: type });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const recruiterSignInService = async (data) => {
   try {
@@ -48,10 +41,10 @@ export const recruiterSignInService = async (data) => {
     if (!isValidUser) throw new Error("user is not exist");
     if (isValidUser.roleUpdateRequest !== "HR" && isValidUser.role !== "HR")
       throw new Error("not allowed to sing in contact relevant authority");
-    const isMatched = await argon2.verify(password, isValidUser.password);
+    const isMatched = await argon2.verify( isValidUser.password,password);
     if (!isMatched) throw new Error("wrong password");
     return {
-      token: createAdminJWT({ email }),
+      token: createRecruiterJWT({ email }),
       data: {
         username: isValidUser.username,
         email: isValidUser.email,
