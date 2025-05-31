@@ -22,12 +22,12 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['User', 'Admin', 'HR'],
+        enum: ['User', 'HR'],
         default: 'User',
     },
     roleUpdateRequest: {
         type: String,
-        enum: ['none', 'HR'],
+        enum: ['pending', 'HR'],
         default: 'pending'
     },
     userDetails: {
