@@ -1,5 +1,4 @@
 import CommonButton from "../../component/Button/Button";
-import NavBar from "../../component/NavigationBar/NavBar";
 import PlayIcon from "../../assets/video-square.png";
 import Partner from "../../assets/Group (4).png";
 import Companies from "../../assets/Group (1).png";
