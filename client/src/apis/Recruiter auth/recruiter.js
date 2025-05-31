@@ -10,11 +10,11 @@ export const recruiterSingUpRequest = async ({ email }) => {
   }
 };
 
-export const recruiterSignInRequest = async ({ email, type }) => {
+export const recruiterSignInRequest = async ({ email, password }) => {
   try {
-    const response = await axiosConfig.post("/recruiter/signup", {
+    const response = await axiosConfig.post("/recruiter/signin", {
       email,
-      type,
+      password,
     });
     return response.data;
   } catch (error) {

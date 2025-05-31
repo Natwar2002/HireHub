@@ -31,7 +31,7 @@ export const RecruiterSigninCard = () => {
     useEffect(()=> {
         if(isSuccess) {
             setTimeout(() => {
-                navigate('/home');
+                navigate('/recruiter/dashboard');
             }, 1000);
         }
     }, [isSuccess, navigate]);

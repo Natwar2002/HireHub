@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     roleUpdateRequest: {
         type: String,
         enum: ['none', 'HR'],
-        default: 'pending'
+        default: 'none'
     },
     userDetails: {
         type: mongoose.Schema.Types.ObjectId,
