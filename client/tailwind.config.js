@@ -4,7 +4,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@heroui/theme/dist/components/(avatar|button|card|divider|drawer|dropdown|image|input|modal|pagination|progress|toggle|table|toast|ripple|spinner|menu|popover|form|checkbox|spacer).js"
+    "./node_modules/@heroui/theme/dist/components/(avatar|button|card|chip|divider|drawer|dropdown|image|input|modal|pagination|progress|toggle|table|toast|user|ripple|spinner|menu|popover|form|checkbox|spacer).js"
   ],
   theme: {
   	extend: {
@@ -70,7 +70,16 @@ export default {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			}
-  		}
+  		},
+		keyframes: {
+			wiggle: {
+			'0%, 100%': { transform: 'translateX(0)' },
+			'50%': { transform: 'translateX(5px)' },
+			},
+		},
+		animation: {
+			wiggle: 'wiggle 0.5s ease-in-out infinite',
+		},
   	}
   },
   darkMode: ["class", "class"],

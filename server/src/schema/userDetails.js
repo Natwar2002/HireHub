@@ -5,11 +5,9 @@ const userDetailsSchema = new mongoose.Schema({
         qualification: {
             type: String,
             enum: ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"],
-            required: true
         },
         completionDate: {
             type: Date,
-            required: true
         }
     },
     experience: [
@@ -20,7 +18,6 @@ const userDetailsSchema = new mongoose.Schema({
     ],
     skills: {
         type: [String],
-        required: true,
         index: true
     },
     projects: [
@@ -31,37 +28,31 @@ const userDetailsSchema = new mongoose.Schema({
     ],
     phoneNo: {
         type: String,
-        required: true,
         match: /^[0-9]{10,15}$/
     },
     location: {
         state: {
             type: String,
-            required: true,
             trim: true
         },
         city: {
             type: String,
-            required: true,
             trim: true
         }
     },
     linkedinLink: {
         type: String,
-        required: true,
         match: /^https:\/\/(www\.)?linkedin\.com\/.+$/i
     },
     gitHubLink: {
         type: String,
-        required: true,
         match: /^https:\/\/(www\.)?github\.com\/.+$/i
     },
     portfolioLink: {
         type: String,
     },
     resume: {
-        type: String,
-        // required: true
+        type: String
     }
 }, { timestamps: true });
 

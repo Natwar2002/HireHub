@@ -2,14 +2,22 @@ import { useCreateOrder } from '../../hooks/payments/useCreateOrder';
 import { Check } from "lucide-react";
 import { RenderRazorpayPopup } from '../RenderRazorpayPopup/RenderRazorpayPopup';
 import { useState } from 'react';
+import store from '../../redux/store';
+import { useNavigate } from 'react-router-dom';
 
 export default function PriceCard({plan, setSelectedPlan, isActive}) {
 
-  const { createOrderMutation, isSuccess } = useCreateOrder();
+  const { createOrderMutation, isSuccess, isPending } = useCreateOrder();
   const [orderResponse, setOrderResponse] = useState('');
   const [amount, setAmount] = useState(null);
+  const { user, token } = store.getState().auth;
+  const navigate = useNavigate();
 
   async function handlePayments(amount) {
+    if(!user || !token) {
+      navigate('/auth/signin');
+      return;
+    }
     setAmount(amount);
     if(amount == 0) return;
     const res = await createOrderMutation(amount*100);
@@ -55,8 +63,11 @@ export default function PriceCard({plan, setSelectedPlan, isActive}) {
               : "bg-muted text-foreground hover:bg-muted/70"
           }`}
         onClick={() => handlePayments(plan.price)}
+        disabled={isPending}
       >
         {plan.id === "free" ? "Start for Free" : "Choose Plan"}
+        { isPending && `Taking you to razorpay` }
+        { isPending && (<LucideLoader className='animate-spin ml-2' />)}
       </button>
       { isSuccess && <RenderRazorpayPopup 
         amount={amount*100}

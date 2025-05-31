@@ -8,7 +8,7 @@ export const createUserDetails = async ({ id, userDetailsData }) => {
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explanation: "User with this id doesnt exist",
+                explanation: "User with this id doesn't exist",
                 status: 400
             });
         }
