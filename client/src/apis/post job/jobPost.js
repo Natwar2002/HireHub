@@ -1,56 +1,69 @@
 import axiosConfig from "../../config/axiosConfig";
 
-export const jobPostRequest = async ({ email, password }) => {
+export const jobPostRequest = async ({jobData, token}) => {
   try {
-    const response = await axiosConfig.post("/job/signin", {
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error.response.data;
-  }
-};
-
-export const jobUpdateRequest = async ({ email }) => {
-  try {
-    const response = await axiosConfig.post("/recruiter/signin", { email });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error.response.data;
-  }
-};
-
-export const jobDeleteRequest = async ({ email, type }) => {
-  try {
-    const response = await axiosConfig.post("/recruiter/signup", {
-      email,
-      type,
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error.response.data;
-  }
-};
-
-export const recruiterUpdateRequestUpdate = async ({ token, data }) => {
-  try {
-    const response = axiosConfig.post(
-      "/recruiter/update",
-      { data },
-      {
-        headers: {
-          "x-access-token": token,
-        },
+    const response = await axiosConfig.post("/jobs/", {
+      jobData
+    }, {
+      headers: {
+        "x-access-token" : token,
       }
-    );
-    console.log("Update user request", response);
-    return response?.data?.data;
+    });
+    return response.data;
   } catch (error) {
-    console.log("Error in update user request", error);
-    throw error;
+    console.error(error);
+    throw error.response.data;
+  }
+};
+
+export const jobUpdateRequest = async ({ jobId, jobData, token }) => {
+  try {
+    const response = await axiosConfig.put(`/jobs/${jobId}`, { jobData }, {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
+  }
+};
+
+export const jobDeleteRequest = async ({ jobId, token }) => {
+  try {
+    const response = await axiosConfig.delete(`/jobs/${jobId}`, {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
+  }
+};
+
+export const getAllJobPostRequest = async () => {
+  try {
+    const response = await axiosConfig.get(`/jobs`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
+  }
+};
+
+export const getJobPostRequest = async ({ jobId, token }) => {
+  try {
+    const response = await axiosConfig.get(`/jobs/${jobId}`, {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
   }
 };

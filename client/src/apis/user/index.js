@@ -2,7 +2,7 @@ import axiosConfig from '../../config/axiosConfig'
 
 export const updateUserRequest = async({ token, data }) => {
     try {
-        const response = axiosConfig.post('/users/update', { data }, {
+        const response = axiosConfig.put('/auth/update', { data }, {
             headers : {
                 'x-access-token' : token
             }
@@ -17,7 +17,7 @@ export const updateUserRequest = async({ token, data }) => {
 
 export const deleteUserRequest = async({ token }) => {
     try {
-        const response = axiosConfig.post('/users/delete', {
+        const response = axiosConfig.delete('/auth/delete', {
             headers : {
                 'x-access-token' : token
             }

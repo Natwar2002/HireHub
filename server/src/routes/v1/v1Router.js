@@ -5,6 +5,7 @@ import jobPostRouter from "./jobPostRouter.js";
 import projectRouter from "./projectRouter.js";
 import paymentRouter from "./paymentRouter.js";
 import recruiterRouter from "./recruiterAuth.js";
+import appliedJobsRouter from "./appliedJobsRouter.js";
 
 
 
@@ -16,5 +17,6 @@ v1Router.use('/users', userRouter);
 v1Router.use('/jobs', jobPostRouter);
 v1Router.use('/projects', projectRouter);
 v1Router.use('/payments', paymentRouter);
+v1Router.use('/appliedJobs', appliedJobsRouter);
 
 export default v1Router;

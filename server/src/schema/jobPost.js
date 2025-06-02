@@ -13,7 +13,7 @@ const jobPostSchema = new mongoose.Schema({
         index: true,
     },
     jobDescription: {
-        type: [String],
+        type: String,
         required: true,
     },
     tags: {

@@ -8,11 +8,11 @@ export const createJobPost = async (id, jobDetailsData) => {
         if (!author) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
-                explanation: "User with this id doesnt exist",
+                explanation: "User with this id doesn't exist",
                 status: 400
             });
         }
-        if (author.role !== 'HR') {
+        if (author.role != 'HR') {
             throw new ClientError({
                 message: "Invalid data sent from the client",
                 explanation: "Only HR can post jobs",

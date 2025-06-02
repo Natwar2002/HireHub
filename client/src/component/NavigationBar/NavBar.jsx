@@ -82,18 +82,18 @@ export default function NavBar() {
               onClick={handleUserButtonClick}
             />
           ) : (
-            <div className="flex items-center gap-4 max-lg:flex-col max-md:flex-row">
+            <div className="flex items-center gap-6 max-lg:flex-col max-md:flex-row">
               <button 
-                className="px-14 py-4 bg-gradient-to-b from-[#CE9FFC] via-[#A582F7] to-[#7367F0] rounded-xl max-xl:py-1"
-                onClick={() => navigate('/auth/signup')}
-              >
-                Sign Up
-              </button>
-              <button 
-                className="px-14 py-4 border-[2px] border-[#A582F7] rounded-xl max-xl:py-1"
+                className="py-4 rounded-xl"
                 onClick={() => navigate('/auth/signin')}
               >
                 Sign In
+              </button>
+              <button 
+                className="px-4 py-1 rounded-lg mr-6 border-[2px] border-white"
+                onClick={() => navigate('/auth/signup')}
+              >
+                Sign Up
               </button>
             </div>
           )}

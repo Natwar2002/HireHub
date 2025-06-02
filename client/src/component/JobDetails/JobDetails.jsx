@@ -81,7 +81,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange }) => {
                     <p className="text-sm text-muted-foreground">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
                     <div className="text-xs text-muted-foreground mb-2">
-                        <p className="flex items-center gap-2"><FaLocationDot /> <span>{job?.mode}</span></p>
+                        <p className="flex items-center gap-2"><FaLocationDot /> <span>{job?.location}</span></p>
                         <p className="flex items-center gap-2"><IoBag /> <span>2-3 Years</span></p>
                         <p className="flex items-center gap-2"><MdCurrencyRupee /> <span>{job?.salary}</span></p>
                     </div>

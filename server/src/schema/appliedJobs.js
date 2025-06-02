@@ -8,6 +8,10 @@ const appliedJobSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['Applied', 'Seen', 'Rejected', 'Accepted'],
+    },
+    jobDetails: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'JobPost'
     }
 }, { timestamps: true });
 

@@ -1,5 +1,5 @@
 import { useCreateOrder } from '../../hooks/payments/useCreateOrder';
-import { Check } from "lucide-react";
+import { Check, LucideLoader } from "lucide-react";
 import { RenderRazorpayPopup } from '../RenderRazorpayPopup/RenderRazorpayPopup';
 import { useState } from 'react';
 import store from '../../redux/store';
@@ -56,7 +56,7 @@ export default function PriceCard({plan, setSelectedPlan, isActive}) {
       </ul>
 
       <button
-        className={`mt-8 w-full py-2 px-4 rounded-xl font-semibold transition-colors duration-200 
+        className={`mt-8 flex gap-2 items-center justify-center w-full py-2 px-4 rounded-xl font-semibold transition-colors duration-200 
           ${
             isActive
               ? "bg-purple-600 text-white hover:bg-purple-700"

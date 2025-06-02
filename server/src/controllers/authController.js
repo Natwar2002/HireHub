@@ -1,4 +1,4 @@
-import { signinService, signupService } from "../services/authService.js";
+import { signinService, signupService, updateUserService } from "../services/authService.js";
 
 export const signupController = async (req, res) => {
     try {
@@ -40,6 +40,28 @@ export const signinController = async (req, res) => {
         return res.status(500).json({
             success: false,
             error: 'Login failed due to internal server error',
+        });
+    }
+}
+
+export const updateUserController = async (req, res) => {
+    try {
+        const response = await updateUserService(req.user, req.body.data);
+        return res.status(201).json({
+            success: true,
+            message: 'User updated successfully',
+            data: response
+        })
+    } catch (error) {
+        if (error.status) {
+            return res.status(error.status).json({
+                success: false,
+                error: error.message,
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            error: 'Failed to update user',
         });
     }
 }

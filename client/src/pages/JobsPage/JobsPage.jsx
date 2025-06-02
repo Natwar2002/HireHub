@@ -8,7 +8,7 @@ export default function JobsPage() {
   const filteredJobs = selectedTag === "All" ? jobs : jobs.filter((job) => job.tag === selectedTag);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1c1c27] via-[#1f1f2e] to-[#27293d] px-4 py-10 text-white">
+    <div className="min-h-screen px-4 py-10 text-white">
       <h1 className="text-2xl font-bold text-center mb-10">Explore Opportunities at HireHub</h1>
 
       <div className="flex justify-center flex-wrap gap-4 mb-8">
