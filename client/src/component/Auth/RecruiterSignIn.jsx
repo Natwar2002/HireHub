@@ -3,7 +3,7 @@ import { LucideLoader, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
-import { useRecruiterSignIn } from "../../hooks/admin/useRecruiterSignUp";
+import { useRecruiterSignIn } from "../../hooks/admin/useRecruiterSignIn";
 
 export const RecruiterSigninCard = () => {
 

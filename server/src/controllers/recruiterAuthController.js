@@ -4,7 +4,7 @@ import { recruiterSignInService, recruiterSignupService } from "../services/recr
 export const recruiterSignupController = async (req, res) => {
     try {
         const response = await recruiterSignupService(req.body);
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             message: 'User signed up successfully',
             data: response

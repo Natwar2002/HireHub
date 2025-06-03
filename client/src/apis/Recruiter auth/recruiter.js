@@ -1,9 +1,9 @@
 import axiosConfig from "../../config/axiosConfig";
 
-export const recruiterSingUpRequest = async ({ email }) => {
+export const recruiterSingUpRequest = async ({ email, username, password }) => {
   try {
-    const response = await axiosConfig.post("/recruiter/signin", { email });
-    return response.data;
+    const response = await axiosConfig.post("/recruiter/signup", { email, username, password });
+    return response.data.data;
   } catch (error) {
     console.error(error);
     throw error.response.data;
@@ -16,7 +16,7 @@ export const recruiterSignInRequest = async ({ email, password }) => {
       email,
       password,
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error);
     throw error.response.data;

@@ -20,7 +20,7 @@ export const recruiterSignupService = async (data) => {
       return response;
     };
     if(isUserExist.roleUpdateRequest == "HR"){
-      return isUserExist;
+      throw new Error("already have recruiter access please sign in")
     }else{
       const response = await userRepository.update(isUserExist.id, {
         roleUpdateRequest: "HR",
@@ -29,6 +29,7 @@ export const recruiterSignupService = async (data) => {
     }
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
