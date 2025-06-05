@@ -1,14 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { recruiterSingUpRequest } from '../../apis/Recruiter auth/recruiter';
+import { recruiterSignInRequest } from '../../apis/Recruiter auth/recruiter';
 import store from '../../redux/store';
 import { setAuth } from '../../redux/actions/authAction';
 
-export const useRecruiterSignUp = () => {
-    const { isPending, isSuccess, error, mutateAsync: adminSignUp } = useMutation({
-        mutationFn: (email,username,password)=>recruiterSingUpRequest(email,username,password),
+export const useRecruiterSignIn = () => {
+    const { isPending, isSuccess, error, mutateAsync: adminSignIn } = useMutation({
+        mutationFn: (email,password)=>recruiterSignInRequest(email,password),
         onSuccess: (data) => {
-            console.log('Successfully updated', data);
-             console.log('Successfully send invite  ', data);
+            console.log('Successfully send invite  ', data);
             const userObject = JSON.stringify(data)
             
             localStorage.setItem('user', userObject);
@@ -17,7 +16,7 @@ export const useRecruiterSignUp = () => {
             store.dispatch(setAuth(data, data.token));
         },
         onError: (error) => {
-            console.log('Failed to update: ', error);
+            console.log('Failed to send invite: ', error);
         }
     });
 
@@ -25,6 +24,6 @@ export const useRecruiterSignUp = () => {
         isPending,
         isSuccess,
         error,
-        adminSignUp
+        adminSignIn
     };
 };

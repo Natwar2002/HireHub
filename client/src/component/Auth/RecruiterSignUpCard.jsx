@@ -3,13 +3,14 @@ import { LucideLoader, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"
-import { useRecruiterSignUp } from "../../hooks/admin/useRecruiterRequest";
+import { useRecruiterSignUp } from "../../hooks/admin/useRecruiterSignUp";
+
 
 export const RecruiterSignUpCard = () => {
 
     const navigate = useNavigate();
 
-    const { isPending, isSuccess, error, adminSignIn } = useRecruiterSignUp();
+    const { isPending, isSuccess, error, adminSignUp } = useRecruiterSignUp();
     const [signinForm, setSigninForm] = useState({
         username:"",
         email: '',
@@ -18,10 +19,10 @@ export const RecruiterSignUpCard = () => {
 
     async function onSigninFormSubmit(e) {
         e.preventDefault();
-        console.log(signinForm);
         try {
-            await adminSignIn({
+            await adminSignUp({
                 email: signinForm.email,
+                username:signinForm.username,
                 password: signinForm.password
             })
         } catch (error) {
@@ -32,7 +33,7 @@ export const RecruiterSignUpCard = () => {
     useEffect(()=> {
         if(isSuccess) {
             setTimeout(() => {
-                navigate('/home');
+                navigate('/recruiter/dashboard');
             }, 1000);
         }
     }, [isSuccess, navigate]);
