@@ -15,15 +15,15 @@ export const recruiterSignupService = async (data) => {
       const user = await userRepository.getByEmail(email);
       if (!user) throw new Error("failed to create user in db");
       const response = await userRepository.update(user.id, {
-        roleUpdateRequest: "HR",
+        role: "HR",
       });
       return response;
     };
-    if(isUserExist.roleUpdateRequest == "HR"){
+    if (isUserExist.role == "HR") {
       throw new Error("already have recruiter access please sign in")
-    }else{
+    } else {
       const response = await userRepository.update(isUserExist.id, {
-        roleUpdateRequest: "HR",
+        role: "HR",
       });
       return response;
     }
@@ -40,9 +40,9 @@ export const recruiterSignInService = async (data) => {
     if (!email || !password) throw new Error("email and password is required");
     const isValidUser = await userRepository.getByEmail(email);
     if (!isValidUser) throw new Error("user is not exist");
-    if (isValidUser.roleUpdateRequest !== "HR" && isValidUser.role !== "HR")
+    if (isValidUser.role !== "HR" && isValidUser.role !== "HR")
       throw new Error("not allowed to sing in contact relevant authority");
-    const isMatched = await argon2.verify( isValidUser.password,password);
+    const isMatched = await argon2.verify(isValidUser.password, password);
     if (!isMatched) throw new Error("wrong password");
     return {
       token: createRecruiterJWT({ email }),

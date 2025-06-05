@@ -5,7 +5,7 @@ import { UserButton } from '../Button/UserButton'
 import store from "../../redux/store";
 import { NavItem } from './NavItem'
 import { useDisclosure } from "@heroui/modal";
-import { UserModal } from "../Modal/UserModal";
+import { UserDetails } from "../UserDetails/UserDetails";
 export default function NavBar() {
 
   const navigate = useNavigate();
@@ -45,10 +45,9 @@ export default function NavBar() {
 
   return (
     <>
-      <UserModal 
+      <UserDetails
         onClose={onClose}
         isOpen={isOpen}
-        link={'https://i.pravatar.cc/150?u=a042581f4e29026704d'}
       />
       <div className="w-[80vw] h-10 flex items-center justify-between mx-auto mt-10">
         <div className="flex items-center max-xl:flex-col max-xl:items-start ">

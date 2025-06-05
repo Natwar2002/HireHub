@@ -33,7 +33,7 @@ export const RecruiterSignUpCard = () => {
     useEffect(()=> {
         if(isSuccess) {
             setTimeout(() => {
-                navigate('/recruiter/dashboard');
+                navigate('/recruiter/signin');
             }, 1000);
         }
     }, [isSuccess, navigate]);
