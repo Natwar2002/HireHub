@@ -14,31 +14,36 @@ import QuizInstructionsPage from "./pages/ContestPage/QuizInstructionsPage"
 import QuizPage from "./pages/ContestPage/QuizPage"
 import MainLayout from "./component/Layouting/Layout"
 import JobsPage from "./pages/JobsPage/JobsPage"
-import ManageJobPosts from "./component/PostedJobs/PostedJobs"
 import { AppliedJobs } from "./pages/AppliedJobs/AppliedJobs"
-import { UserDetails } from "./pages/UserDetails"
+import ManageJobPosts from "./component/PostedJobs/PostedJobs"
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard/AdminDashboard"
+import UserDetailsModal from "./component/Modal/UserDetails"
 
 export const AppRoutes = () => {
-    return (
-        <Routes>
-            <Route path='/' element={<SiteLoader/>} />
-            <Route path='/auth/signup' element={<Auth><SignupContainer /></Auth>} />
-            <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
-            <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
-            <Route path='/recruiter/signup' element={<Auth><RecruiterSignUpCard/></Auth>} />
-            <Route path="/" element={<MainLayout />} >
-                <Route path='/home' element={<Home />} />
-                <Route path='/premium' element={<PricePage />} />
-                <Route path='/contests' element={<QuizContestPage />} />
-                <Route path="/contests/quiz" element={<QuizPage /> } />
-                <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/applied-jobs" element={<AppliedJobs />} />
-            </Route>
-            <Route path="/contests/start" element={<QuizInstructionsPage /> } />
-            <Route path="/recruiter/dashboard" element={<AdminLayout /> } />
-            <Route path="/user-details" element={<UserDetails />} /> 
-            <Route path="/recruiter/jobs" element={<ManageJobPosts /> } />      
-            <Route path="/*" element={<NotFound />} />
-        </Routes>
-    )
+  return (
+    <Routes>
+        <Route path='/' element={<SiteLoader />} />
+        <Route path='/auth/signup' element={<Auth><SignupContainer /></Auth>} />
+        <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
+        <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
+        <Route path='/recruiter/signup' element={<Auth><RecruiterSignUpCard /></Auth>} />
+        <Route path='/contests/start' element={<QuizInstructionsPage />} />
+
+        <Route path='/' element={<MainLayout />}>
+            <Route path='home' element={<Home />} />
+            <Route path='premium' element={<PricePage />} />
+            <Route path='contests' element={<QuizContestPage />} />
+            <Route path='contests/quiz' element={<QuizPage />} />
+            <Route path='jobs' element={<JobsPage />} />
+            <Route path='applied-jobs' element={<AppliedJobs />} />
+        </Route>
+
+        <Route path='/recruiter' element={<AdminLayout />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path='postedJobs' element={<ManageJobPosts />} />
+        </Route>
+
+        <Route path='*' element={<NotFound />} />
+    </Routes>
+  )
 }

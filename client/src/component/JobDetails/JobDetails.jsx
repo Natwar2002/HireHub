@@ -7,6 +7,8 @@ import { Chip } from "@heroui/react"
 import { MdCurrencyRupee } from "react-icons/md";
 import { FaUsers, FaUserTie  } from "react-icons/fa";
 import CommonButton from "../Button/Button";
+import { useCreateApplication } from "../../hooks/applications/useCreateApplication";
+import { useQueryClient } from "@tanstack/react-query";
 
 let skills = ["HTML",
   "CSS",
@@ -42,11 +44,22 @@ let responsibilities = ["Hands-on experience with network devices (routers, swit
 ]
 
 
-export const JobDetails = ({ job, isOpen, onOpenChange }) => {
+export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
 
-    function handleApply () {
+    const { createApplicationMutation, error, isSuccess } = useCreateApplication();
+    const queryClient = useQueryClient();
+
+    function handleApply (jobId) {
         console.log("Successfully applied");
-        
+        createApplicationMutation(jobId);
+        queryClient.invalidateQueries('GetJobs');
+
+        if(error) {
+            // add toast if error
+        }
+        if (isSuccess) {
+            // Add toast if success
+        }
     }
 
     return (
@@ -106,10 +119,10 @@ export const JobDetails = ({ job, isOpen, onOpenChange }) => {
                         <div className="text-sm">
                             <p>Posted By: <span>{ job?.posted_by || "Natwar" }</span></p>
                         </div>
-                        <CommonButton 
+                        { isVisible && <CommonButton 
                             text="Apply" 
-                            onClickHandler={handleApply}                            
-                        />
+                            onClickHandler={() => handleApply(job?.id)}                            
+                        />}
                     </div>
                 </DrawerFooter>
                 </>

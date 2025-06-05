@@ -1,116 +1,126 @@
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import PostJobModal from "../Modal/PostJobModal";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
 
 export default function ManageJobPosts() {
-  const [postedJobs, setPostedJobs] = useState([
+  const [jobs, setJobs] = useState([
     {
       id: 1,
       company: "TechCorp",
       jobTitle: "Frontend Developer",
-      jobDescription: ["Build responsive UI components", "Integrate REST APIs"],
-      tags: ["#frontend", "#react", "#javascript"],
-      requiredSkills: ["React", "JavaScript", "HTML", "CSS"],
+      jobDescription: ["Build responsive UI", "Integrate APIs"],
+      tags: ["#react", "#frontend"],
+      requiredSkills: ["React", "JS", "HTML", "CSS"],
       location: "Remote",
       experience: "2+ years",
-      responsibilities: ["Write clean code", "Participate in code reviews"],
-      salary: {
-        min: 60000,
-        max: 90000,
-      },
+      responsibilities: ["Write clean code", "Review PRs"],
+      salary: { min: 60000, max: 90000 },
       jobType: "Full-time",
       deadLine: new Date("2025-07-01"),
     },
+    {
+      id: 2,
+      company: "InnoTech",
+      jobTitle: "Backend Developer",
+      jobDescription: ["Design REST APIs", "Database modeling"],
+      tags: ["#node", "#backend"],
+      requiredSkills: ["Node.js", "MongoDB", "Express"],
+      location: "Hybrid",
+      experience: "3+ years",
+      responsibilities: ["Design architecture", "Write APIs"],
+      salary: { min: 70000, max: 95000 },
+      jobType: "Part-time",
+      deadLine: new Date("2025-08-15"),
+    },
   ]);
 
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null);
+  const [selectedJob, setSelectedJob] = useState(jobs[0]);
 
   const handleDelete = (id) => {
-    const confirmDelete = confirm("Are you sure you want to delete this job?");
-    if (confirmDelete) {
-      setPostedJobs(postedJobs.filter((job) => job.id !== id));
+    if (confirm("Delete this job post?")) {
+      setJobs((prev) => prev.filter((j) => j.id !== id));
+      setSelectedJob(jobs[0]);
     }
   };
 
-  const handleEdit = (job) => {
-    setSelectedJob(job);
-    setIsEditOpen(true);
-  };
-
   return (
-    <div className="p-6 ">
-      <h2 className="text-2xl font-bold mb-6 px-6">Your Posted Jobs</h2>
-      {postedJobs.length === 0 ? (
-        <p>No jobs posted yet.</p>
-      ) : (
-        <div className="p-6 ">
-          {postedJobs.map((job) => (
-            <motion.div
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[90vh] px-6 py-10 bg-[#0f0f0f] text-white">
+      {/* LEFT COLUMN: JOB LIST */}
+      <div className="md:col-span-1 border-r border-gray-700 pr-4 overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-6">Your Job Posts</h2>
+        <div className="space-y-4">
+          {jobs.map((job) => (
+            <div
               key={job.id}
-              whileHover={{ scale: 1.03 }}
-              className="p-6 rounded-xl bg-gradient-to-b from-[#471a69] via-[#8139e0] to-indigo-600 shadow-lg transition duration-300 hover:shadow-xl"
+              onClick={() => setSelectedJob(job)}
+              className={`cursor-pointer border p-4 rounded-xl hover:bg-gray-800 transition ${
+                selectedJob?.id === job.id ? "bg-gray-800" : "bg-[#1a1a1a]"
+              }`}
             >
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="text-xl font-semibold ">{job.jobTitle}</h3>
-                  <p className=" text-sm">
-                    {job.company} • {job.location}
-                  </p>
-                  <p className="text-sm mt-1 ">Experience: {job.experience}</p>
-                  <p className="text-sm ">Type: {job.jobType}</p>
-                  <p className="text-sm ">
-                    Salary: ${job.salary.min.toLocaleString()} - $
-                    {job.salary.max.toLocaleString()}
-                  </p>
-                  <p className="text-sm ">
-                    Deadline: {new Date(job.deadLine).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEdit(job)}
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    <Pencil className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(job.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center gap-10">
-                <div className="mt-2">
-                  <p className="font-semibold text-sm ">Description:</p>
-                  <ul className="list-disc ml-5 text-sm ">
-                    {job.jobDescription.map((desc, i) => (
-                      <li key={i}>{desc}</li>
-                    ))}
-                  </ul>
-                </div>
+              <h3 className="text-lg font-semibold">{job.jobTitle}</h3>
+              <p className="text-sm text-gray-400">{job.company}</p>
+              <p className="text-sm text-gray-500">
+                {job.location} • {job.jobType}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
-                <div className="mt-2">
-                  <p className="font-semibold text-sm ">Responsibilities:</p>
-                  <ul className="list-disc ml-5 text-sm ">
-                    {job.responsibilities.map((resp, i) => (
-                      <li key={i}>{resp}</li>
-                    ))}
-                  </ul>
-                </div>
+      {/* RIGHT COLUMN: DETAILS */}
+      <div className="md:col-span-2 overflow-y-auto pl-6">
+        {selectedJob ? (
+          <div>
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h2 className="text-3xl font-bold">{selectedJob.jobTitle}</h2>
+                <p className="text-gray-400 text-sm mt-1">
+                  {selectedJob.company} • {selectedJob.location}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Deadline:{" "}
+                  {new Date(selectedJob.deadLine).toLocaleDateString()}
+                </p>
               </div>
-              <div className="flex items-center gap-10 mt-5" >
-                <div className="mt-2">
-                  <p className="font-semibold text-sm ">Skills:</p>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {job.requiredSkills.map((skill, i) => (
+              <div className="flex gap-3">
+                <button className="bg-blue-600 px-3 py-1.5 rounded flex items-center gap-1 text-sm hover:bg-blue-700">
+                  <Pencil size={16} /> Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(selectedJob.id)}
+                  className="bg-red-600 px-3 py-1.5 rounded flex items-center gap-1 text-sm hover:bg-red-700"
+                >
+                  <Trash2 size={16} /> Delete
+                </button>
+              </div>
+            </div>
+
+            <div className="grid gap-6">
+              <div>
+                <h4 className="text-lg font-semibold mb-2">Job Description</h4>
+                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                  {selectedJob.jobDescription.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-lg font-semibold mb-2">Responsibilities</h4>
+                <ul className="list-disc list-inside text-gray-300 space-y-1">
+                  {selectedJob.responsibilities.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <div>
+                  <h4 className="text-lg font-semibold mb-1">Skills</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJob.requiredSkills.map((skill, idx) => (
                       <span
-                        key={i}
-                        className="px-2 py-1 text-xs bg-purple-200 text-purple-700 rounded-full"
+                        key={idx}
+                        className="bg-purple-800/30 border border-purple-500 text-purple-200 text-xs px-3 py-1 rounded-full"
                       >
                         {skill}
                       </span>
@@ -118,13 +128,13 @@ export default function ManageJobPosts() {
                   </div>
                 </div>
 
-                <div className="mt-2">
-                  <p className="font-semibold text-sm ">Tags:</p>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {job.tags.map((tag, i) => (
+                <div>
+                  <h4 className="text-lg font-semibold mb-1">Tags</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJob.tags.map((tag, idx) => (
                       <span
-                        key={i}
-                        className="px-2 py-1 text-xs font-semibold bg-blue-200 text-blue-700 rounded-full"
+                        key={idx}
+                        className="bg-blue-800/30 border border-blue-500 text-blue-200 text-xs px-3 py-1 rounded-full"
                       >
                         {tag}
                       </span>
@@ -132,26 +142,16 @@ export default function ManageJobPosts() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
 
-      {isEditOpen && (
-        <PostJobModal
-          isOpen={isEditOpen}
-          onOpenChange={setIsEditOpen}
-          jobData={selectedJob}
-          onSave={(updatedJob) => {
-            setPostedJobs((prevJobs) =>
-              prevJobs.map((job) =>
-                job.id === updatedJob.id ? updatedJob : job
-              )
-            );
-            setIsEditOpen(false);
-          }}
-        />
-      )}
+              <p className="text-gray-400">
+                <strong>Salary:</strong> ${selectedJob.salary.min.toLocaleString()} - ${selectedJob.salary.max.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500">Select a job to view details</p>
+        )}
+      </div>
     </div>
   );
 }

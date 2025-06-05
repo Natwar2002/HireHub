@@ -20,6 +20,9 @@ export const createJobPost = async (id, jobDetailsData) => {
             });
         }
 
+        console.log(jobDetailsData);
+
+
         jobDetailsData.postedBy = id;
         const newJobPost = await jobPostRepository.create(jobDetailsData);
         console.log(newJobPost);

@@ -8,7 +8,7 @@ export const getApplicationsController = async (req, res) => {
         return res.status(201).json(customSuccessResponse(response, 'Applications fetched successfully'));
     } catch (error) {
         if (error.message) {
-            return res.status(error.status).json(customErrorResponse(error.message, error))
+            return res.status(error.status || 500).json(customErrorResponse(error.message, error))
         }
         return res.status(500).json({
             success: false,

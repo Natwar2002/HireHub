@@ -7,7 +7,7 @@ export const getApplicationService = async (userId) => {
     try {
         const page = 1;
         const limit = 20;
-        const applications = await appliedJobsRepository.getApplications(page, limit);
+        const applications = await appliedJobsRepository.getApplications(page, limit, userId);
         return applications;
     } catch (error) {
         console.log("Error in get applications service: ", error);

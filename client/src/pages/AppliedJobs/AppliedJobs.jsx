@@ -3,6 +3,8 @@ import {Avatar, Chip} from "@heroui/react";
 import { AiOutlineRight } from "react-icons/ai";
 import { JobDetails } from '../../component/JobDetails/JobDetails'
 import { useState } from "react";
+import { LoaderIcon, TriangleAlertIcon } from "lucide-react";
+import { useGetApplications } from '../../hooks/applications/useGetApplications'
 
 const Applications = [
     {
@@ -62,10 +64,29 @@ export const AppliedJobs = () => {
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [app, setApp] = useState(null);
+    
+    const { isError, isFetching, applications } = useGetApplications();
 
     function handleClick(application) {
         setApp(application);
         onOpen();
+    }
+
+    // if(isFetching){
+    //     return(
+    //         <div className='h-full flex-1 flex items-center justify-center'>
+    //             <LoaderIcon className='size-5 animate-spin text-muted-foreground' />
+    //         </div>
+    //     );
+    // }
+
+    if(isError) {
+        return(
+            <div className='h-full flex-1 flex flex-col gap-y-2 items-center justify-center'>
+                <TriangleAlertIcon className='size-6 text-muted-foreground' />
+                <span className='text-sm text-muted-foreground'>Channel not found</span>
+            </div>
+        );
     }
 
     return (
@@ -74,6 +95,7 @@ export const AppliedJobs = () => {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 job={app}
+                isVisible={false}
             />
             <div className="mx-[200px]">
                 <h1 className="m-6 text-4xl">Applications</h1>

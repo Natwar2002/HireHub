@@ -8,6 +8,7 @@ import {
   Avatar,
   Divider,
   Input,
+  useDisclosure,
 } from "@heroui/react"
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -16,6 +17,8 @@ import store from "../../redux/store";
 import { logout } from "../../redux/actions/authAction";
 import { useDeleteUser } from "../../hooks/user/useDeleteUser";
 import { useUpdateUser } from '../../hooks/user/useUpdateUser';
+import { CgMoreVerticalO } from "react-icons/cg";
+import UserDetailsModal from "./UserDetails";
 
 export const UserModal = ({ isOpen, onClose, link }) => {
 
@@ -23,7 +26,7 @@ export const UserModal = ({ isOpen, onClose, link }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.username);
 
-
+  const { isOpen: isUserDetailsOpen , onOpenChange } = useDisclosure();
 
   const [confirmAction, setConfirmAction] = useState(null); 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -67,16 +70,22 @@ export const UserModal = ({ isOpen, onClose, link }) => {
     <>
       {/* Main Modal */}
       <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
+        <UserDetailsModal isOpen={isUserDetailsOpen} onOpenChange={onOpenChange} />
         <ModalContent>
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">User Profile</ModalHeader>
               <ModalBody>
-                <div className="flex justify-start items-center gap-2">
-                  <Avatar size="lg" src={link} />
+                <div className="flex justify-between items-center">
+                  <div className="flex justify-start items-center gap-2">
+                    <Avatar size="lg" src={link} />
+                    <div>
+                      <Plus />
+                      <span className="text-xs text-muted-foreground">max size 500KB</span>
+                    </div>
+                  </div>
                   <div>
-                    <Plus />
-                    <span className="text-xs text-muted-foreground">max size 500KB</span>
+                    <span className="cursor-pointer" onClick={() => { onOpenChange() }}><CgMoreVerticalO size={22} /></span>
                   </div>
                 </div>
                 <Divider />

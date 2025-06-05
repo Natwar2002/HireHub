@@ -1,9 +1,11 @@
 import { useState } from "react";
 import JobCard from "../../component/JobCard/JobCard";
 import { jobs, tags } from "../../utils/constants";
+import { useGetAllJobs } from '../../hooks/jobPost/useGetAllJobs'
 
 export default function JobsPage() {
   const [selectedTag, setSelectedTag] = useState("All");
+  const { jobs: allJobs } = useGetAllJobs();
 
   const filteredJobs = selectedTag === "All" ? jobs : jobs.filter((job) => job.tag === selectedTag);
 

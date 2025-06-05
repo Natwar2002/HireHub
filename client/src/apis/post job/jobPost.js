@@ -1,10 +1,8 @@
 import axiosConfig from "../../config/axiosConfig";
 
-export const jobPostRequest = async ({jobData, token}) => {
+export const createJobPostRequest = async (jobData, token) => {
   try {
-    const response = await axiosConfig.post("/jobs/", {
-      jobData
-    }, {
+    const response = await axiosConfig.post("/jobs/", jobData , {
       headers: {
         "x-access-token" : token,
       }
@@ -16,7 +14,7 @@ export const jobPostRequest = async ({jobData, token}) => {
   }
 };
 
-export const jobUpdateRequest = async ({ jobId, jobData, token }) => {
+export const jobUpdateRequest = async (jobId, jobData, token ) => {
   try {
     const response = await axiosConfig.put(`/jobs/${jobId}`, { jobData }, {
       headers: {
@@ -30,7 +28,7 @@ export const jobUpdateRequest = async ({ jobId, jobData, token }) => {
   }
 };
 
-export const jobDeleteRequest = async ({ jobId, token }) => {
+export const jobDeleteRequest = async ( jobId, token ) => {
   try {
     const response = await axiosConfig.delete(`/jobs/${jobId}`, {
       headers: {
@@ -44,9 +42,13 @@ export const jobDeleteRequest = async ({ jobId, token }) => {
   }
 };
 
-export const getAllJobPostRequest = async () => {
+export const getAllJobPostRequest = async (token) => {
   try {
-    const response = await axiosConfig.get(`/jobs`);
+    const response = await axiosConfig.get(`/jobs`, {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -54,7 +56,7 @@ export const getAllJobPostRequest = async () => {
   }
 };
 
-export const getJobPostRequest = async ({ jobId, token }) => {
+export const getJobPostRequest = async ( jobId, token ) => {
   try {
     const response = await axiosConfig.get(`/jobs/${jobId}`, {
       headers: {

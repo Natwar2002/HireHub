@@ -40,14 +40,8 @@ const jobPostSchema = new mongoose.Schema({
         required: true,
     },
     salary: {
-        min: {
-            type: Number,
-            required: true,
-        },
-        max: {
-            type: Number,
-            required: true,
-        },
+        type: String,
+        required: true
     },
     postedBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -59,7 +53,7 @@ const jobPostSchema = new mongoose.Schema({
         enum: ['Full-time', 'Part-time', 'Internship', 'Contract', 'Freelance'],
         required: true,
     },
-    deadLine: {
+    deadline: {
         type: Date,
         required: true,
     },
