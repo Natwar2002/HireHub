@@ -12,7 +12,7 @@ export const createJobPost = async (id, jobDetailsData) => {
                 status: 400
             });
         }
-        if (author.role != 'HR') {
+        if (author.roleUpdateRequest != 'HR') {
             throw new ClientError({
                 message: "Invalid data sent from the client",
                 explanation: "Only HR can post jobs",
@@ -43,7 +43,7 @@ export const updateJobPost = async (id, jobId, jobDetailsData) => {
                 status: 400
             });
         }
-        if (author.role !== 'HR') {
+        if (author.roleUpdateRequest !== 'HR') {
             throw new ClientError({
                 message: "Invalid data sent from the client",
                 explanation: "Only HR can update jobs",
@@ -84,7 +84,7 @@ export const deleteJobPost = async (id, jobId) => {
                 status: 400
             });
         }
-        if (author.role !== 'HR') {
+        if (author.roleUpdateRequest !== 'HR') {
             throw new ClientError({
                 message: "Invalid data sent from the client",
                 explanation: "Only HR can delete jobs",
