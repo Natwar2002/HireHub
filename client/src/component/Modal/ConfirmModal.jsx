@@ -11,7 +11,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, action }) => {
   if (!action) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} backdrop="blur">
+    <Modal isOpen={isOpen} onClose={onClose} backdrop="blur" placement="center">
       <ModalContent>
         {() => (
           <>

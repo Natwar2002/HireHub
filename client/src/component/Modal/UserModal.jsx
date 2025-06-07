@@ -15,10 +15,8 @@ import { useState } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import store from "../../redux/store";
 import { logout } from "../../redux/actions/authAction";
-import { useDeleteUser } from "../../hooks/user/useDeleteUser";
-import { useUpdateUser } from '../../hooks/user/useUpdateUser';
 import { CgMoreVerticalO } from "react-icons/cg";
-import UserDetailsModal from "./UserDetails";
+import UserDetailsModal from "./UserDetailsModal";
 
 export const UserModal = ({ isOpen, onClose, link }) => {
 
@@ -31,14 +29,11 @@ export const UserModal = ({ isOpen, onClose, link }) => {
   const [confirmAction, setConfirmAction] = useState(null); 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const { deleteUserMutation } = useDeleteUser();
-  const { updateUserMutation } = useUpdateUser();
 
   const handleEditToggle = () => setIsEditing(!isEditing);
   const handleNameChange = (e) => setUsername(e.target.value);
   const handleBlur = () => {
     if(username !== user?.username) {
-      updateUserMutation({ username: username });
       console.log("Username updated successfully");
     }
     setIsEditing(false);
@@ -51,7 +46,6 @@ export const UserModal = ({ isOpen, onClose, link }) => {
   };
 
   const confirmDelete = () => {
-    deleteUserMutation();
     setShowConfirmModal(false);
     onClose();
   };

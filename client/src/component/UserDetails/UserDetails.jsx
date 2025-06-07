@@ -7,42 +7,48 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
+  useDisclosure,
 } from "@heroui/react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { FaPowerOff } from "react-icons/fa6";
 import { BsPencilSquare } from "react-icons/bs";
 import store from "../../redux/store";
 import { logout } from "../../redux/actions/authAction";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { useState } from "react";
+import UserDetailsModal from "../Modal/UserDetailsModal";
+import { useGetUserDetails } from "../../hooks/user/useGetUserDetails";
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
 
-    const user = {
-        username: "Natwar Patidar",
-        email: "natwar@example.com",
-        highestEducation: {
-        qualification: "MCA",
-        completionDate: "2024-06-01",
-        },
-        experience: [
-        { title: "Frontend Developer", company: "TechCorp" },
-        { title: "Backend Intern", company: "CodeBase" },
-        ],
-        skills: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
-        phoneNo: "9876543210",
-        location: {
-        city: "Indore",
-        state: "Madhya Pradesh",
-        },
-        linkedinLink: "https://linkedin.com/in/natwarpatidar",
-        gitHubLink: "https://github.com/natwarpatidar",
-        portfolioLink: "https://natwar.dev",
-        resume: "https://drive.google.com/resume-link",
-    };
+    const { userDetails } = useGetUserDetails();
+
+    // const userDetails = {
+    //     username: "Natwar Patidar",
+    //     email: "natwar@example.com",
+    //     highestEducation: {
+    //     qualification: "MCA",
+    //     completionDate: "2024-06-01",
+    //     },
+    //     experience: [
+    //     { title: "Frontend Developer", company: "TechCorp" },
+    //     { title: "Backend Intern", company: "CodeBase" },
+    //     ],
+    //     skills: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+    //     phoneNo: "9876543210",
+    //     location: {
+    //     city: "Indore",
+    //     state: "Madhya Pradesh",
+    //     },
+    //     linkedinLink: "https://linkedin.com/in/natwarpatidar",
+    //     gitHubLink: "https://github.com/natwarpatidar",
+    //     portfolioLink: "https://natwar.dev",
+    //     resume: "https://drive.google.com/resume-link",
+    // };
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [confirmAction, setConfirmAction] = useState(null);
+    const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
 
     function openConfirmDialog(action) {
         setConfirmAction(action);
@@ -61,19 +67,29 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
         <>
             <Drawer isOpen={isOpen} onOpenChange={onOpenChange} size="xl" backdrop="opaque">
                 <DrawerContent>
-                {() => (
-                    <>
-                        <DrawerHeader className="flex flex-col gap-1">User Details</DrawerHeader>
-
-                        <DrawerBody className="space-y-1">
+                    <DrawerHeader className="flex items-center justify-between relative">
+                        <span className="text-lg font-semibold">User Details</span>
+                        <Button
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            onPress={onClose}
+                            className="absolute right-1 top-1"
+                            aria-label="Close"
+                        >
+                            <X className="w-6 h-6" />
+                        </Button>
+                    </DrawerHeader>
+                        { userDetails ? (
+                            <DrawerBody className="space-y-1">
                             <div className="flex items-center gap-4">
                                 <div className="relative">
                                     <Avatar size="lg" />
                                     <Plus className="absolute left-10 bottom-[-2px] text-blue-700 cursor-pointer" />
                                 </div>
                                 <div>
-                                    <p className="text-lg font-semibold">{user.username}</p>
-                                    <p className="text-sm text-muted-foreground">{user.email}</p>
+                                    <p className="text-lg font-semibold">{userDetails?.username.toUpperCase()}</p>
+                                    <p className="text-sm text-muted-foreground">{userDetails.email}</p>
                                 </div>
                             </div>
                             <span className="text-xs text-muted-foreground">
@@ -85,9 +101,9 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                             <div>
                                 <h3 className="font-semibold mb-1">Highest Education</h3>
                                 <p>
-                                    {user.highestEducation?.qualification} (
-                                    {user.highestEducation?.completionDate
-                                        ? new Date(user.highestEducation.completionDate).toLocaleDateString()
+                                    {userDetails.userDetails?.highestEducation?.qualification} (
+                                    {userDetails.userDetails?.highestEducation?.completionDate
+                                        ? new Date(userDetails.userDetails?.highestEducation.completionDate).toLocaleDateString()
                                         : "N/A"}
                                     )
                                 </p>
@@ -97,9 +113,9 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
 
                         <div>
                             <h3 className="font-semibold mb-1">Experience</h3>
-                            {user.experience?.length > 0 ? (
+                            {userDetails.userDetails?.experience?.length > 0 ? (
                             <ul className="list-disc pl-4 space-y-1">
-                                {user.experience.map((exp, idx) => (
+                                {userDetails.userDetails?.experience.map((exp, idx) => (
                                 <li key={idx}>
                                     {exp.title} at {exp.company}
                                 </li>
@@ -115,7 +131,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                         <div>
                             <h3 className="font-semibold mb-1">Skills</h3>
                             <div className="flex flex-wrap gap-2">
-                            {user.skills?.map((skill, idx) => (
+                            {userDetails.userDetails?.skills?.map((skill, idx) => (
                                 <span
                                 key={idx}
                                 className="px-2 py-1 bg-muted text-sm rounded-md border border-border"
@@ -130,8 +146,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
 
                         <div>
                             <h3 className="font-semibold mb-1">Contact Info</h3>
-                            <p>Phone: {user.phoneNo}</p>
-                            <p>Location: {user.location?.city}, {user.location?.state}</p>
+                            <p>Phone: {userDetails.userDetails?.phoneNo}</p>
+                            <p>Location: {userDetails.userDetails?.location?.city}, {userDetails.userDetails?.location?.state}</p>
                         </div>
 
                         <Divider />
@@ -139,30 +155,30 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                         <div>
                             <h3 className="font-semibold mb-1">Links</h3>
                             <ul className="list-disc pl-4 space-y-1 text-blue-600">
-                            {user.linkedinLink && (
+                            {userDetails.userDetails?.linkedinLink && (
                                 <li>
-                                <a href={user.linkedinLink} target="_blank" rel="noopener noreferrer">
+                                <a href={userDetails.userDetails?.linkedinLink} target="_blank" rel="noopener noreferrer">
                                     LinkedIn
                                 </a>
                                 </li>
                             )}
-                            {user.gitHubLink && (
+                            {userDetails.userDetails?.gitHubLink && (
                                 <li>
-                                <a href={user.gitHubLink} target="_blank" rel="noopener noreferrer">
+                                <a href={userDetails.userDetails?.gitHubLink} target="_blank" rel="noopener noreferrer">
                                     GitHub
                                 </a>
                                 </li>
                             )}
-                            {user.portfolioLink && (
+                            {userDetails.userDetails?.portfolioLink && (
                                 <li>
-                                <a href={user.portfolioLink} target="_blank" rel="noopener noreferrer">
+                                <a href={userDetails.userDetails?.portfolioLink} target="_blank" rel="noopener noreferrer">
                                     Portfolio
                                 </a>
                                 </li>
                             )}
-                            {user.resume && (
+                            {userDetails.resume && (
                                 <li>
-                                <a href={user.resume} target="_blank" rel="noopener noreferrer">
+                                <a href={userDetails.userDetails?.resume} target="_blank" rel="noopener noreferrer">
                                     Resume
                                 </a>
                                 </li>
@@ -170,23 +186,47 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                             </ul>
                         </div>
                         </DrawerBody>
+                        ) : (
+                            <DrawerBody className="flex flex-col items-center justify-center text-center space-y-4 py-10">
+                                <div className="flex flex-col items-center">
+                                    <Avatar size="lg" />
+                                    <h2 className="text-xl font-semibold mt-4">No Details Found</h2>
+                                    <p className="text-sm text-muted-foreground max-w-xs">
+                                        You haven't added your personal or professional details yet.
+                                        This helps us personalize your experience and improve visibility to recruiters.
+                                    </p>
+                                </div>
+                                <Button
+                                    variant="shadow"
+                                    color="primary"
+                                    className="mt-4 px-6 py-2 text-base rounded-lg"
+                                    onPress={() => onOpenChangeOfUserDetailsModal()}
+                                >
+                                    <Plus className="mr-2" />
+                                    Add Your Details
+                                </Button>
+                            </DrawerBody>
+                        )}
 
-                        <DrawerFooter className="flex justify-between">
-                            <Button
-                                onPress={openConfirmDialog}
-                            >
-                                <span>Logout</span>
-                                <FaPowerOff />
-                            </Button>
-                            <Button
-                                onPress={() => {}}
-                            >
-                                <span>Edit</span>
-                                <BsPencilSquare />
-                            </Button>
-                        </DrawerFooter>
-                    </>
-                )}
+                    <DrawerFooter className="flex justify-between">
+                        <Button
+                            variant="shadow"
+                            color="danger"
+                            className="mt-4 px-6 py-2 text-base rounded-lg"
+                            onPress={() => openConfirmDialog("logout")}
+                        >
+                            <span>Logout</span>
+                            <FaPowerOff />
+                        </Button>
+                        <Button
+                            variant="shadow"
+                            className="mt-4 px-6 py-2 text-base rounded-lg"
+                            onPress={() => { onOpenChangeOfUserDetailsModal() }}
+                        >
+                            <span>Edit</span>
+                            <BsPencilSquare />
+                        </Button>
+                    </DrawerFooter>
                 </DrawerContent>
             </Drawer>
 
@@ -196,6 +236,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                 onConfirm={handleConfirm}
                 action={confirmAction}
             />
+
+            <UserDetailsModal isOpen={isUserDetailsOpen} onOpenChange={onOpenChangeOfUserDetailsModal} />
         </>
     );
 };

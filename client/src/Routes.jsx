@@ -17,7 +17,6 @@ import JobsPage from "./pages/JobsPage/JobsPage"
 import { AppliedJobs } from "./pages/AppliedJobs/AppliedJobs"
 import ManageJobPosts from "./component/PostedJobs/PostedJobs"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard/AdminDashboard"
-import UserDetailsModal from "./component/Modal/UserDetails"
 
 export const AppRoutes = () => {
   return (
