@@ -6,6 +6,7 @@ import store from "../../redux/store";
 import { NavItem } from './NavItem'
 import { useDisclosure } from "@heroui/modal";
 import { UserDetails } from "../UserDetails/UserDetails";
+
 export default function NavBar() {
 
   const navigate = useNavigate();

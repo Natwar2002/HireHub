@@ -1,4 +1,4 @@
-import { createJobPost, deleteJobPost, getAllJobPost, updateJobPost } from "../services/jobPostService.js";
+import { createJobPost, deleteJobPost, getAllJobPost, getJobPostByHR, updateJobPost } from "../services/jobPostService.js";
 import { customErrorResponse } from "../utils/common/customErrorResponse.js";
 import { customSuccessResponse } from '../utils/common/customSuccessResponse.js';
 
@@ -69,6 +69,23 @@ export const getJobPostController = async (req, res) => {
 export const getAllJobPostController = async (req, res) => {
     try {
         const response = await getAllJobPost(req.user);
+        return res.status(201).json(customSuccessResponse(response, 'Job posts fetched successfully'));
+    } catch (error) {
+        console.log(error.message);
+        if (error.message) {
+            return res.status(error.status).json(customErrorResponse(error.message, error))
+        }
+        return res.status(500).json({
+            success: false,
+            data: {},
+            error: error.message
+        });
+    }
+}
+
+export const getAllJobPostByHRController = async (req, res) => {
+    try {
+        const response = await getJobPostByHR(req.user);
         return res.status(201).json(customSuccessResponse(response, 'Job posts fetched successfully'));
     } catch (error) {
         console.log(error.message);

@@ -143,3 +143,15 @@ export const getAllJobPost = async () => {
         throw error;
     }
 }
+
+export const getJobPostByHR = async (userId) => {
+    try {
+        const page = 1;
+        const limit = 20;
+        const jobposts = await jobPostRepository.getJobsPostedByHR(page, limit, userId);
+        return jobposts;
+    } catch (error) {
+        console.log("Error in getJobPostByHR", error);
+        throw error;
+    }
+}

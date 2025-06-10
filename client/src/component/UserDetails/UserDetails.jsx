@@ -18,6 +18,7 @@ import ConfirmModal from "../Modal/ConfirmModal";
 import { useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
 import { useGetUserDetails } from "../../hooks/user/useGetUserDetails";
+import ProjectDetailsModal from "../Modal/ProjectModal";
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
 
@@ -49,7 +50,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [confirmAction, setConfirmAction] = useState(null);
     const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
-
+    const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
+ 
     function openConfirmDialog(action) {
         setConfirmAction(action);
         setShowConfirmModal(true);
@@ -205,6 +207,57 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                                     <Plus className="mr-2" />
                                     Add Your Details
                                 </Button>
+
+                                <div>
+                                    <h3 className="font-semibold mb-1">Projects</h3>
+                                    {userDetails?.userDetails?.projects?.length > 0 ? (
+                                        <ul className="space-y-4">
+                                        {userDetails.userDetails.projects.map((project, idx) => (
+                                            <li key={idx} className="p-4 border rounded-md bg-muted">
+                                            <h4 className="text-base font-semibold">{project.projectName}</h4>
+                                            <p className="text-sm text-muted-foreground mb-2">
+                                                {project.projectDescription}
+                                            </p>
+                                            <div className="flex gap-4 text-blue-600 text-sm">
+                                                {project.liveLink && (
+                                                <a
+                                                    href={project.liveLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="underline"
+                                                >
+                                                    Live Demo
+                                                </a>
+                                                )}
+                                                <a
+                                                href={project.githubLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="underline"
+                                                >
+                                                GitHub
+                                                </a>
+                                            </div>
+                                            </li>
+                                        ))}
+                                        </ul>
+                                    ) : (
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">No projects listed yet</p>
+                                            { userDetails && ( 
+                                                <Button
+                                                    variant="shadow"
+                                                    color="primary"
+                                                    className="mt-4 px-6 py-2 text-base rounded-lg"
+                                                    onPress={() => onOpenChangeOfProjectModal()}
+                                                >
+                                                    <Plus className="mr-2" />
+                                                    Add Project
+                                                </Button>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </DrawerBody>
                         )}
 
@@ -237,7 +290,14 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                 action={confirmAction}
             />
 
-            <UserDetailsModal isOpen={isUserDetailsOpen} onOpenChange={onOpenChangeOfUserDetailsModal} />
+            <UserDetailsModal 
+                isOpen={isUserDetailsOpen} 
+                onOpenChange={onOpenChangeOfUserDetailsModal} 
+            />
+            <ProjectDetailsModal 
+                isOpen={isProjectModalOpen} 
+                onOpenChange={onOpenChangeOfProjectModal}
+            />
         </>
     );
 };

@@ -49,6 +49,8 @@ export const recruiterSignInService = async (data) => {
       data: {
         username: isValidUser.username,
         email: isValidUser.email,
+        role: isValidUser.role,
+        _id: isValidUser.user._id,
       },
     };
   } catch (error) {
