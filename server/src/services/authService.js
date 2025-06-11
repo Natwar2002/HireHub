@@ -63,7 +63,6 @@ export const updateUserService = async (userId, userData) => {
             });
         }
         const newUser = await userRepository.update(userId, userData);
-        console.log(newUser);
         return newUser;
     } catch (error) {
         console.log('Error in update user service', error);

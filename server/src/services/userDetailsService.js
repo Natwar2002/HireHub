@@ -2,7 +2,7 @@ import userRepository from "../repositories/userRepository.js";
 import userDetailsRepository from '../repositories/userDetailsRepository.js';
 import ClientError from "../utils/erros/clientError.js";
 
-export const createUserDetails = async ({ id, userDetailsData }) => {
+export const createUserDetails = async (id, userDetailsData) => {
     try {
         const user = await userRepository.getById(id);
         if (!user) {

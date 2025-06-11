@@ -4,7 +4,7 @@ import { customSuccessResponse } from "../utils/common/customSuccessResponse.js"
 
 export const createUserDetailsController = async (req, res) => {
     try {
-        const response = await createUserDetails({ id: req.user, userDetailsData: req.body });
+        const response = await createUserDetails(req.user, req.body);
         return res.status(201).json(customSuccessResponse(response, 'User details added successfully'));
     } catch (error) {
         if (error.message) {

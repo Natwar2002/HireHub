@@ -50,7 +50,7 @@ export const recruiterSignInService = async (data) => {
         username: isValidUser.username,
         email: isValidUser.email,
         role: isValidUser.role,
-        _id: isValidUser.user._id,
+        _id: isValidUser._id,
       },
     };
   } catch (error) {

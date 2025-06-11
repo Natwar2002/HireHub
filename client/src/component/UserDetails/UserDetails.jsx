@@ -17,35 +17,34 @@ import { logout } from "../../redux/actions/authAction";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
-import { useGetUserDetails } from "../../hooks/user/useGetUserDetails";
 import ProjectDetailsModal from "../Modal/ProjectModal";
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
 
-    const { userDetails } = useGetUserDetails();
-
-    // const userDetails = {
-    //     username: "Natwar Patidar",
-    //     email: "natwar@example.com",
-    //     highestEducation: {
-    //     qualification: "MCA",
-    //     completionDate: "2024-06-01",
-    //     },
-    //     experience: [
-    //     { title: "Frontend Developer", company: "TechCorp" },
-    //     { title: "Backend Intern", company: "CodeBase" },
-    //     ],
-    //     skills: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
-    //     phoneNo: "9876543210",
-    //     location: {
-    //     city: "Indore",
-    //     state: "Madhya Pradesh",
-    //     },
-    //     linkedinLink: "https://linkedin.com/in/natwarpatidar",
-    //     gitHubLink: "https://github.com/natwarpatidar",
-    //     portfolioLink: "https://natwar.dev",
-    //     resume: "https://drive.google.com/resume-link",
-    // };
+    const userDetails = {
+        username: "Natwar Patidar",
+        email: "natwar@gmail.com",
+        userDetails: {
+        highestEducation: {
+        qualification: "MCA",
+        completionDate: "2024-06-01",
+        },
+        experience: [
+        { title: "Frontend Developer", company: "TechCorp" },
+        { title: "Backend Intern", company: "CodeBase" },
+        ],
+        skills: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+        phoneNo: "9876543210",
+        location: {
+        city: "Indore",
+        state: "Madhya Pradesh",
+        },
+        linkedinLink: "https://linkedin.com/in/natwarpatidar",
+        gitHubLink: "https://github.com/natwarpatidar",
+        portfolioLink: "https://natwar.dev",
+        resume: "https://drive.google.com/resume-link",
+    }
+    };
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [confirmAction, setConfirmAction] = useState(null);
@@ -82,7 +81,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                             <X className="w-6 h-6" />
                         </Button>
                     </DrawerHeader>
-                        { userDetails ? (
+                        { userDetails?.userDetails ? (
                             <DrawerBody className="space-y-1">
                             <div className="flex items-center gap-4">
                                 <div className="relative">
@@ -187,6 +186,58 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                             )}
                             </ul>
                         </div>
+
+                        <div>
+                            <h3 className="font-semibold mb-1">Projects</h3>
+                            {userDetails?.userDetails?.projects?.length > 0 ? (
+                                <ul className="space-y-4">
+                                {userDetails.userDetails.projects.map((project, idx) => (
+                                    <li key={idx} className="p-4 border rounded-md bg-muted">
+                                    <h4 className="text-base font-semibold">{project.projectName}</h4>
+                                    <p className="text-sm text-muted-foreground mb-2">
+                                        {project.projectDescription}
+                                    </p>
+                                    <div className="flex gap-4 text-blue-600 text-sm">
+                                        {project.liveLink && (
+                                        <a
+                                            href={project.liveLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="underline"
+                                        >
+                                            Live Demo
+                                        </a>
+                                        )}
+                                        <a
+                                        href={project.githubLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                        >
+                                        GitHub
+                                        </a>
+                                    </div>
+                                    </li>
+                                ))}
+                                </ul>
+                            ) : (
+                                <div>
+                                    <p className="text-sm text-muted-foreground">No projects listed yet</p>
+                                    { userDetails && ( 
+                                        <Button
+                                            variant="shadow"
+                                            color="primary"
+                                            className="mt-4 px-6 py-2 text-base rounded-lg"
+                                            onPress={() => onOpenChangeOfProjectModal()}
+                                        >
+                                            <Plus className="mr-2" />
+                                            Add Project
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
                         </DrawerBody>
                         ) : (
                             <DrawerBody className="flex flex-col items-center justify-center text-center space-y-4 py-10">
@@ -207,57 +258,6 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                                     <Plus className="mr-2" />
                                     Add Your Details
                                 </Button>
-
-                                <div>
-                                    <h3 className="font-semibold mb-1">Projects</h3>
-                                    {userDetails?.userDetails?.projects?.length > 0 ? (
-                                        <ul className="space-y-4">
-                                        {userDetails.userDetails.projects.map((project, idx) => (
-                                            <li key={idx} className="p-4 border rounded-md bg-muted">
-                                            <h4 className="text-base font-semibold">{project.projectName}</h4>
-                                            <p className="text-sm text-muted-foreground mb-2">
-                                                {project.projectDescription}
-                                            </p>
-                                            <div className="flex gap-4 text-blue-600 text-sm">
-                                                {project.liveLink && (
-                                                <a
-                                                    href={project.liveLink}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="underline"
-                                                >
-                                                    Live Demo
-                                                </a>
-                                                )}
-                                                <a
-                                                href={project.githubLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="underline"
-                                                >
-                                                GitHub
-                                                </a>
-                                            </div>
-                                            </li>
-                                        ))}
-                                        </ul>
-                                    ) : (
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">No projects listed yet</p>
-                                            { userDetails && ( 
-                                                <Button
-                                                    variant="shadow"
-                                                    color="primary"
-                                                    className="mt-4 px-6 py-2 text-base rounded-lg"
-                                                    onPress={() => onOpenChangeOfProjectModal()}
-                                                >
-                                                    <Plus className="mr-2" />
-                                                    Add Project
-                                                </Button>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
                             </DrawerBody>
                         )}
 
