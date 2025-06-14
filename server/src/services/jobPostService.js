@@ -1,3 +1,4 @@
+import { deleteImageCloudinary } from '../config/cloudinary.js';
 import jobPostRepository from '../repositories/jobPostRepository.js';
 import userRepository from '../repositories/userRepository.js';
 import ClientError from "../utils/erros/clientError.js";
@@ -5,6 +6,16 @@ import ClientError from "../utils/erros/clientError.js";
 export const createJobPost = async (id, jobDetailsData) => {
     try {
         const author = await userRepository.getById(id);
+        // more readable method
+         const requiredFields = [
+            "company", "jobTitle", "jobDescription", "tags", "requiredSkills",
+            "location", "experience", "responsibilities", "salary",
+            "jobType", "deadline","logo"
+        ];
+        const missingFields = requiredFields.filter(field => !jobDetailsData[field]);
+        if (missingFields.length > 0) {
+            throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+        }
         if (!author) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
@@ -12,20 +23,15 @@ export const createJobPost = async (id, jobDetailsData) => {
                 status: 400
             });
         }
-        if (author.roleUpdateRequest != 'HR') {
+        if (author.role != 'HR') {
             throw new ClientError({
-                message: "Invalid data sent from the client",
+                message: "User not allowed to post jobs",
                 explanation: "Only HR can post jobs",
                 status: 400
             });
         }
-
-        console.log(jobDetailsData);
-
-
         jobDetailsData.postedBy = id;
         const newJobPost = await jobPostRepository.create(jobDetailsData);
-        console.log(newJobPost);
         return newJobPost;
     } catch (error) {
         console.log("Error in creat job post", error);
@@ -45,7 +51,7 @@ export const updateJobPost = async (id, jobId, jobDetailsData) => {
         }
         if (author.roleUpdateRequest !== 'HR') {
             throw new ClientError({
-                message: "Invalid data sent from the client",
+                message: "User not allowed to post jobs",
                 explanation: "Only HR can update jobs",
                 status: 403
             });
@@ -108,6 +114,7 @@ export const deleteJobPost = async (id, jobId) => {
         }
 
         await jobPostRepository.delete(jobId, jobDetailsData);
+        await deleteImageCloudinary(job.public_key)
         return { success: true };
     } catch (error) {
         console.log("Error in delete job post", error);
