@@ -17,8 +17,6 @@ export const Home = () => {
   const [selectedTag, setSelectedTag] = useState("All");
   const { user, token } = store.getState().auth;
 
-  console.log(user)
-
   const filteredJobs = selectedTag === "All" ? jobsHome : jobsHome.filter((job) => job.tag === selectedTag);
 
   function handleGetStartedClick() {

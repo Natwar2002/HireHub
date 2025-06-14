@@ -44,3 +44,18 @@ export const updateUserDetailsRequest = async(token, data) => {
         throw error;
     }
 }
+
+export const updateUserRequest = async (token, data) => {
+    try {
+        const response = await axiosConfig.put('', data, {
+            headers: {
+                "x-access-token": token
+            }
+        });
+        console.log("Update user request", response);
+        return response?.data?.data;
+    } catch (error) {
+        console.log('Error in update user request: ', error?.response?.data?.error);
+        throw error;
+    }
+}

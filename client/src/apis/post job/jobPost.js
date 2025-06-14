@@ -16,7 +16,7 @@ export const createJobPostRequest = async (jobData, token) => {
 
 export const jobUpdateRequest = async (jobId, jobData, token ) => {
   try {
-    const response = await axiosConfig.put(`/jobs/${jobId}`, { jobData }, {
+    const response = await axiosConfig.put(`/jobs/${jobId}`, jobData , {
       headers: {
         "x-access-token" : token,
       }

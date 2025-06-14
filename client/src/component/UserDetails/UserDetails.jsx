@@ -9,13 +9,13 @@ import {
   DrawerHeader,
   useDisclosure,
 } from "@heroui/react";
-import { Plus, X } from "lucide-react";
+import { Plus, X, XIcon } from "lucide-react";
 import { FaPowerOff } from "react-icons/fa6";
 import { BsPencilSquare } from "react-icons/bs";
 import store from "../../redux/store";
 import { logout } from "../../redux/actions/authAction";
 import ConfirmModal from "../Modal/ConfirmModal";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
 import ProjectDetailsModal from "../Modal/ProjectModal";
 
@@ -50,6 +50,24 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
     const [confirmAction, setConfirmAction] = useState(null);
     const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
     const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
+    const avatarInputRef = useRef(null);
+    const [avatar, setavatar] = useState(null);
+
+    const handleFileChange = async () => {
+        if (!avatar) return;
+
+        const validTypes = ["avatar/jpeg", "avatar/png", "avatar/jpg", "avatar/webp"];
+        if (!validTypes.includes(avatar.type)) {
+            alert("Please select a valid avatar file (jpg, png, gif, webp)");
+            return;
+        }
+
+        try {
+            // API Call
+        } catch (err) {
+            console.error(err);
+        }
+    };
  
     function openConfirmDialog(action) {
         setConfirmAction(action);
@@ -85,8 +103,31 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                             <DrawerBody className="space-y-1">
                             <div className="flex items-center gap-4">
                                 <div className="relative">
-                                    <Avatar size="lg" />
-                                    <Plus className="absolute left-10 bottom-[-2px] text-blue-700 cursor-pointer" />
+                                    {
+                                        avatar ? (
+                                            <Avatar 
+                                                size="lg" 
+                                                src={URL.createObjectURL(avatar)} 
+                                            />) : (
+                                            <Avatar 
+                                                size="lg" 
+                                                src={userDetails?.avatar}
+                                            />
+                                        )
+                                    }
+                                    <Plus 
+                                        className="absolute left-10 bottom-[-2px] text-blue-700 cursor-pointer" 
+                                        onClick={() => {
+                                            avatarInputRef?.current?.click();
+                                        }}
+                                    />
+                                    <input
+                                        ref={avatarInputRef}
+                                        type="file"
+                                        accept="avatar/*"
+                                        className="hidden"
+                                        onChange={(e) => setavatar(e.target.files[0])}
+                                    />
                                 </div>
                                 <div>
                                     <p className="text-lg font-semibold">{userDetails?.username.toUpperCase()}</p>

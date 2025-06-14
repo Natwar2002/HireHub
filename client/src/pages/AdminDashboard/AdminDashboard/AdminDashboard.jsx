@@ -16,6 +16,7 @@ import {
   User,
   Pagination,
   useDisclosure,
+  Chip,
 } from "@heroui/react";
 import PostJobModal from "../../../component/Modal/PostJobModal";
 
@@ -24,6 +25,7 @@ export const columns = [
   { name: "CANDIDATE NAME", uid: "name", sortable: true },
   { name: "RESUME/CV", uid: "role", sortable: true },
   { name: "ROLE", uid: "jobs", sortable: true },
+  { name: "STATUS", uid: "status" },
   { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -41,6 +43,7 @@ export const users = [
     team: "Management",
     jobs: "200",
     age: "29",
+    status: "applied",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     email: "tony.reichert@example.com",
   },
@@ -51,6 +54,7 @@ export const users = [
     team: "Development",
     jobs: "30",
     age: "25",
+    status: "seen",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
     email: "zoey.lang@example.com",
   },
@@ -60,6 +64,7 @@ export const users = [
     role: "Sr. Dev",
     team: "Development",
     jobs: "200",
+    status: "accepted",
     age: "22",
     avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
     email: "jane.fisher@example.com",
@@ -70,6 +75,7 @@ export const users = [
     role: "C.M.",
     team: "Marketing",
     jobs: "3",
+    status: "rejected",
     age: "28",
     avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
     email: "william.howard@example.com",
@@ -80,6 +86,7 @@ export const users = [
     role: "S. Manager",
     team: "Sales",
     jobs: "200",
+    status: "applied",
     age: "24",
     avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
     email: "kristen.cooper@example.com",
@@ -89,6 +96,7 @@ export const users = [
     name: "Brian Kim",
     role: "P. Manager",
     team: "Management",
+    status: "seen",
     age: "29",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
     email: "brian.kim@example.com",
@@ -100,6 +108,7 @@ export const users = [
     role: "Designer",
     team: "Design",
     jobs: "30",
+    status: "seen",
     age: "27",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e29027007d",
     email: "michael.hunt@example.com",
@@ -109,6 +118,7 @@ export const users = [
     name: "Samantha Brooks",
     role: "HR Manager",
     team: "HR",
+    status: "rejected",
     jobs: "200",
     age: "31",
     avatar: "https://i.pravatar.cc/150?u=a042581f4e27027008d",
@@ -120,6 +130,7 @@ export const users = [
     role: "F. Manager",
     team: "Finance",
     jobs: "3",
+    status: "accpeted",
     age: "33",
     avatar: "https://i.pravatar.cc/150?img=4",
     email: "frank.harrison@example.com",
@@ -131,6 +142,7 @@ export const users = [
     team: "Operations",
     jobs: "200",
     age: "35",
+    status: "seen",
     avatar: "https://i.pravatar.cc/150?img=5",
     email: "emma.adams@example.com",
   },
@@ -139,6 +151,7 @@ export const users = [
     name: "Brandon Stevens",
     role: "Jr. Dev",
     team: "Development",
+    status: "applied",
     jobs: "200",
     age: "22",
     avatar: "https://i.pravatar.cc/150?img=8",
@@ -149,6 +162,7 @@ export const users = [
     name: "Megan Richards",
     role: "P. Manager",
     team: "Product",
+    status: "accepted",
     jobs: "30",
     age: "28",
     avatar: "https://i.pravatar.cc/150?img=10",
@@ -161,6 +175,7 @@ export const users = [
     team: "Security",
     jobs: "200",
     age: "37",
+    status: "accepted",
     avatar: "https://i.pravatar.cc/150?img=12",
     email: "oliver.scott@example.com",
   },
@@ -171,6 +186,7 @@ export const users = [
     team: "Marketing",
     jobs: "200",
     age: "30",
+    status: "rejected",
     avatar: "https://i.pravatar.cc/150?img=16",
     email: "grace.allen@example.com",
   },
@@ -181,6 +197,7 @@ export const users = [
     team: "I. Technology",
     jobs: "30",
     age: "31",
+    status: "applied",
     avatar: "https://i.pravatar.cc/150?img=15",
     email: "noah.carter@example.com",
   },
@@ -191,6 +208,7 @@ export const users = [
     team: "Sales",
     jobs: "200",
     age: "29",
+    status: "applied",
     avatar: "https://i.pravatar.cc/150?img=20",
     email: "ava.perez@example.com",
   },
@@ -199,6 +217,7 @@ export const users = [
     name: "Liam Johnson",
     role: "Data Analyst",
     team: "Analysis",
+    status: "seen",
     jobs: "200",
     age: "28",
     avatar: "https://i.pravatar.cc/150?img=33",
@@ -210,6 +229,7 @@ export const users = [
     role: "QA Analyst",
     team: "Testing",
     jobs: "200",
+    status: "seen",
     age: "27",
     avatar: "https://i.pravatar.cc/150?img=29",
     email: "sophia.taylor@example.com",
@@ -220,6 +240,7 @@ export const users = [
     role: "Administrator",
     team: "Information Technology",
     jobs: "30",
+    status: "seen",
     age: "32",
     avatar: "https://i.pravatar.cc/150?img=50",
     email: "lucas.harris@example.com",
@@ -230,6 +251,7 @@ export const users = [
     role: "Coordinator",
     team: "Operations",
     jobs: "200",
+    status: "applied",
     age: "26",
     avatar: "https://i.pravatar.cc/150?img=45",
     email: "mia.robinson@example.com",
@@ -340,7 +362,7 @@ export const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }) => {
   );
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "jobs", "actions", "id"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "role", "jobs", "actions", "id", "status"];
 
 export default function AdminDashboard() {
   const [filterValue, setFilterValue] = React.useState("");
@@ -427,6 +449,42 @@ export default function AdminDashboard() {
             </p>
           </div>
         );
+
+      case "status": {
+        let fromColor = "from-indigo-500";
+        let toColor = "to-pink-500";
+        switch (user.status?.toLowerCase()) {
+          case "rejected":
+            fromColor = "from-red-700";
+            toColor = "to-red-500";
+            break;
+          case "accepted":
+            fromColor = "from-[#58c71f]";
+            toColor = "to-[#0fbf00]";
+            break;
+          case "seen":
+            fromColor = "from-[#0f74bf]";
+            toColor= "to-[#]";
+            break;
+          default:
+            fromColor = "from-indigo-500";
+            toColor= "to-pink-500";
+        }
+
+        return (
+          <div className="flex flex-col">
+            <Chip 
+              classNames={{
+                  base: `bg-gradient-to-br ${fromColor} ${toColor} border-small border-white/50 shadow-pink-500/30`,
+                  content: "drop-shadow shadow-black text-white",
+              }}
+              variant="shadow"
+            >
+              {user?.status}
+            </Chip>
+          </div>
+        );
+      }
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
@@ -437,9 +495,9 @@ export default function AdminDashboard() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="view">View</DropdownItem>
-                <DropdownItem key="edit">Edit</DropdownItem>
-                <DropdownItem key="delete">Delete</DropdownItem>
+                <DropdownItem key="view">Accept</DropdownItem>
+                <DropdownItem key="edit">Reject</DropdownItem>
+                {/* <DropdownItem key="delete">Delete</DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
           </div>
