@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
     },
+    public_key:{
+        type:String,   // to store cloudinary key
+    },
     role: {
         type: String,
         enum: ['User', 'HR'],

@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "argon2": "^0.43.0",
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^2.6.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.5.0",
@@ -20,7 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.0",
     "multer": "^1.4.5-lts.2",
-    "multer-storage-cloudinary": "^1.2.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^3.1.10",
     "razorpay": "^2.9.6",
     "zod": "^3.24.3"

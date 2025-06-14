@@ -48,6 +48,12 @@ const jobPostSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    logo:{
+        type:String
+    },
+     public_key:{
+        type:String, // to store cloudinary key 
+    },
     jobType: {
         type: String,
         enum: ['Full-time', 'Part-time', 'Internship', 'Contract', 'Freelance'],
