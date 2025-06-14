@@ -13,7 +13,16 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary
-})
+});
+
+const storageResume = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "resumes",
+        resource_type: "raw",
+        allowedFormats: ["pdf"],
+    },
+});
 
 export const uploader = multer({
     storage: storage,
@@ -21,6 +30,13 @@ export const uploader = multer({
         fileSize: 1024 * 1024 * 2,
     }
 });
+
+export const resumeUploader = multer({
+    storage:storageResume,
+    limits: {
+        fileSize: 1024 * 1024 * 2,
+    }
+})
 
 export const deleteImageCloudinary = async(publicId)=>{
     try {
