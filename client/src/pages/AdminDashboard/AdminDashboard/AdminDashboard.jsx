@@ -459,23 +459,23 @@ export default function AdminDashboard() {
             toColor = "to-red-500";
             break;
           case "accepted":
-            fromColor = "from-[#58c71f]";
-            toColor = "to-[#0fbf00]";
+            fromColor = "from-green-500";
+            toColor = "to-green-800";
             break;
           case "seen":
-            fromColor = "from-[#0f74bf]";
-            toColor= "to-[#]";
+            fromColor = "from-yellow-500";
+            toColor= "to-yellow-800";
             break;
           default:
-            fromColor = "from-indigo-500";
-            toColor= "to-pink-500";
+            fromColor = "from-blue-400";
+            toColor= "to-blue-600";
         }
 
         return (
           <div className="flex flex-col">
             <Chip 
               classNames={{
-                  base: `bg-gradient-to-br ${fromColor} ${toColor} border-small border-white/50 shadow-pink-500/30`,
+                  base: `bg-gradient-to-b ${fromColor} ${toColor} capitalize text-center min-w-[80px] border-small border-white/50 shadow-pink-500/30`,
                   content: "drop-shadow shadow-black text-white",
               }}
               variant="shadow"

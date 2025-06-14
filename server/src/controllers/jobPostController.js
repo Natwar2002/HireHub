@@ -130,7 +130,7 @@ export const getAllJobPostController = async (req, res) => {
 
 export const getAllJobPostByHRController = async (req, res) => {
   try {
-    const response = await getJobPostByHR(req.user);
+    const response = await getJobPostByHR(req.user.id);
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job posts fetched successfully"));
