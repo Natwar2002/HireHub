@@ -1,5 +1,5 @@
 import multer from 'multer'
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import CloudinaryStorage from 'multer-storage-cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv'
 dotenv.config();
@@ -32,28 +32,28 @@ export const uploader = multer({
 });
 
 export const resumeUploader = multer({
-    storage:storageResume,
+    storage: storageResume,
     limits: {
         fileSize: 1024 * 1024 * 2,
     }
 })
 
-export const deleteImageCloudinary = async(publicId)=>{
+export const deleteImageCloudinary = async (publicId) => {
     try {
         const response = await cloudinary.uploader.destroy(publicId);
-        console.log("cloudinary response",response);
+        console.log("cloudinary response", response);
     } catch (error) {
-        console.log('unable to delete image',error);
+        console.log('unable to delete image', error);
         throw error
     }
 };
 
-export const deleteResumeCloudinary = async(publicId)=>{
+export const deleteResumeCloudinary = async (publicId) => {
     try {
-        const response = await cloudinary.uploader.destroy(publicId,{resource_type:"raw"});
-        console.log("cloudinary response",response);
+        const response = await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
+        console.log("cloudinary response", response);
     } catch (error) {
-        console.log('unable to delete video',error);
+        console.log('unable to delete video', error);
         throw error
     }
 }
