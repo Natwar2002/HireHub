@@ -10,7 +10,8 @@ import {
   SelectItem,
   DatePicker,
 } from "@heroui/react";
-import { PlusIcon, X } from "lucide-react";
+import { PlusIcon, X, XIcon } from "lucide-react";
+import { useRef } from "react";
 import { useState } from "react";
 
 const qualifications = ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"];
@@ -46,12 +47,18 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
   const [gitHubLink, setGitHubLink] = useState("");
   const [portfolioLink, setPortfolioLink] = useState("");
   const [resume, setResume] = useState("");
+  const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const skills = useListInput("", 2);
 
   const [expTitle, setExpTitle] = useState("");
   const [expCompany, setExpCompany] = useState("");
   const [experienceList, setExperienceList] = useState([]);
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
 
   const addExperience = () => {
     if (expTitle.trim() && expCompany.trim()) {
@@ -98,6 +105,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
       gitHubLink,
       portfolioLink,
       resume,
+      selectedImage
     };
 
     console.log("UserDetails Payload:", payload);
@@ -129,6 +137,42 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
                 <Input label="GitHub Link" placeholder="https://github.com/..." value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
                 <Input label="Portfolio Link" placeholder="https://..." value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
                 <Input label="Resume Link" placeholder="Public URL (Cloudinary, Drive etc.)" value={resume} onChange={(e) => setResume(e.target.value)} />
+                <div
+                  className="h-24 w-32 bg-zinc-800 border relative rounded-lg cursor-pointer hover:border-primary flex items-center justify-start overflow-hidden"
+                  onClick={handleImageClick}
+                >
+                  {selectedImage ? (
+                    <img
+                      src={URL.createObjectURL(selectedImage)}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-400 px-2">
+                      Add a profile photo
+                    </span>
+                  )}
+                  {
+                    selectedImage && (
+                      <button 
+                        className="absolute top-1 right-1"
+                        onClick={() => {
+                            setSelectedImage(null);
+                            fileInputRef.current.value = '';
+                        }}
+                      >
+                        <XIcon className='size-4' />
+                      </button>
+                    )
+                  }
+                  <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setSelectedImage(e.target.files[0])}
+                      className="hidden"
+                  />
+                </div>
 
                 {/* Skills List */}
                 <div className="col-span-full">

@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JobCard from "../../component/JobCard/JobCard";
-import { jobs, tags } from "../../utils/constants";
+import { tags } from "../../utils/constants";
 import { useGetAllJobs } from '../../hooks/jobPost/useGetAllJobs'
 
 export default function JobsPage() {
   const [selectedTag, setSelectedTag] = useState("All");
-  const { jobs: allJobs } = useGetAllJobs();
+  const { jobs } = useGetAllJobs();
 
-  const filteredJobs = selectedTag === "All" ? jobs : jobs.filter((job) => job.tag === selectedTag);
+  useEffect(() => {
+    console.log(jobs);
+    
+  })
+  // const [jobs, setJobs] = useState([...jobs]);
+
+
+
+  // const filteredJobs = selectedTag === "All" ? jobs : jobs.filter((job) => job.tag === selectedTag);
 
   return (
     <div className="min-h-screen px-4 py-10 text-white">
@@ -29,11 +37,11 @@ export default function JobsPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+      {/* <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
         {filteredJobs.map(job => (
           <JobCard key={job.id} job={job} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

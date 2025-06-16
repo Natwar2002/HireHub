@@ -44,7 +44,7 @@ export const jobDeleteRequest = async ( jobId, token ) => {
 
 export const getAllJobPostRequest = async (token) => {
   try {
-    const response = await axiosConfig.get(`/jobs`, {
+    const response = await axiosConfig.get(`/jobs/all`, {
       headers: {
         "x-access-token" : token,
       }

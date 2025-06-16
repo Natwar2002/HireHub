@@ -47,7 +47,7 @@ export const updateUserDetailsRequest = async(token, data) => {
 
 export const updateUserRequest = async (token, data) => {
     try {
-        const response = await axiosConfig.put('', data, {
+        const response = await axiosConfig.put('/auth/update', data, {
             headers: {
                 "x-access-token": token
             }
