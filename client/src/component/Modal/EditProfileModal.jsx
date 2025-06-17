@@ -30,7 +30,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
 
     const payload = {
       username,
-      selectedImage,
+      avatar: selectedImage,
     };
 
     try {

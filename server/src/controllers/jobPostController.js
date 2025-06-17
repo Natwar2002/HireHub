@@ -41,8 +41,8 @@ export const createJobPostController = async (req, res) => {
 
 export const updateJobPostController = async (req, res) => {
   if (req.file) {
-      req.body.logo = req.file.path;
-      req.body.public_key = req.file.filename;
+    req.body.logo = req.file.path;
+    req.body.public_key = req.file.filename;
   }
   try {
     const response = await updateJobPost(req.user, req.params.jobId, req.body);

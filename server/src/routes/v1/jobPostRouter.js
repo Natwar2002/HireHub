@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticatedRecruiter } from '../../middlewares/authMiddleware.js';
+import { isAuthenticated, isAuthenticatedRecruiter } from '../../middlewares/authMiddleware.js';
 import { createJobPostController, deleteJobPostController, getAllJobPostByHRController, getAllJobPostController, getJobPostController, updateJobPostController } from "../../controllers/jobPostController.js";
 import { uploader } from "../../config/cloudinary.js";
 
@@ -10,7 +10,7 @@ jobPostRouter.post('/post', isAuthenticatedRecruiter, uploader.single("logo"), c
 jobPostRouter.put('/:jobId', isAuthenticatedRecruiter, uploader.single("logo"), updateJobPostController);
 jobPostRouter.delete('/:jobId', isAuthenticatedRecruiter, deleteJobPostController);
 jobPostRouter.get('/:jobId', isAuthenticatedRecruiter, getJobPostController);
-jobPostRouter.get('/all', isAuthenticatedRecruiter, getAllJobPostController);
+jobPostRouter.get('/all', isAuthenticated, getAllJobPostController);
 jobPostRouter.get('/', isAuthenticatedRecruiter, getAllJobPostByHRController);
 // user id is already available in req.user object 
 

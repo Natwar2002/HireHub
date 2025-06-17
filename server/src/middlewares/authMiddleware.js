@@ -40,7 +40,7 @@ export const isAuthenticated = async (req, res, next) => {
             message: "Internal Server Error"
         })
     }
-}; 
+};
 export const isAuthenticatedRecruiter = async (req, res, next) => {
     try {
         const token = req.headers['x-access-token'];

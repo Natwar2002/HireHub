@@ -11,8 +11,9 @@ import {
   DatePicker,
 } from "@heroui/react";
 import { PlusIcon, X, XIcon } from "lucide-react";
-import { useRef } from "react";
 import { useState } from "react";
+import { useUpdateUserDetails } from "../../hooks/user/useUpdateUserDetails";
+import { useCreateUserDetails } from "../../hooks/user/useCreateUserDetails";
 
 const qualifications = ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"];
 
@@ -37,18 +38,16 @@ const useListInput = (initial = "", minLength = 1) => {
   return { value, setValue, list, addItem, removeItem };
 };
 
-export default function UserDetailsModal({ isOpen, onOpenChange }) {
-  const [qualification, setQualification] = useState("");
-  const [completionDate, setCompletionDate] = useState(null);
-  const [phoneNo, setPhoneNo] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [linkedinLink, setLinkedinLink] = useState("");
-  const [gitHubLink, setGitHubLink] = useState("");
-  const [portfolioLink, setPortfolioLink] = useState("");
-  const [resume, setResume] = useState("");
-  const fileInputRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, userDetails }) {
+  const [qualification, setQualification] = useState(userDetails?.highestEducation?.qualification);
+  const [completionDate, setCompletionDate] = useState(userDetails?.highestEducation?.completionDate);
+  const [phoneNo, setPhoneNo] = useState(userDetails?.phoneNo);
+  const [state, setState] = useState(userDetails?.location?.state);
+  const [city, setCity] = useState(userDetails?.location?.city);
+  const [linkedinLink, setLinkedinLink] = useState(userDetails?.linkedinLink);
+  const [gitHubLink, setGitHubLink] = useState(userDetails?.gitHubLink);
+  const [portfolioLink, setPortfolioLink] = useState(userDetails?.portfolioLink);
+  const [resume, setResume] = useState(userDetails?.resume);
 
   const skills = useListInput("", 2);
 
@@ -56,9 +55,9 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
   const [expCompany, setExpCompany] = useState("");
   const [experienceList, setExperienceList] = useState([]);
 
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
+  const { updateUserDetailsMutation } = useUpdateUserDetails();
+  const { createUserDetailsMutation } = useCreateUserDetails();
+  
 
   const addExperience = () => {
     if (expTitle.trim() && expCompany.trim()) {
@@ -105,11 +104,16 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
       gitHubLink,
       portfolioLink,
       resume,
-      selectedImage
     };
 
     console.log("UserDetails Payload:", payload);
-    // Add API call here
+    if(createDetails) {
+      const res = createUserDetailsMutation(payload);
+      console.log(res);
+    } else {
+      const res = updateUserDetailsMutation(payload);
+      console.log(res);
+    }
   };
 
   return (
@@ -136,42 +140,43 @@ export default function UserDetailsModal({ isOpen, onOpenChange }) {
                 <Input label="LinkedIn Link" placeholder="https://linkedin.com/in/..." value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} />
                 <Input label="GitHub Link" placeholder="https://github.com/..." value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
                 <Input label="Portfolio Link" placeholder="https://..." value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
-                <Input label="Resume Link" placeholder="Public URL (Cloudinary, Drive etc.)" value={resume} onChange={(e) => setResume(e.target.value)} />
-                <div
-                  className="h-24 w-32 bg-zinc-800 border relative rounded-lg cursor-pointer hover:border-primary flex items-center justify-start overflow-hidden"
-                  onClick={handleImageClick}
-                >
-                  {selectedImage ? (
-                    <img
-                      src={URL.createObjectURL(selectedImage)}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-sm text-gray-400 px-2">
-                      Add a profile photo
-                    </span>
-                  )}
-                  {
-                    selectedImage && (
-                      <button 
-                        className="absolute top-1 right-1"
-                        onClick={() => {
-                            setSelectedImage(null);
-                            fileInputRef.current.value = '';
-                        }}
-                      >
-                        <XIcon className='size-4' />
-                      </button>
-                    )
-                  }
-                  <input
-                      ref={fileInputRef}
+                <div className="flex flex-col">
+                  <label className="text-xs text-muted-foreground font-medium mb-1 flex">
+                    <input
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => setSelectedImage(e.target.files[0])}
-                      className="hidden"
-                  />
+                      accept=".pdf,.docx"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const isAllowedType = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type);
+                          const isUnderSizeLimit = file.size <= 10 * 1024 * 1024;
+
+                          if (!isAllowedType) {
+                            alert("Only PDF or DOCX files are allowed.");
+                            e.target.value = null;
+                            return;
+                          }
+
+                          if (!isUnderSizeLimit) {
+                            alert("File size must be under 10MB.");
+                            e.target.value = null;
+                            return;
+                          }
+
+                          setResume(file);
+                        }
+                      }}
+                      className="text-xs text-gray-300 border border-gray-300 rounded-lg cursor-pointer bg-zinc-800 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-zinc-800 mr-3"
+                    />
+                    <span>
+                      Upload Resume (.pdf, .docx only, max 10MB)
+                    </span>
+                  </label>
+                  {resume && (
+                    <p className="text-xs text-gray-300 mt-1">
+                      Selected: {resume.name}
+                    </p>
+                  )}
                 </div>
 
                 {/* Skills List */}

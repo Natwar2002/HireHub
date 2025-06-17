@@ -7,10 +7,10 @@ export const createJobPost = async (id, jobDetailsData) => {
     try {
         const author = await userRepository.getById(id);
         // more readable method
-         const requiredFields = [
+        const requiredFields = [
             "company", "jobTitle", "jobDescription", "tags", "requiredSkills",
             "location", "experience", "responsibilities", "salary",
-            "jobType", "deadline","logo"
+            "jobType", "deadline", "logo"
         ];
         const missingFields = requiredFields.filter(field => !jobDetailsData[field]);
         if (missingFields.length > 0) {
@@ -143,7 +143,9 @@ export const getAllJobPost = async () => {
     try {
         const page = 1;
         const limit = 20;
-        const jobposts = await jobPostRepository.getAllJobs(page, limit);
+        const jobposts = await jobPostRepository.getAllJobs();
+        console.log(jobposts);
+
         return jobposts;
     } catch (error) {
         console.log("Error in get all job post", error);

@@ -4,6 +4,8 @@ import { customSuccessResponse } from "../utils/common/customSuccessResponse.js"
 
 export const createUserDetailsController = async (req, res) => {
     try {
+        req.body.resume = req.file.path;
+        req.body.public_key = req.file.filename;
         const response = await createUserDetails(req.user, req.body);
         return res.status(201).json(customSuccessResponse(response, 'User details added successfully'));
     } catch (error) {
@@ -36,6 +38,10 @@ export const getUserDetailsController = async (req, res) => {
 
 export const updateUserDetailsController = async (req, res) => {
     try {
+        if (req.file) {
+            req.body.resume = req.file.path;
+            req.body.public_key = req.file.filename;
+        }
         const response = await updateUserDetails(req.user, req.body);
         return res.status(201).json(customSuccessResponse(response, 'User details updated successfully'));
     } catch (error) {

@@ -303,6 +303,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
             <UserDetailsModal 
                 isOpen={isUserDetailsOpen} 
                 onOpenChange={onOpenChangeOfUserDetailsModal} 
+                createDetails={true}
+                userDetails={userDetails}
             />
             <ProjectDetailsModal 
                 isOpen={isProjectModalOpen} 
@@ -311,7 +313,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
             <EditProfileModal 
                 isOpen={isEditProfileModalOpen} 
                 onOpenChange={onOpenChangeOfEditProfileModal}
-                userDetails={userDetails}
+                userDetails={userDetails?.userDetails}
             />
         </>
     );

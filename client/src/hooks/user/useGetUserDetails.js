@@ -8,6 +8,7 @@ export const useGetUserDetails = () => {
     const { isFetched, isSuccess, error, data: userDetails, isError } = useQuery({
         queryFn: () => getUserDetailsRequest(token),
         queryKey: [`get-user-details`],
+        cacheTime: 10000
     });
 
     return {

@@ -19,7 +19,8 @@ export const createUserDetailsRequest = async(token, data) => {
     try {
         const response = await axiosConfig.post('/users/userDetails', data, {
             headers : {
-                'x-access-token' : token
+                'x-access-token' : token,
+                'Content-Type': 'multipart/form-data'
             }
         })
         console.log("Create user details request",response);
@@ -34,7 +35,8 @@ export const updateUserDetailsRequest = async(token, data) => {
     try {
         const response = await axiosConfig.put('/users/userDetails', data, {
             headers : {
-                'x-access-token' : token
+                'x-access-token' : token,
+                'Content-Type': 'multipart/form-data'
             }
         })
         console.log("Update user details request",response);
@@ -49,7 +51,8 @@ export const updateUserRequest = async (token, data) => {
     try {
         const response = await axiosConfig.put('/auth/update', data, {
             headers: {
-                "x-access-token": token
+                "x-access-token": token,
+                'Content-Type': 'multipart/form-data'
             }
         });
         console.log("Update user request", response);

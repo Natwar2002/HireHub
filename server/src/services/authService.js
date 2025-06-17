@@ -54,6 +54,13 @@ export const signinService = async (data) => {
 
 export const updateUserService = async (userId, userData) => {
     try {
+        if (!userData) {
+            throw new ClientError({
+                explanation: "Data not found",
+                message: "No user data provided",
+                status: 400
+            });
+        }
         const user = await userRepository.getById(userId);
         if (!user) {
             throw new ClientError({
