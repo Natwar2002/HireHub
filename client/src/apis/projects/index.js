@@ -10,7 +10,7 @@ export const createProjectRequest = async(token, data) => {
         console.log("Create project request",response);
         return response?.data?.data;
     } catch (error) {
-        console.log('Error in create project request: ', error?.response?.data?.error);
+        console.log('Error in create project request: ', error);
         throw error;
     }
 }
@@ -22,10 +22,25 @@ export const updateProjectRequest = async(token, data, id) => {
                 'x-access-token' : token
             }
         })
-        console.log("Update project request",response);
+        console.log("Update project request", response);
         return response?.data?.data;
     } catch (error) {
-        console.log('Error in update project request: ', error?.response?.data?.error);
+        console.log('Error in update project request: ', error);
+        throw error;
+    }
+}
+
+export const deleteProjectRequest = async(token, id) => {
+    try {
+        const response = await axiosConfig.post(`/projects/${id}`, {
+            headers : {
+                'x-access-token' : token
+            }
+        })
+        console.log("Delete project request", response);
+        return response?.data?.data;
+    } catch (error) {
+        console.log('Error in delete project request: ', error?.response?.data?.error);
         throw error;
     }
 }

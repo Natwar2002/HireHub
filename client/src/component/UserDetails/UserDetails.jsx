@@ -9,8 +9,10 @@ import {
   DrawerHeader,
   useDisclosure,
 } from "@heroui/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import { FaEllipsisVertical } from "react-icons/fa6";
 import { Plus, X } from "lucide-react";
-import { HiOutlinePencilAlt, HiPencilAlt } from "react-icons/hi";
+import { HiOutlinePencilAlt } from "react-icons/hi";
 import { FaPowerOff } from "react-icons/fa6";
 import { BsPencilSquare } from "react-icons/bs";
 import store from "../../redux/store";
@@ -20,31 +22,50 @@ import { useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
 import ProjectDetailsModal from "../Modal/ProjectModal";
 import EditProfileModal from "../Modal/EditProfileModal";
+import { FaTrashRestore } from "react-icons/fa";
+import { useDeleteProject } from '../../hooks/projects/useDeleteProject';
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [confirmAction, setConfirmAction] = useState(null);
+    const [project, setProject] = useState(null);
     const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
     const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
     const { isOpen: isEditProfileModalOpen, onOpenChange: onOpenChangeOfEditProfileModal } = useDisclosure(); 
+
+    const { deleteProjectMutation } = useDeleteProject();
  
     function openConfirmDialog(action) {
         setConfirmAction(action);
         setShowConfirmModal(true);
     }
 
-    function handleConfirm() {
+    async function handleConfirm() {
         if (confirmAction === "logout") {
-        store.dispatch(logout());
-        onClose();
+            store.dispatch(logout());
+            onClose();
         }
+        if (confirmAction === "delete" && project) {
+            console.log("Deleting project:", project);
+            const res = await deleteProjectMutation(project?._id);
+            console.log(res);
+        }
+
+        setConfirmAction("");
+        setProject(null);
         setShowConfirmModal(false);
+    }
+
+    function handleProjectDelete(project) {
+        setProject(project);
+        setConfirmAction("delete");
+        setShowConfirmModal(true);
     }
 
     return (
         <>
-            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} size="xl" backdrop="opaque">
+            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" backdrop="opaque">
                 <DrawerContent>
                     <DrawerHeader className="flex items-center justify-between relative">
                         <div className="flex items-center gap-4">
@@ -146,7 +167,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
                                 <div>
                                     <h3 className="font-semibold mb-1">Links</h3>
-                                    <ul className="list-disc pl-4 space-y-1 text-blue-600">
+                                    <ul className="space-y-1 text-blue-600 flex items-center gap-3">
                                     {userDetails.userDetails?.linkedinLink && (
                                         <li>
                                         <a href={userDetails.userDetails?.linkedinLink} target="_blank" rel="noopener noreferrer">
@@ -184,32 +205,68 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                                     <ul className="space-y-4">
                                     {userDetails.userDetails.projects.map((project, idx) => (
                                         <li key={idx} className="p-4 border rounded-md bg-muted">
-                                        <h4 className="text-base font-semibold">{project.projectName}</h4>
-                                        <p className="text-sm text-muted-foreground mb-2">
-                                            {project.projectDescription}
-                                        </p>
-                                        <div className="flex gap-4 text-blue-600 text-sm">
-                                            {project.liveLink && (
-                                            <a
-                                                href={project.liveLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="underline"
-                                            >
-                                                Live Demo
-                                            </a>
-                                            )}
-                                            <a
-                                            href={project.githubLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="underline"
-                                            >
-                                            GitHub
-                                            </a>
-                                        </div>
+                                            <div className="flex justify-between">
+                                                <h4 className="text-base font-semibold">{project.projectName}</h4>
+                                                <div className="flex gap-2">
+                                                    <Dropdown>
+                                                        <DropdownTrigger>
+                                                            <FaEllipsisVertical />
+                                                        </DropdownTrigger>
+                                                        <DropdownMenu aria-label="Example with disabled actions">
+                                                            <DropdownItem key="edit" onPress={() => {
+                                                                setProject(project);
+                                                                onOpenChangeOfProjectModal();
+                                                            }}>
+                                                                <div className="flex gap-2 items-center">
+                                                                    <BsPencilSquare />
+                                                                    <span>Edit</span>
+                                                                </div>
+                                                            </DropdownItem>
+
+                                                            <DropdownItem key="delete" className="text-danger" color="danger" onPress={() => {handleProjectDelete(project)}}>
+                                                                <div className="flex gap-2 items-center">
+                                                                    <FaTrashRestore />
+                                                                    <span>Delete</span>
+                                                                </div>
+                                                            </DropdownItem>
+                                                        </DropdownMenu>
+                                                    </Dropdown>
+                                                </div>
+                                            </div>
+                                            <p className="text-sm text-muted-foreground mb-2">
+                                                {project.projectDescription}
+                                            </p>
+                                            <div className="flex gap-4 text-blue-600 text-sm">
+                                                {project.liveLink && (
+                                                <a
+                                                    href={project.liveLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="underline"
+                                                >
+                                                    Live Demo
+                                                </a>
+                                                )}
+                                                <a
+                                                    href={project.githubLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="underline"
+                                                >
+                                                GitHub
+                                                </a>
+                                            </div>
                                         </li>
                                     ))}
+                                    <Button
+                                        variant="shadow"
+                                        color="primary"
+                                        className="mt-4 px-6 py-2 text-base rounded-lg"
+                                        onPress={() => onOpenChangeOfProjectModal()}
+                                    >
+                                        <Plus className="mr-2" />
+                                        Add Project
+                                    </Button>
                                     </ul>
                                 ) : (
                                     <div>
@@ -290,7 +347,9 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
             <ProjectDetailsModal 
                 isOpen={isProjectModalOpen} 
                 onOpenChange={onOpenChangeOfProjectModal}
+                project={project}
             />
+            
             <EditProfileModal 
                 isOpen={isEditProfileModalOpen} 
                 onOpenChange={onOpenChangeOfEditProfileModal}

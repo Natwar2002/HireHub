@@ -7,7 +7,7 @@ import {
   Button
 } from "@heroui/react";
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm, action }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm, action, title, message }) => {
   if (!action) return null;
 
   return (
@@ -15,24 +15,14 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, action }) => {
       <ModalContent>
         {() => (
           <>
-            <ModalHeader>
-              {action === "logout" ? "Confirm Logout" : "Confirm Account Deletion"}
-            </ModalHeader>
+            <ModalHeader>{title || `Confirm ${action}`}</ModalHeader>
             <ModalBody>
-              <p>
-                Are you sure you want to{" "}
-                <span className="font-semibold">{action}</span> your account?
-              </p>
+              <p>{message || `Are you sure you want to ${action}?`}</p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
-                Cancel
-              </Button>
-              <Button
-                color={action === "logout" ? "primary" : "danger"}
-                onPress={onConfirm}
-              >
-                Yes {action}
+              <Button variant="light" onPress={onClose}>Cancel</Button>
+              <Button color={action === "delete" ? "danger" : "primary"} onPress={onConfirm}>
+                Yes, {action}
               </Button>
             </ModalFooter>
           </>

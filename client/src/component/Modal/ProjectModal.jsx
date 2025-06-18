@@ -8,19 +8,28 @@ import {
   Button,
   Textarea,
 } from "@heroui/react";
-import { PlusIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateProject } from "../../hooks/projects/useCreateProject";
+import { useUpdateProject } from "../../hooks/projects/useUpdateProject";
 
-export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
-  const [projectName, setProjectName] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [githubLink, setGithubLink] = useState("");
-  const [liveLink, setLiveLink] = useState("");
+export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
+  console.log(project);
+  useEffect(() => {
+    setProjectName(project?.projectName || "");
+    setProjectDescription(project?.projectDescription || "");
+    setGithubLink(project?.githubLink || "");
+    setLiveLink(project?.liveLink || "");
+  }, [project]);
+  
+  const [projectName, setProjectName] = useState(project?.projectName);
+  const [projectDescription, setProjectDescription] = useState(project?.projectDescription);
+  const [githubLink, setGithubLink] = useState(project?.githubLink);
+  const [liveLink, setLiveLink] = useState(project?.liveLink);
 
   const { createProjectMutation } = useCreateProject();
+  const { updateProjectMutation } = useUpdateProject();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       !projectName.trim() ||
       !projectDescription.trim() ||
@@ -30,13 +39,20 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
       return;
     }
 
-    const payload = { projectName, projectDescription, githubLink, liveLink: liveLink || " " }
-
+    const payload = { 
+      projectName, 
+      projectDescription, 
+      githubLink, 
+      liveLink: liveLink || " " 
+    }
     console.log("Projects Payload:", payload);
-
-    const res = createProjectMutation(payload);
-    console.log(res);
-    
+    if(!project?._id) {
+      const res = await createProjectMutation(payload);
+      console.log(res);
+    } else {
+      const res = await updateProjectMutation(payload, project?._id);
+      console.log(res);
+    }
     onOpenChange(false);
   };
 
@@ -45,7 +61,7 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
       <ModalContent className="overflow-y-auto">
         {(onClose) => (
           <>
-            <ModalHeader>Add Your Projects</ModalHeader>
+            <ModalHeader>Fill Project Details</ModalHeader>
             <ModalBody>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
                 <Input
@@ -79,7 +95,9 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
-              <Button color="primary" onPress={handleSubmit}>Add Project</Button>
+              <Button color="primary" onPress={handleSubmit}>
+                {project ? "Update Project" : "Add Project"}
+              </Button>
             </ModalFooter>
           </>
         )}
