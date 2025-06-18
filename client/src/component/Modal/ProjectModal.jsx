@@ -17,45 +17,21 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
   const [projectDescription, setProjectDescription] = useState("");
   const [githubLink, setGithubLink] = useState("");
   const [liveLink, setLiveLink] = useState("");
-  const [projects, setProjects] = useState([]);
 
   const { createProjectMutation } = useCreateProject();
 
-  const addProject = () => {
-    if (
-      projectName.trim() &&
-      projectDescription.trim() &&
-      githubLink.trim()
-    ) {
-      setProjects((prev) => [
-        ...prev,
-        {
-          projectName,
-          projectDescription,
-          githubLink,
-          liveLink,
-        },
-      ]);
-      setProjectName("");
-      setProjectDescription("");
-      setGithubLink("");
-      setLiveLink("");
-    } else {
-      alert("Please fill in all required fields.");
-    }
-  };
-
-  const removeProject = (index) => {
-    setProjects((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = () => {
-    if (projects.length === 0) {
+    if (
+      !projectName.trim() ||
+      !projectDescription.trim() ||
+      !githubLink.trim()
+    ) {
       alert("Please add at least one project.");
       return;
     }
 
-    const payload = projects;
+    const payload = { projectName, projectDescription, githubLink, liveLink: liveLink || " " }
+
     console.log("Projects Payload:", payload);
 
     const res = createProjectMutation(payload);
@@ -99,35 +75,6 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
                   className="md:col-span-2"
                 />
 
-                <Button
-                  onClick={addProject}
-                  className="col-span-full w-fit"
-                  size="sm"
-                  variant="ghost"
-                >
-                  <PlusIcon className="mr-1 size-4" /> Add Project
-                </Button>
-
-                <ul className="col-span-full flex flex-col gap-1 mt-2">
-                  {projects.map((proj, i) => (
-                    <li
-                      key={i}
-                      className="text-sm border rounded-md px-3 py-2 flex justify-between items-start flex-col gap-1 md:flex-row md:items-center"
-                    >
-                      <div>
-                        <p className="font-medium">{proj.projectName}</p>
-                        <p className="text-muted-foreground text-xs">{proj.projectDescription}</p>
-                        <a href={proj.githubLink} target="_blank" rel="noreferrer" className="text-blue-500 text-sm">GitHub</a>
-                        {proj.liveLink && (
-                          <span className="ml-2 text-blue-500 text-sm">
-                            | <a href={proj.liveLink} target="_blank" rel="noreferrer">Live</a>
-                          </span>
-                        )}
-                      </div>
-                      <X className="cursor-pointer size-4 self-end md:self-center" onClick={() => removeProject(i)} />
-                    </li>
-                  ))}
-                </ul>
               </div>
             </ModalBody>
             <ModalFooter>

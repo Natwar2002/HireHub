@@ -6,12 +6,12 @@ export const useCreateProject = () => {
     const { token } = store.getState().auth;
 
     const { isPending, isSuccess, error, mutateAsync: createProjectMutation } = useMutation({
-        mutationFn: (data) => createProjectRequest(data, token),
+        mutationFn: (data) => createProjectRequest(token, data),
         onSuccess: (data) => {
-            console.log('Post Created Successfully: ', data);
+            console.log('Project added Successfully: ', data);
         },
         onError: (error) => {
-            console.log('Failed to create post: ', error);
+            console.log('Failed to add project: ', error);
         }
     });
 

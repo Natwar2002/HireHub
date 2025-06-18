@@ -21,9 +21,10 @@ export const createProjectService = async (id, data) => {
                 status: 400
             });
         }
-        const project = await projectRepository.create(data);
+        const project = await projectRepository.create({ ...data, userId: id });
         project.userId = id;
-        userDetails.projects.push(project);
+        await project.save();
+        userDetails.projects.push(project._id);
         await userDetails.save();
         return project;
     } catch (error) {
