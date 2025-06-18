@@ -6,12 +6,14 @@ import store from "../../redux/store";
 import { NavItem } from './NavItem'
 import { useDisclosure } from "@heroui/modal";
 import { UserDetails } from "../UserDetails/UserDetails";
+import { useGetUserDetails } from "../../hooks/user/useGetUserDetails"
 
 export default function NavBar() {
 
   const navigate = useNavigate();
   const { user, token } = store.getState().auth;
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const { userDetails } = useGetUserDetails();
 
   function handleAppliedJobsClick() {
     if(!user && !token) {
@@ -49,6 +51,7 @@ export default function NavBar() {
       <UserDetails
         onClose={onClose}
         isOpen={isOpen}
+        userDetails={userDetails}
       />
       <div className="w-[80vw] h-10 flex items-center justify-between mx-auto mt-10">
         <div className="flex items-center max-xl:flex-col max-xl:items-start ">
@@ -78,7 +81,7 @@ export default function NavBar() {
         <div className="flex items-center gap-4">
           { user && token? (
             <UserButton
-              link={'https://i.pravatar.cc/150?u=a042581f4e29026704d'}
+              link={userDetails?.avatar}
               onClick={handleUserButtonClick}
             />
           ) : (

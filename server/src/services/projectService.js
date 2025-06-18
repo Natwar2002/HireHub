@@ -43,8 +43,6 @@ export const updateProjectService = async (id, projectId, data) => {
             });
         }
 
-        console.log(user);
-
         const project = await projectRepository.getById(projectId)
         if (!project) {
             throw new ClientError({
@@ -54,6 +52,16 @@ export const updateProjectService = async (id, projectId, data) => {
             });
         }
 
+        if (project.userId !== id) {
+            throw new ClientError({
+                message: "Unauthorized",
+                explanation: "You do not have permission to update this project",
+                status: 403
+            });
+        }
+
+        const updatedProject = await projectRepository.update(projectId, data);
+        return updatedProject;
     } catch (error) {
         console.log("Error in update projects service", error);
         throw error;

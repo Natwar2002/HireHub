@@ -39,7 +39,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
     } catch (error) {
       console.log(error);
     }
-    queryClient.invalidateQueries({ queryKey: ['get-user-details'] });
+    queryClient.invalidateQueries('get-user-details');
     onOpenChange(false);
   };
 

@@ -5,7 +5,6 @@ import { createProjectController, updateProjectController } from "../../controll
 const projectRouter = Router();
 
 projectRouter.post('/', isAuthenticated, createProjectController);
-// projectRouter.get('/', isAuthenticated, getUserDetailsController);
 projectRouter.put('/:id', isAuthenticated, updateProjectController);
 // projectRouter.delete('/', isAuthenticated, deleteUserDetailsController);
 

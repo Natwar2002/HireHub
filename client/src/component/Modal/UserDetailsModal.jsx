@@ -10,10 +10,11 @@ import {
   SelectItem,
   DatePicker,
 } from "@heroui/react";
-import { PlusIcon, X, XIcon } from "lucide-react";
+import { PlusIcon, X } from "lucide-react";
 import { useState } from "react";
 import { useUpdateUserDetails } from "../../hooks/user/useUpdateUserDetails";
 import { useCreateUserDetails } from "../../hooks/user/useCreateUserDetails";
+import { useQueryClient } from "@tanstack/react-query";
 
 const qualifications = ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"];
 
@@ -48,6 +49,8 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
   const [gitHubLink, setGitHubLink] = useState(userDetails?.gitHubLink);
   const [portfolioLink, setPortfolioLink] = useState(userDetails?.portfolioLink);
   const [resume, setResume] = useState(userDetails?.resume);
+
+  const queryClient = useQueryClient();
 
   const skills = useListInput("", 2);
 
@@ -114,6 +117,8 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
       const res = updateUserDetailsMutation(payload);
       console.log(res);
     }
+    queryClient.invalidateQueries('get-user-details');
+    onOpenChange(false);
   };
 
   return (
@@ -141,24 +146,24 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
                 <Input label="GitHub Link" placeholder="https://github.com/..." value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
                 <Input label="Portfolio Link" placeholder="https://..." value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
                 <div className="flex flex-col">
-                  <label className="text-xs text-muted-foreground font-medium mb-1 flex">
+                  <label className="text-xs text-muted-foreground font-medium mb-1">
                     <input
                       type="file"
-                      accept=".pdf,.docx"
+                      accept=".pdf"
                       onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) {
-                          const isAllowedType = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type);
-                          const isUnderSizeLimit = file.size <= 10 * 1024 * 1024;
+                          const isAllowedType = ['application/pdf'].includes(file.type);
+                          const isUnderSizeLimit = file.size <= 2 * 1024 * 1024;
 
                           if (!isAllowedType) {
-                            alert("Only PDF or DOCX files are allowed.");
+                            alert("Only PDF files are allowed.");
                             e.target.value = null;
                             return;
                           }
 
                           if (!isUnderSizeLimit) {
-                            alert("File size must be under 10MB.");
+                            alert("File size must be under 2MB.");
                             e.target.value = null;
                             return;
                           }
@@ -169,7 +174,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
                       className="text-xs text-gray-300 border border-gray-300 rounded-lg cursor-pointer bg-zinc-800 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-zinc-800 mr-3"
                     />
                     <span>
-                      Upload Resume (.pdf, .docx only, max 10MB)
+                      Upload Resume (.pdf max 2MB)
                     </span>
                   </label>
                   {resume && (

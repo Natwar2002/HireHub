@@ -10,6 +10,7 @@ import {
 } from "@heroui/react";
 import { PlusIcon, X } from "lucide-react";
 import { useState } from "react";
+import { useCreateProject } from "../../hooks/projects/useCreateProject";
 
 export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
   const [projectName, setProjectName] = useState("");
@@ -17,6 +18,8 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
   const [githubLink, setGithubLink] = useState("");
   const [liveLink, setLiveLink] = useState("");
   const [projects, setProjects] = useState([]);
+
+  const { createProjectMutation } = useCreateProject();
 
   const addProject = () => {
     if (
@@ -54,7 +57,11 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
 
     const payload = projects;
     console.log("Projects Payload:", payload);
-    // Add your API call to save projects here
+
+    const res = createProjectMutation(payload);
+    console.log(res);
+    
+    onOpenChange(false);
   };
 
   return (
@@ -125,7 +132,7 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange }) {
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
-              <Button color="primary" onPress={handleSubmit}>Save</Button>
+              <Button color="primary" onPress={handleSubmit}>Add Project</Button>
             </ModalFooter>
           </>
         )}

@@ -19,34 +19,15 @@ import ConfirmModal from "../Modal/ConfirmModal";
 import { useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
 import ProjectDetailsModal from "../Modal/ProjectModal";
-import { useGetUserDetails } from "../../hooks/user/useGetUserDetails";
 import EditProfileModal from "../Modal/EditProfileModal";
 
-export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
-
-    const {userDetails} = useGetUserDetails();
+export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [confirmAction, setConfirmAction] = useState(null);
     const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
     const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
     const { isOpen: isEditProfileModalOpen, onOpenChange: onOpenChangeOfEditProfileModal } = useDisclosure(); 
-
-    // const handleFileChange = async () => {
-    //     if (!avatar) return;
-
-    //     const validTypes = ["avatar/jpeg", "avatar/png", "avatar/jpg", "avatar/webp"];
-    //     if (!validTypes.includes(avatar.type)) {
-    //         alert("Please select a valid avatar file (jpg, png, gif, webp)");
-    //         return;
-    //     }
-
-    //     try {
-    //         // API Call
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // };
  
     function openConfirmDialog(action) {
         setConfirmAction(action);
@@ -72,11 +53,11 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                                     userDetails?.avatar ? (
                                         <Avatar 
                                             size="lg" 
-                                            src="" 
+                                            src={userDetails?.avatar} 
                                         />) : (
                                         <Avatar 
                                             size="lg" 
-                                            src={userDetails?.avatar}
+                                            src={" "}
                                         />
                                     )
                                 }
@@ -252,7 +233,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose }) => {
                         ) : (
                             <DrawerBody className="flex flex-col items-center justify-center text-center space-y-4 py-10">
                                 <div className="flex flex-col items-center">
-                                    <Avatar size="lg" />
+                                    <Avatar size="lg" src={userDetails?.avatar} />
                                     <h2 className="text-xl font-semibold mt-4">No Details Found</h2>
                                     <p className="text-sm text-muted-foreground max-w-xs">
                                         You haven't added your personal or professional details yet.
