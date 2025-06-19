@@ -22,7 +22,6 @@ export const createProjectController = async (req, res) => {
 
 export const updateProjectController = async (req, res) => {
     try {
-        console.log(req.params.id, req.body);
 
         const response = await updateProjectService(req.user, req.params.id, req.body);
         return res.status(201).json(customSuccessResponse(response, "Project updated successfully"));
