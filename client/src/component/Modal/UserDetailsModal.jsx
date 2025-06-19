@@ -55,8 +55,8 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
 
   const skills = useListInput("", 2);
   const queryClient = useQueryClient();
-  const { updateUserDetailsMutation } = useUpdateUserDetails();
-  const { createUserDetailsMutation } = useCreateUserDetails();
+  const { updateUserDetailsMutation, isPending: isUpdatePending, isSuccess: isUpdateSuccess } = useUpdateUserDetails();
+  const { createUserDetailsMutation, isPending: isCreatePending, isSuccess: isCreateSuccess } = useCreateUserDetails();
 
   useEffect(() => {
     if (isOpen && userDetails) {
@@ -171,6 +171,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
                   label="Qualification"
                   selectedKeys={qualification ? [qualification] : []}
                   onSelectionChange={(keys) => setQualification(Array.from(keys)[0])}
+                  disabled={isCreatePending || isUpdatePending}
                 >
                   {qualifications.map((q) => (
                     <SelectItem key={q} value={q}>
@@ -183,6 +184,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
                   label="Completion Year"
                   selectedKeys={completionYear ? [completionYear] : []}
                   onSelectionChange={(keys) => setCompletionYear(Array.from(keys)[0])}
+                  disabled={isCreatePending || isUpdatePending}
                 >
                   {completionYears.map((year) => (
                     <SelectItem key={year} value={year}>
@@ -191,18 +193,55 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
                   ))}
                 </Select>
 
-                <Input label="Phone Number" value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} />
-                <Input label="State" value={state} onChange={(e) => setState(e.target.value)} />
-                <Input label="City" value={city} onChange={(e) => setCity(e.target.value)} />
-                <Input label="LinkedIn Link" value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} />
-                <Input label="GitHub Link" value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
-                <Input label="Portfolio Link" value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
+                <Input 
+                  label="Phone Number" 
+                  value={phoneNo} 
+                  onChange={(e) => setPhoneNo(e.target.value)}
+                  disabled={isCreatePending || isUpdatePending}
+                />
+
+                <Input 
+                  label="State" 
+                  value={state} 
+                  onChange={(e) => setState(e.target.value)}
+                  disabled={isCreatePending || isUpdatePending}
+                />
+
+                <Input 
+                  label="City" 
+                  value={city} 
+                  onChange={(e) => 
+                  setCity(e.target.value)} 
+                  disabled={isCreatePending || isUpdatePending}
+                />
+
+                <Input 
+                  label="LinkedIn Link" 
+                  value={linkedinLink} 
+                  onChange={(e) => setLinkedinLink(e.target.value)}
+                  disabled={isCreatePending || isUpdatePending}
+                />
+                
+                <Input 
+                  label="GitHub Link" 
+                  value={gitHubLink} 
+                  onChange={(e) => setGitHubLink(e.target.value)} 
+                  disabled={isCreatePending || isUpdatePending}
+                />
+
+                <Input 
+                  label="Portfolio Link" 
+                  value={portfolioLink} 
+                  onChange={(e) => setPortfolioLink(e.target.value)} 
+                  disabled={isCreatePending || isUpdatePending}
+                />
 
                 <div className="flex flex-col">
                   <label className="text-xs text-muted-foreground font-medium mb-1">
                     <input
                       type="file"
                       accept=".pdf"
+                      disabled={isCreatePending || isUpdatePending}
                       onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) {
@@ -229,6 +268,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
                 {/* Skills */}
                 <div className="col-span-full">
                   <Input
+                    disabled={isCreatePending || isUpdatePending}
                     label="Skills"
                     placeholder="Add skill"
                     value={skills.value}
@@ -247,11 +287,30 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
 
                 {/* Experience */}
                 <div className="col-span-full grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
-                  <Input label="Experience Title" value={expTitle} onChange={(e) => setExpTitle(e.target.value)} />
-                  <Input label="Company" value={expCompany} onChange={(e) => setExpCompany(e.target.value)} />
-                  <Button onClick={addExperience} className="col-span-full w-fit" size="sm" variant="ghost">
+                  <Input 
+                    label="Experience Title" 
+                    value={expTitle} 
+                    onChange={(e) => setExpTitle(e.target.value)} 
+                    disabled={isCreatePending || isUpdatePending}
+                  />
+
+                  <Input 
+                    label="Company" 
+                    value={expCompany} 
+                    onChange={(e) => setExpCompany(e.target.value)} 
+                    disabled={isCreatePending || isUpdatePending}
+                  />
+
+                  <Button 
+                    disabled={isCreatePending || isUpdatePending} 
+                    onPress={addExperience} 
+                    className="col-span-full w-fit" 
+                    size="sm" 
+                    variant="ghost"
+                  >
                     <PlusIcon className="mr-1 size-4" /> Add Experience
                   </Button>
+
                   <ul className="col-span-full flex flex-col gap-1 mt-2">
                     {experienceList.map((exp, i) => (
                       <li key={i} className="text-sm border rounded-md px-2 py-1 flex justify-between items-center">
@@ -264,11 +323,25 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={() => { onClose(); resetForm(); }}>
+              <Button 
+                color="danger" 
+                variant="light" 
+                onPress={() => { onClose(); resetForm(); }}
+                disabled={isCreatePending || isUpdatePending}
+              >
                 Cancel
               </Button>
-              <Button color="primary" onPress={handleSubmit}>
-                Save
+              <Button 
+                color="primary" 
+                onPress={handleSubmit}
+                disabled={isCreatePending || isUpdatePending}
+              >
+                { userDetails ? (
+                  isUpdatePending || isUpdateSuccess ? 'Updating...' : 'Save'
+                ) : (
+                  isCreatePending || isCreateSuccess ? 'Creating...' : 'Save'
+                ) }
+
               </Button>
             </ModalFooter>
           </>

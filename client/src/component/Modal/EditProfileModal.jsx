@@ -10,12 +10,13 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateUser } from '../../hooks/user/useUpdateUser'
+import { LucideLoader } from "lucide-react";
 
 export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) {
   const [username, setUsername] = useState(userDetails?.username);
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { updateUserMutation } = useUpdateUser();
+  const { updateUserMutation, isPending, isSuccess } = useUpdateUser();
   const queryClient = useQueryClient();
 
   useEffect(() =>{
@@ -64,6 +65,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
 
                 <Input
                     label="Username"
+                    disabled={isPending}
                     placeholder="Enter your username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -78,6 +80,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
                       src={typeof selectedImage === 'string' ? selectedImage : URL.createObjectURL(selectedImage)}
                       alt="Profile"
                       className="w-full h-full object-cover"
+                      disabled={isPending}
                     />
                   ) : (
                     <span className="text-sm text-gray-400 text-center px-2">
@@ -98,8 +101,8 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
               <Button variant="light" color="danger" onPress={onClose}>
                 Cancel
               </Button>
-              <Button color="primary" onClick={handleSubmit}>
-                Save
+              <Button color="primary" onClick={handleSubmit} className="flex items-center">
+                  { isPending || isSuccess ? `Saving...` : 'Save' }
               </Button>
             </ModalFooter>
           </>

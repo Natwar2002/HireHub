@@ -27,8 +27,8 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
   const [liveLink, setLiveLink] = useState(project?.liveLink);
   const queryClient = useQueryClient();
 
-  const { createProjectMutation } = useCreateProject();
-  const { updateProjectMutation } = useUpdateProject(project?._id);
+  const { createProjectMutation, isPending: isCreatePending, isSuccess: isCreateSuccess } = useCreateProject();
+  const { updateProjectMutation,  isPending: isUpdatePending, isSuccess: isUpdateSuccess } = useUpdateProject(project?._id);
 
   const resetForm = () => {
     setProjectDescription("");
@@ -79,25 +79,28 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
       <ModalContent className="overflow-y-auto">
         {(onClose) => (
           <>
-            <ModalHeader>Fill Project Details</ModalHeader>
+            <ModalHeader>{project ? "Edit Project" : "Add Project"}</ModalHeader>
             <ModalBody>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
                 <Input
                   label="Project Name"
                   placeholder="Enter project name"
                   value={projectName}
+                  disabled={isCreatePending || isUpdatePending}
                   onChange={(e) => setProjectName(e.target.value)}
                 />
                 <Input
                   label="GitHub Link"
                   placeholder="https://github.com/..."
                   value={githubLink}
+                  disabled={isCreatePending || isUpdatePending}
                   onChange={(e) => setGithubLink(e.target.value)}
                 />
                 <Textarea
                   label="Project Description"
                   placeholder="Describe your project"
                   value={projectDescription}
+                  disabled={isCreatePending || isUpdatePending}
                   onChange={(e) => setProjectDescription(e.target.value)}
                   className="md:col-span-2"
                 />
@@ -105,6 +108,7 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
                   label="Live Link (optional)"
                   placeholder="https://..."
                   value={liveLink}
+                  disabled={isCreatePending || isUpdatePending}
                   onChange={(e) => setLiveLink(e.target.value)}
                   className="md:col-span-2"
                 />
@@ -114,7 +118,11 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
               <Button color="primary" onPress={handleSubmit}>
-                {project ? "Update Project" : "Add Project"}
+                { project ? (
+                  isUpdatePending || isUpdateSuccess ? 'Updating...' : 'Save'
+                ) : (
+                  isCreatePending || isCreateSuccess ? 'Creating...' : 'Save'
+                ) }
               </Button>
             </ModalFooter>
           </>
