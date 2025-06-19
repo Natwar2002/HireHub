@@ -17,7 +17,6 @@ export const RecruiterSigninCard = () => {
 
     async function onSigninFormSubmit(e) {
         e.preventDefault();
-        console.log(signinForm);
         try {
             await adminSignIn({
                 email: signinForm.email,

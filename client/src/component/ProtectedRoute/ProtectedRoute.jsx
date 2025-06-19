@@ -1,17 +1,17 @@
-// import { LucideLoader2 } from 'lucide-react';
-// import { Navigate } from 'react-router-dom';
-// import store from '../../redux/store';
+import { Navigate, Outlet } from "react-router-dom";
+import store from "../../redux/store";
 
-export const ProtectedRoute = ({ children }) => {
-    // const { user, token, isLoading } = store.getState().auth;
+export const ProtectedRoute = ({ allowedRoles = [] }) => {
+    const { user } = store.getState().auth;
+    console.log(user);
+    
+    if (!user) {
+        return <Outlet />;
+    }
 
-    // if(!user || !token) {
-    //     return <Navigate to='' />;
-    // }
-
-    // if(isLoading) {
-    //     return <div><LucideLoader2 className='animate-spin ml-2' /></div>;
-    // }
-
-    return children;
+    if (!allowedRoles.includes(user.role)) {
+        if (user.role === "HR") return <Navigate to="/recruiter/dashboard" replace />;
+        return <Navigate to="/home" replace />;
+    }
+    return <Outlet />
 };

@@ -42,7 +42,7 @@ export const signinService = async (data) => {
         return {
             username: user.username,
             email: user.email,
-            _id: user._id,
+            id: user._id,
             role: user.role,
             token: createJWT({ id: user._id, email: user.email })
         }

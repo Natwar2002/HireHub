@@ -143,9 +143,9 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     onChange={(e) => tags.setValue(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && tags.addItem()}
                   />
-                  <ul>
+                  <ul className="flex items-center">
                     {tags.list.map((item, i) => (
-                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between">
+                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2">
                         #{item.replace(/^#/, "")}
                         <X onClick={() => tags.removeItem(item)} className="size-4 cursor-pointer" />
                       </li>
@@ -161,9 +161,9 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     onChange={(e) => skills.setValue(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && skills.addItem()}
                   />
-                  <ul>
+                  <ul className="flex items-center">
                     {skills.list.map((item, i) => (
-                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between">
+                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2">
                         {item} <X onClick={() => skills.removeItem(item)} className="size-4 cursor-pointer" />
                       </li>
                     ))}

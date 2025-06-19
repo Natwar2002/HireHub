@@ -17,6 +17,7 @@ import JobsPage from "./pages/JobsPage/JobsPage"
 import { AppliedJobs } from "./pages/AppliedJobs/AppliedJobs"
 import ManageJobPosts from "./component/PostedJobs/PostedJobs"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard/AdminDashboard"
+import { ProtectedRoute } from "./component/ProtectedRoute/ProtectedRoute"
 
 export const AppRoutes = () => {
   return (
@@ -26,20 +27,24 @@ export const AppRoutes = () => {
         <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
         <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
         <Route path='/recruiter/signup' element={<Auth><RecruiterSignUpCard /></Auth>} />
-        <Route path='/contests/start' element={<QuizInstructionsPage />} />
 
-        <Route path='/' element={<MainLayout />}>
+        <Route element={<ProtectedRoute allowedRoles={["User"]} />}>
+          <Route path='/' element={<MainLayout />}>
             <Route path='home' element={<Home />} />
             <Route path='premium' element={<PricePage />} />
             <Route path='contests' element={<QuizContestPage />} />
+            <Route path='contests/start' element={<QuizInstructionsPage />} />
             <Route path='contests/quiz' element={<QuizPage />} />
             <Route path='jobs' element={<JobsPage />} />
             <Route path='applied-jobs' element={<AppliedJobs />} />
+          </Route>
         </Route>
 
-        <Route path='/recruiter' element={<AdminLayout />}>
+        <Route element={<ProtectedRoute allowedRoles={["HR"]} />}>
+          <Route path='/recruiter' element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path='postedJobs' element={<ManageJobPosts />} />
+          </Route>
         </Route>
 
         <Route path='*' element={<NotFound />} />

@@ -45,13 +45,11 @@ export const recruiterSignInService = async (data) => {
     const isMatched = await argon2.verify(isValidUser.password, password);
     if (!isMatched) throw new Error("wrong password");
     return {
-      token: createRecruiterJWT({ email, id:isValidUser.id }),
-      data: {
-        username: isValidUser.username,
-        email: isValidUser.email,
-        role: isValidUser.role,
-        _id: isValidUser._id,
-      },
+      token: createRecruiterJWT({ email, id: isValidUser.id }),
+      username: isValidUser.username,
+      email: isValidUser.email,
+      role: isValidUser.role,
+      id: isValidUser._id,
     };
   } catch (error) {
     console.log(error);
