@@ -20,7 +20,7 @@ export const createUserDetails = async (id, userDetailsData) => {
             });
         }
         const userDetails = await userDetailsRepository.create(userDetailsData);
-        user.userDetails = userDetails;
+        user.userDetails = userDetails.id;
         await user.save();
         return user;
     } catch (error) {
@@ -71,8 +71,6 @@ export const updateUserDetails = async (id, userDetailsData) => {
             });
         }
         const userDetails = await userDetailsRepository.update(user.userDetails, userDetailsData);
-        user.userDetails = userDetails;
-        await user.save();
         return user;
     } catch (error) {
         console.log('Error in update user details service: ', error);

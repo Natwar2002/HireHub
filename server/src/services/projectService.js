@@ -52,8 +52,7 @@ export const updateProjectService = async (id, projectId, data) => {
                 status: 400
             });
         }
-
-        if (project.userId !== id) {
+        if (project.userId.toString() !== id) {
             throw new ClientError({
                 message: "Unauthorized",
                 explanation: "You do not have permission to update this project",
