@@ -18,12 +18,14 @@ import { BsPencilSquare } from "react-icons/bs";
 import store from "../../redux/store";
 import { logout } from "../../redux/actions/authAction";
 import ConfirmModal from "../Modal/ConfirmModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserDetailsModal from "../Modal/UserDetailsModal";
 import ProjectDetailsModal from "../Modal/ProjectModal";
 import EditProfileModal from "../Modal/EditProfileModal";
 import { FaTrashRestore } from "react-icons/fa";
 import { useDeleteProject } from '../../hooks/projects/useDeleteProject';
+import { useQueryClient } from "@tanstack/react-query";
+
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
@@ -32,7 +34,10 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
     const [project, setProject] = useState(null);
     const { isOpen: isUserDetailsOpen , onOpenChange: onOpenChangeOfUserDetailsModal } = useDisclosure();
     const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
-    const { isOpen: isEditProfileModalOpen, onOpenChange: onOpenChangeOfEditProfileModal } = useDisclosure(); 
+    const { isOpen: isEditProfileModalOpen, onOpenChange: onOpenChangeOfEditProfileModal } = useDisclosure();
+    const queryClient = useQueryClient();
+
+    useEffect(() => {}, [userDetails]);
 
     const { deleteProjectMutation } = useDeleteProject();
  
@@ -49,9 +54,9 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
         if (confirmAction === "delete" && project) {
             console.log("Deleting project:", project);
             const res = await deleteProjectMutation(project?._id);
+            queryClient.invalidateQueries('get-user-details');
             console.log(res);
         }
-
         setConfirmAction("");
         setProject(null);
         setShowConfirmModal(false);

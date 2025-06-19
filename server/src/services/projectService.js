@@ -67,3 +67,32 @@ export const updateProjectService = async (id, projectId, data) => {
         throw error;
     }
 }
+
+export const deleteProjectService = async (id, projectId) => {
+    try {
+        const user = await userRepository.getUserWithDetails(id);
+
+        const project = await projectRepository.getById(projectId)
+        if (!project) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "Project with this id doesnt exist",
+                status: 400
+            });
+        }
+
+        if (project.userId.toString() !== id) {
+            throw new ClientError({
+                message: "Unauthorized",
+                explanation: "You do not have permission to delete this project",
+                status: 403
+            });
+        }
+
+        const updatedProject = await projectRepository.delete(projectId);
+        return updatedProject;
+    } catch (error) {
+        console.log("Error in delete projects service", error);
+        throw error;
+    }
+}

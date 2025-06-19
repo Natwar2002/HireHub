@@ -11,10 +11,9 @@ import {
 import { useEffect, useState } from "react";
 import { useCreateProject } from "../../hooks/projects/useCreateProject";
 import { useUpdateProject } from "../../hooks/projects/useUpdateProject";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
-  console.log(project);
-  
   useEffect(() => {
     setProjectName(project?.projectName || "");
     setProjectDescription(project?.projectDescription || "");
@@ -26,9 +25,17 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
   const [projectDescription, setProjectDescription] = useState(project?.projectDescription);
   const [githubLink, setGithubLink] = useState(project?.githubLink);
   const [liveLink, setLiveLink] = useState(project?.liveLink);
+  const queryClient = useQueryClient();
 
   const { createProjectMutation } = useCreateProject();
   const { updateProjectMutation } = useUpdateProject(project?._id);
+
+  const resetForm = () => {
+    setProjectDescription("");
+    setProjectName("");
+    setGithubLink("");
+    setLiveLink("");
+  };
 
   const handleSubmit = async () => {
     if (
@@ -48,13 +55,23 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
     }
     console.log("Projects Payload:", payload);
     if(!project?._id) {
-      const res = createProjectMutation(payload);
-      console.log(res);
+      try {
+        const res = await createProjectMutation(payload);
+        console.log(res);
+      } catch (error) {
+        console.log("Error in createProjectMutation: ", error);
+      }
     } else {
-      const res = updateProjectMutation(payload, project?._id);
-      console.log(res);
+      try {
+        const res = await updateProjectMutation(payload, project?._id);
+        console.log(res);
+      } catch (error) {
+        console.log("Error in updateProjectMutation: ", error);
+      }
     }
+    queryClient.invalidateQueries('get-user-details');
     onOpenChange(false);
+    resetForm();
   };
 
   return (

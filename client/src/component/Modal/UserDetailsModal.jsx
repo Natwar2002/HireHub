@@ -108,7 +108,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
     setExperienceList((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (
       !qualification ||
       !completionYear ||
@@ -139,11 +139,19 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
     };
 
     if (userDetails) {
-      const res = updateUserDetailsMutation(payload);
-      console.log(res);
+      try {
+        const res = await updateUserDetailsMutation(payload);
+        console.log(res);
+      } catch (error) {
+        console.log("Error in updateUserDetailsMutation: ", error);
+      }
     } else {
-      const res = createUserDetailsMutation(payload);
-      console.log(res);
+      try {
+        const res = await createUserDetailsMutation(payload);
+        console.log(res);
+      } catch (error) {
+        console.log("Error in createUserDetailsMutation: ", error);
+      }
     }
 
     queryClient.invalidateQueries(["get-user-details"]);

@@ -27,7 +27,12 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
     fileInputRef.current.click();
   };
 
-  const handleSubmit = () => {
+  const resetForm = () => {
+    setUsername("");
+    setSelectedImage(null);
+  };
+
+  const handleSubmit = async() => {
     if (!username?.trim() && !selectedImage) {
       alert("Username or photo is required.");
       return;
@@ -39,13 +44,14 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
     };
 
     try {
-      const res = updateUserMutation(payload);
+      const res = await updateUserMutation(payload);
       console.log("Submitted: ", res);
     } catch (error) {
       console.log(error);
     }
     queryClient.invalidateQueries('get-user-details');
     onOpenChange(false);
+    resetForm();
   };
 
   return (
