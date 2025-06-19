@@ -47,7 +47,6 @@ export const signinController = async (req, res) => {
 
 export const updateUserController = async (req, res) => {
     try {
-        console.log(req?.file);
         if (req.file) {
             req.body.avatar = req.file.path;
             req.body.public_key = req.file.filename;

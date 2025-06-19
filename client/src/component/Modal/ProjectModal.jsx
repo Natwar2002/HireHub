@@ -14,6 +14,7 @@ import { useUpdateProject } from "../../hooks/projects/useUpdateProject";
 
 export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
   console.log(project);
+  
   useEffect(() => {
     setProjectName(project?.projectName || "");
     setProjectDescription(project?.projectDescription || "");
@@ -27,7 +28,7 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
   const [liveLink, setLiveLink] = useState(project?.liveLink);
 
   const { createProjectMutation } = useCreateProject();
-  const { updateProjectMutation } = useUpdateProject();
+  const { updateProjectMutation } = useUpdateProject(project?._id);
 
   const handleSubmit = async () => {
     if (
@@ -47,10 +48,10 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
     }
     console.log("Projects Payload:", payload);
     if(!project?._id) {
-      const res = await createProjectMutation(payload);
+      const res = createProjectMutation(payload);
       console.log(res);
     } else {
-      const res = await updateProjectMutation(payload, project?._id);
+      const res = updateProjectMutation(payload, project?._id);
       console.log(res);
     }
     onOpenChange(false);

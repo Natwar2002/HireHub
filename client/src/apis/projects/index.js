@@ -17,7 +17,7 @@ export const createProjectRequest = async(token, data) => {
 
 export const updateProjectRequest = async(token, data, id) => {
     try {
-        const response = await axiosConfig.post(`/projects/${id}`, data, {
+        const response = await axiosConfig.put(`/projects/${id}`, data, {
             headers : {
                 'x-access-token' : token
             }
@@ -32,7 +32,7 @@ export const updateProjectRequest = async(token, data, id) => {
 
 export const deleteProjectRequest = async(token, id) => {
     try {
-        const response = await axiosConfig.post(`/projects/${id}`, {
+        const response = await axiosConfig.delete(`/projects/${id}`, {
             headers : {
                 'x-access-token' : token
             }

@@ -209,7 +209,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                                                 <h4 className="text-base font-semibold">{project.projectName}</h4>
                                                 <div className="flex gap-2">
                                                     <Dropdown>
-                                                        <DropdownTrigger>
+                                                        <DropdownTrigger className="cursor-pointer">
                                                             <FaEllipsisVertical />
                                                         </DropdownTrigger>
                                                         <DropdownMenu aria-label="Example with disabled actions">
@@ -319,14 +319,18 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                             <span>Logout</span>
                             <FaPowerOff />
                         </Button>
-                        <Button
-                            variant="shadow"
-                            className="mt-4 px-6 py-2 text-base rounded-lg"
-                            onPress={() => { onOpenChangeOfUserDetailsModal() }}
-                        >
-                            <span>Edit</span>
-                            <BsPencilSquare />
-                        </Button>
+                        {
+                            userDetails?.userDetails && (
+                                <Button
+                                    variant="shadow"
+                                    className="mt-4 px-6 py-2 text-base rounded-lg"
+                                    onPress={() => { onOpenChangeOfUserDetailsModal() }}
+                                >
+                                    <span>Edit</span>
+                                    <BsPencilSquare />
+                                </Button>
+                            )
+                        }
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
@@ -338,12 +342,13 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                 action={confirmAction}
             />
 
-            <UserDetailsModal 
+            <UserDetailsModal
+                key={userDetails?.userDetails?._id || "new-user"} 
                 isOpen={isUserDetailsOpen} 
                 onOpenChange={onOpenChangeOfUserDetailsModal} 
-                createDetails={true}
-                userDetails={userDetails}
+                userDetails={userDetails?.userDetails}
             />
+            
             <ProjectDetailsModal 
                 isOpen={isProjectModalOpen} 
                 onOpenChange={onOpenChangeOfProjectModal}
@@ -353,7 +358,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
             <EditProfileModal 
                 isOpen={isEditProfileModalOpen} 
                 onOpenChange={onOpenChangeOfEditProfileModal}
-                userDetails={userDetails?.userDetails}
+                userDetails={userDetails}
             />
         </>
     );

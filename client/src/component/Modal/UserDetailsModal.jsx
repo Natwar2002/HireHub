@@ -8,15 +8,15 @@ import {
   Button,
   Select,
   SelectItem,
-  DatePicker,
 } from "@heroui/react";
 import { PlusIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUpdateUserDetails } from "../../hooks/user/useUpdateUserDetails";
 import { useCreateUserDetails } from "../../hooks/user/useCreateUserDetails";
 import { useQueryClient } from "@tanstack/react-query";
 
 const qualifications = ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"];
+const completionYears = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028"];
 
 const useListInput = (initial = "", minLength = 1) => {
   const [value, setValue] = useState(initial);
@@ -36,31 +36,63 @@ const useListInput = (initial = "", minLength = 1) => {
     setList((prev) => prev.filter((i) => i !== item));
   };
 
-  return { value, setValue, list, addItem, removeItem };
+  return { value, setValue, list, setList, addItem, removeItem };
 };
 
-export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, userDetails }) {
-  const [qualification, setQualification] = useState(userDetails?.highestEducation?.qualification);
-  const [completionDate, setCompletionDate] = useState(userDetails?.highestEducation?.completionDate);
-  const [phoneNo, setPhoneNo] = useState(userDetails?.phoneNo);
-  const [state, setState] = useState(userDetails?.location?.state);
-  const [city, setCity] = useState(userDetails?.location?.city);
-  const [linkedinLink, setLinkedinLink] = useState(userDetails?.linkedinLink);
-  const [gitHubLink, setGitHubLink] = useState(userDetails?.gitHubLink);
-  const [portfolioLink, setPortfolioLink] = useState(userDetails?.portfolioLink);
-  const [resume, setResume] = useState(userDetails?.resume);
-
-  const queryClient = useQueryClient();
-
-  const skills = useListInput("", 2);
-
+export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) {
+  const [qualification, setQualification] = useState("");
+  const [completionYear, setCompletionYear] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [linkedinLink, setLinkedinLink] = useState("");
+  const [gitHubLink, setGitHubLink] = useState("");
+  const [portfolioLink, setPortfolioLink] = useState("");
+  const [resume, setResume] = useState(null);
   const [expTitle, setExpTitle] = useState("");
   const [expCompany, setExpCompany] = useState("");
   const [experienceList, setExperienceList] = useState([]);
 
+  const skills = useListInput("", 2);
+  const queryClient = useQueryClient();
   const { updateUserDetailsMutation } = useUpdateUserDetails();
   const { createUserDetailsMutation } = useCreateUserDetails();
-  
+
+  useEffect(() => {
+    if (isOpen && userDetails) {
+      setQualification(userDetails?.highestEducation?.qualification || "");
+      setCompletionYear(userDetails?.highestEducation?.completionYear || "");
+      setPhoneNo(userDetails?.phoneNo || "");
+      setState(userDetails?.location?.state || "");
+      setCity(userDetails?.location?.city || "");
+      setLinkedinLink(userDetails?.linkedinLink || "");
+      setGitHubLink(userDetails?.gitHubLink || "");
+      setPortfolioLink(userDetails?.portfolioLink || "");
+      setResume(userDetails?.resume || null);
+      skills.setList(userDetails?.skills || []);
+      skills.setValue("");
+      setExperienceList(userDetails?.experience || []);
+    } else if (isOpen) {
+      resetForm();
+    }
+  }, [userDetails, isOpen]);
+
+  const resetForm = () => {
+    setQualification("");
+    setCompletionYear("");
+    setPhoneNo("");
+    setState("");
+    setCity("");
+    setLinkedinLink("");
+    setGitHubLink("");
+    setPortfolioLink("");
+    setResume(null);
+    skills.setValue("");
+    skills.setList([]);
+    setExpTitle("");
+    setExpCompany("");
+    setExperienceList([]);
+  };
 
   const addExperience = () => {
     if (expTitle.trim() && expCompany.trim()) {
@@ -79,7 +111,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
   const handleSubmit = () => {
     if (
       !qualification ||
-      !completionDate ||
+      !completionYear ||
       !phoneNo ||
       !state ||
       !city ||
@@ -95,10 +127,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
     }
 
     const payload = {
-      highestEducation: {
-        qualification,
-        completionDate,
-      },
+      highestEducation: { qualification, completionYear },
       experience: experienceList,
       skills: skills.list,
       phoneNo,
@@ -109,42 +138,58 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
       resume,
     };
 
-    console.log("UserDetails Payload:", payload);
-    if(createDetails) {
-      const res = createUserDetailsMutation(payload);
-      console.log(res);
-    } else {
+    if (userDetails) {
       const res = updateUserDetailsMutation(payload);
       console.log(res);
+    } else {
+      const res = createUserDetailsMutation(payload);
+      console.log(res);
     }
-    queryClient.invalidateQueries('get-user-details');
+
+    queryClient.invalidateQueries(["get-user-details"]);
     onOpenChange(false);
+    resetForm();
   };
 
   return (
     <Modal size="5xl" isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
-      <ModalContent className="overflow-y-auto">
+      <ModalContent key={userDetails?._id || "new"} className="overflow-y-auto">
         {(onClose) => (
           <>
-            <ModalHeader>Enter User Details</ModalHeader>
+            <ModalHeader>{userDetails ? "Edit User Details" : "Enter User Details"}</ModalHeader>
             <ModalBody>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Select label="Qualification" onChange={(e) => setQualification(e.target.value)}>
+                <Select
+                  label="Qualification"
+                  selectedKeys={qualification ? [qualification] : []}
+                  onSelectionChange={(keys) => setQualification(Array.from(keys)[0])}
+                >
                   {qualifications.map((q) => (
                     <SelectItem key={q} value={q}>
                       {q}
                     </SelectItem>
                   ))}
                 </Select>
-                <DatePicker label="Completion Date" value={completionDate} onChange={setCompletionDate} />
 
-                <Input label="Phone Number" placeholder="Enter phone" value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} />
-                <Input label="State" placeholder="Enter State" value={state} onChange={(e) => setState(e.target.value)} />
-                <Input label="City" placeholder="Enter City" value={city} onChange={(e) => setCity(e.target.value)} />
+                <Select
+                  label="Completion Year"
+                  selectedKeys={completionYear ? [completionYear] : []}
+                  onSelectionChange={(keys) => setCompletionYear(Array.from(keys)[0])}
+                >
+                  {completionYears.map((year) => (
+                    <SelectItem key={year} value={year}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </Select>
 
-                <Input label="LinkedIn Link" placeholder="https://linkedin.com/in/..." value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} />
-                <Input label="GitHub Link" placeholder="https://github.com/..." value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
-                <Input label="Portfolio Link" placeholder="https://..." value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
+                <Input label="Phone Number" value={phoneNo} onChange={(e) => setPhoneNo(e.target.value)} />
+                <Input label="State" value={state} onChange={(e) => setState(e.target.value)} />
+                <Input label="City" value={city} onChange={(e) => setCity(e.target.value)} />
+                <Input label="LinkedIn Link" value={linkedinLink} onChange={(e) => setLinkedinLink(e.target.value)} />
+                <Input label="GitHub Link" value={gitHubLink} onChange={(e) => setGitHubLink(e.target.value)} />
+                <Input label="Portfolio Link" value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} />
+
                 <div className="flex flex-col">
                   <label className="text-xs text-muted-foreground font-medium mb-1">
                     <input
@@ -153,38 +198,27 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
                       onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) {
-                          const isAllowedType = ['application/pdf'].includes(file.type);
-                          const isUnderSizeLimit = file.size <= 2 * 1024 * 1024;
+                          const isPDF = file.type === "application/pdf";
+                          const under2MB = file.size <= 2 * 1024 * 1024;
 
-                          if (!isAllowedType) {
-                            alert("Only PDF files are allowed.");
-                            e.target.value = null;
-                            return;
-                          }
-
-                          if (!isUnderSizeLimit) {
-                            alert("File size must be under 2MB.");
-                            e.target.value = null;
-                            return;
-                          }
+                          if (!isPDF) return alert("Only PDF files allowed.");
+                          if (!under2MB) return alert("Max size is 2MB.");
 
                           setResume(file);
                         }
                       }}
-                      className="text-xs text-gray-300 border border-gray-300 rounded-lg cursor-pointer bg-zinc-800 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-zinc-800 mr-3"
+                      className="text-xs border border-gray-300 rounded-lg cursor-pointer bg-zinc-800 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-zinc-800"
                     />
-                    <span>
-                      Upload Resume (.pdf max 2MB)
-                    </span>
+                    <span>Upload Resume (.pdf max 2MB)</span>
                   </label>
                   {resume && (
                     <p className="text-xs text-gray-300 mt-1">
-                      Selected: {resume.name}
+                      Selected: {resume.name || resume}
                     </p>
                   )}
                 </div>
 
-                {/* Skills List */}
+                {/* Skills */}
                 <div className="col-span-full">
                   <Input
                     label="Skills"
@@ -222,8 +256,12 @@ export default function UserDetailsModal({ isOpen, onOpenChange, createDetails, 
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
-              <Button color="primary" onPress={handleSubmit}>Save</Button>
+              <Button color="danger" variant="light" onPress={() => { onClose(); resetForm(); }}>
+                Cancel
+              </Button>
+              <Button color="primary" onPress={handleSubmit}>
+                Save
+              </Button>
             </ModalFooter>
           </>
         )}

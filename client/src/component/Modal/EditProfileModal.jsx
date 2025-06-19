@@ -7,7 +7,7 @@ import {
   Input,
   Button,
 } from "@heroui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateUser } from '../../hooks/user/useUpdateUser'
 
@@ -17,6 +17,11 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
   const [selectedImage, setSelectedImage] = useState(null);
   const { updateUserMutation } = useUpdateUser();
   const queryClient = useQueryClient();
+
+  useEffect(() =>{
+    setUsername(userDetails?.username || "");
+    setSelectedImage(userDetails?.avatar);
+  }, [userDetails]);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -52,8 +57,8 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
             <ModalBody className="flex flex-col gap-4 items-center">
 
                 <Input
-                    label="Full Name"
-                    placeholder="Enter your name"
+                    label="Username"
+                    placeholder="Enter your username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
@@ -64,7 +69,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
                 >
                   {selectedImage ? (
                     <img
-                      src={URL.createObjectURL(selectedImage)}
+                      src={typeof selectedImage === 'string' ? selectedImage : URL.createObjectURL(selectedImage)}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />

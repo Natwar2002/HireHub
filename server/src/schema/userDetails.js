@@ -6,8 +6,8 @@ const userDetailsSchema = new mongoose.Schema({
             type: String,
             enum: ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"],
         },
-        completionDate: {
-            type: Date,
+        completionYear: {
+            type: String,
         }
     },
     experience: [
