@@ -143,9 +143,7 @@ export const getAllJobPost = async () => {
     try {
         const page = 1;
         const limit = 20;
-        const jobposts = await jobPostRepository.getAllJobs();
-        console.log(jobposts);
-
+        const jobposts = await jobPostRepository.getAllJobs(page, limit);
         return jobposts;
     } catch (error) {
         console.log("Error in get all job post", error);

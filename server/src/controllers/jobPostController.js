@@ -3,6 +3,7 @@ import {
   createJobPost,
   deleteJobPost,
   getAllJobPost,
+  getJobPost,
   getJobPostByHR,
   updateJobPost,
 } from "../services/jobPostService.js";
@@ -89,7 +90,7 @@ export const deleteJobPostController = async (req, res) => {
 
 export const getJobPostController = async (req, res) => {
   try {
-    const response = await updateJobPost(req.user, req.params.jobId);
+    const response = await getJobPost(req.user, req.params.jobId);
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job post fetched successfully"));

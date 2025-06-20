@@ -53,7 +53,6 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
         console.log("Successfully applied");
         createApplicationMutation(jobId);
         queryClient.invalidateQueries('GetJobs');
-
         if(error) {
             // add toast if error
         }
@@ -79,7 +78,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
                         <Avatar
                             radius="md"
                             className="w-[90px] h-[90px] text-large"
-                            src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+                            src={job?.logo}
                         />
                         <div className="flex flex-col gap-1">
                             <h1 className="text-xl font-bold">{job?.company}</h1>

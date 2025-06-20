@@ -2,10 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import store from "../../redux/store";
 
 export const ProtectedRoute = ({ allowedRoles = [] }) => {
-    const { user } = store.getState().auth;
-    console.log(user);
+    const { user, token } = store.getState().auth;
     
-    if (!user) {
+    if (!user || !token) {
         return <Outlet />;
     }
 

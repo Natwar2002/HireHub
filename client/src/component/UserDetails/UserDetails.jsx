@@ -119,11 +119,9 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                                 <div>
                                     <h3 className="font-semibold mb-1">Highest Education</h3>
                                     <p>
-                                        {userDetails.userDetails?.highestEducation?.qualification} (
-                                        {userDetails.userDetails?.highestEducation?.completionDate
-                                            ? new Date(userDetails.userDetails?.highestEducation.completionDate).toLocaleDateString()
-                                            : "N/A"}
-                                        )
+                                        {userDetails.userDetails?.highestEducation?.qualification}
+                                        &nbsp; - 
+                                        ({userDetails.userDetails?.highestEducation?.completionYear})
                                     </p>
                                 </div>
 

@@ -8,14 +8,25 @@ import Logo from "../../assets/job-search.png";
 import JobCard from "../../component/JobCard/JobCard";
 import store from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { jobsHome, tags } from "../../utils/constants";
+import { useGetAllJobs } from '../../hooks/jobPost/useGetAllJobs';
+import { setJob } from "../../redux/actions/jobActions";
 
 export const Home = () => {
 
   const navigate = useNavigate();
   const [selectedTag, setSelectedTag] = useState("All");
   const { user, token } = store.getState().auth;
+
+  const { jobs } = useGetAllJobs();
+  console.log(jobs);
+  
+  useEffect(() => {
+    if(jobs && jobs.length > 0) {
+      store.dispatch(setJob(jobs));
+    }
+  }, [jobs]);
 
   const filteredJobs = selectedTag === "All" ? jobsHome : jobsHome.filter((job) => job.tag === selectedTag);
 
@@ -200,7 +211,7 @@ export const Home = () => {
         </div>
         <div>
             <p className="font-cabinet font-light">We are Always Happy To Help</p>
-            <p>HireHub@gmail.com</p>
+            <p>hirehub@gmail.com</p>
         </div>
       </div>
       <hr className="w-[80vw] m-auto "/>

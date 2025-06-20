@@ -9,8 +9,8 @@ const jobPostRouter = Router();
 jobPostRouter.post('/post', isAuthenticatedRecruiter, uploader.single("logo"), createJobPostController);
 jobPostRouter.put('/:jobId', isAuthenticatedRecruiter, uploader.single("logo"), updateJobPostController);
 jobPostRouter.delete('/:jobId', isAuthenticatedRecruiter, deleteJobPostController);
-jobPostRouter.get('/:jobId', isAuthenticatedRecruiter, getJobPostController);
-jobPostRouter.get('/all', isAuthenticated, getAllJobPostController);
+jobPostRouter.get('/job/:jobId', isAuthenticated, getJobPostController);
+jobPostRouter.get('/get', isAuthenticated, getAllJobPostController);
 jobPostRouter.get('/', isAuthenticatedRecruiter, getAllJobPostByHRController);
 // user id is already available in req.user object 
 
