@@ -8,27 +8,23 @@ import Logo from "../../assets/job-search.png";
 import JobCard from "../../component/JobCard/JobCard";
 import store from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { jobsHome, tags } from "../../utils/constants";
+import {  useEffect, useState } from "react";
+import {  tags } from "../../utils/constants";
 import { useGetAllJobs } from '../../hooks/jobPost/useGetAllJobs';
-import { setJob } from "../../redux/actions/jobActions";
 
 export const Home = () => {
 
   const navigate = useNavigate();
   const [selectedTag, setSelectedTag] = useState("All");
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const { user, token } = store.getState().auth;
 
   const { jobs } = useGetAllJobs();
-  console.log(jobs);
-  
-  useEffect(() => {
-    if(jobs && jobs.length > 0) {
-      store.dispatch(setJob(jobs));
-    }
-  }, [jobs]);
 
-  const filteredJobs = selectedTag === "All" ? jobsHome : jobsHome.filter((job) => job.tag === selectedTag);
+  useEffect(()=>{
+    const filter = selectedTag === "All" ? jobs : jobs?.filter((job) => job.tags.includes(selectedTag));
+    setFilteredJobs(filter)
+  },[jobs, selectedTag])
 
   function handleGetStartedClick() {
     if(user && token) {
@@ -41,7 +37,7 @@ export const Home = () => {
   function handleHireFromUsClick() {
       navigate('/recruiter/signin');
   }
-
+  console.log(filteredJobs)
   return (
     <>
       <div className="w-full h-screen mt-12 flex flex-col items-center justify-center relative">
@@ -61,7 +57,7 @@ export const Home = () => {
             onClickHandler={handleGetStartedClick}
             text={"Get Started"} 
           />
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <img src={PlayIcon} alt="play-icon" />
             <p>Our Story</p>
           </div>
@@ -136,8 +132,10 @@ export const Home = () => {
         </div>
         </div>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto mt-12">
-          {filteredJobs.map(job => (
-            <JobCard key={job.id} job={job} />
+          {filteredJobs?.map(job => (
+            <div key={job._id}>
+              <JobCard  job={job} />
+            </div>
           ))}
         </div>
       </div>

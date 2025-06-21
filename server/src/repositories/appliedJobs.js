@@ -7,7 +7,7 @@ const appliedJobsRepository = {
         const jobs = await AppliedJobs.find({ userId }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).populate("jobDetails");
         return jobs;
     },
-    findApplication: async function ({ data }) {
+    findApplication: async function (data) {
         const application = await AppliedJobs.findOne(data);
         return application;
     }

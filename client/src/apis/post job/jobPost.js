@@ -83,3 +83,16 @@ export const getJobHRPostedRequest = async ( token ) => {
     throw error.response.data;
   }
 };
+export const getJobDataDashboardRequest = async ( token ) => {
+  try {
+    const response = await axiosConfig.get(`/jobs/data`, {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
+  }
+};

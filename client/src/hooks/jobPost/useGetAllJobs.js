@@ -7,7 +7,8 @@ export const useGetAllJobs = () => {
 
     const { isFetched, isSuccess, error, data: jobs, isError } = useQuery({
         queryFn: () => getAllJobPostRequest(token),
-        queryKey: ['GetJobs']
+        queryKey: ['GetJobs'],
+        staleTime:20000
     });
 
     return {

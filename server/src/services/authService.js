@@ -31,6 +31,13 @@ export const signinService = async (data) => {
                 status: 400
             });
         }
+        if(user.role=="HR"){
+            throw new ClientError({
+                explanation: "Invalid data sent from the client",
+                message: "Recruiter account found please go to recruiter sign in page",
+                status: 400
+            });
+        }
         const isMatch = await argon2.verify(user.password, data.password);
         if (!isMatch) {
             throw new ClientError({

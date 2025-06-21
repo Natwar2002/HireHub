@@ -10,10 +10,10 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 import { PlusIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCreateJob } from "../../hooks/jobPost/useCreateJob";
 
 export const SelectorIcon = (props) => (
@@ -53,7 +53,8 @@ const useListInput = (initial = "", minLength = 1) => {
     }
   };
 
-  const removeItem = (item) => setList((prev) => prev.filter((i) => i !== item));
+  const removeItem = (item) =>
+    setList((prev) => prev.filter((i) => i !== item));
 
   return { value, setValue, list, addItem, removeItem };
 };
@@ -71,6 +72,12 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
   const [experience, setExperience] = useState("");
   const [deadlineDate, setDeadlineDate] = useState(null);
   const [selectedJobType, setSelectedJobType] = useState("");
+  const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
 
   const navigate = useNavigate();
 
@@ -98,11 +105,17 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
       skills.list.length === 0 ||
       responsibilities.list.length === 0
     ) {
-      alert("Please fill all fields and ensure list fields have at least one entry.");
+      alert(
+        "Please fill all fields and ensure list fields have at least one entry."
+      );
       return;
     }
 
-    const deadline = new Date(deadlineDate.year, deadlineDate.month - 1, deadlineDate.day);
+    const deadline = new Date(
+      deadlineDate.year,
+      deadlineDate.month - 1,
+      deadlineDate.day
+    );
 
     await createJobMutation({
       company,
@@ -113,41 +126,77 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
       deadline,
       jobType: selectedJobType,
       jobDescription: jobDesc,
-      tags: tags.list.map((tag) => tag.startsWith("#") ? tag : `#${tag}`),
+      tags: tags.list.map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
       requiredSkills: skills.list,
       responsibilities: responsibilities.list,
     });
     onOpenChange(false);
-    navigate('/jobs');
+    navigate("/jobs");
   };
 
   return (
-    <Modal size="full" isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+    <Modal
+      size="full"
+      isOpen={isOpen}
+      placement="top-center"
+      onOpenChange={onOpenChange}
+    >
       <ModalContent className="overflow-scroll">
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Post New Job</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">
+              Post New Job
+            </ModalHeader>
             <ModalBody>
               <div className="flex gap-2 flex-col md:flex-row">
                 <div className="w-full flex flex-col gap-4">
-                  <Input label="Company" placeholder="Enter Company Name" variant="bordered" value={company} onChange={(e) => setCompany(e.target.value)} />
-                  <Input label="Job Title" placeholder="Enter Job Title" variant="bordered" value={title} onChange={(e) => setTitle(e.target.value)} />
-                  <Input label="Job Description" placeholder="Enter Job Description" variant="bordered" value={jobDesc} onChange={(e) => setJobDesc(e.target.value)} />
+                  <Input
+                    label="Company"
+                    placeholder="Enter Company Name"
+                    variant="bordered"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                  <Input
+                    label="Job Title"
+                    placeholder="Enter Job Title"
+                    variant="bordered"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <Input
+                    label="Job Description"
+                    placeholder="Enter Job Description"
+                    variant="bordered"
+                    value={jobDesc}
+                    onChange={(e) => setJobDesc(e.target.value)}
+                  />
 
                   <Input
                     label="Tags"
                     placeholder="Enter tag (no need for #)"
                     variant="bordered"
                     value={tags.value}
-                    endContent={<PlusIcon onClick={tags.addItem} className="size-4 cursor-pointer" />}
+                    endContent={
+                      <PlusIcon
+                        onClick={tags.addItem}
+                        className="size-4 cursor-pointer"
+                      />
+                    }
                     onChange={(e) => tags.setValue(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && tags.addItem()}
                   />
                   <ul className="flex items-center">
                     {tags.list.map((item, i) => (
-                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2">
+                      <li
+                        key={i}
+                        className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2"
+                      >
                         #{item.replace(/^#/, "")}
-                        <X onClick={() => tags.removeItem(item)} className="size-4 cursor-pointer" />
+                        <X
+                          onClick={() => tags.removeItem(item)}
+                          className="size-4 cursor-pointer"
+                        />
                       </li>
                     ))}
                   </ul>
@@ -157,38 +206,82 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     placeholder="Enter skill"
                     variant="bordered"
                     value={skills.value}
-                    endContent={<PlusIcon onClick={skills.addItem} className="size-4 cursor-pointer" />}
+                    endContent={
+                      <PlusIcon
+                        onClick={skills.addItem}
+                        className="size-4 cursor-pointer"
+                      />
+                    }
                     onChange={(e) => skills.setValue(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && skills.addItem()}
                   />
                   <ul className="flex items-center">
                     {skills.list.map((item, i) => (
-                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2">
-                        {item} <X onClick={() => skills.removeItem(item)} className="size-4 cursor-pointer" />
+                      <li
+                        key={i}
+                        className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2"
+                      >
+                        {item}{" "}
+                        <X
+                          onClick={() => skills.removeItem(item)}
+                          className="size-4 cursor-pointer"
+                        />
                       </li>
                     ))}
                   </ul>
 
-                  <Input label="Location" placeholder="Enter Location" variant="bordered" value={location} onChange={(e) => setLocation(e.target.value)} />
-                  <Input label="Salary" placeholder="Enter Salary (e.g. 12 LPA)" variant="bordered" value={salary} onChange={(e) => setSalary(e.target.value)} />
+                  <Input
+                    label="Location"
+                    placeholder="Enter Location"
+                    variant="bordered"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
+                  <Input
+                    label="Salary"
+                    placeholder="Enter Salary (e.g. 12 LPA)"
+                    variant="bordered"
+                    value={salary}
+                    onChange={(e) => setSalary(e.target.value)}
+                  />
                 </div>
 
                 <div className="w-full flex flex-col gap-4">
-                  <Input label="Experience" placeholder="Enter Experience" variant="bordered" value={experience} onChange={(e) => setExperience(e.target.value)} />
+                  <Input
+                    label="Experience"
+                    placeholder="Enter Experience"
+                    variant="bordered"
+                    value={experience}
+                    onChange={(e) => setExperience(e.target.value)}
+                  />
 
                   <Input
                     label="Responsibilities"
                     placeholder="Enter Responsibility"
                     variant="bordered"
                     value={responsibilities.value}
-                    endContent={<PlusIcon onClick={responsibilities.addItem} className="size-4 cursor-pointer" />}
+                    endContent={
+                      <PlusIcon
+                        onClick={responsibilities.addItem}
+                        className="size-4 cursor-pointer"
+                      />
+                    }
                     onChange={(e) => responsibilities.setValue(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && responsibilities.addItem()}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && responsibilities.addItem()
+                    }
                   />
                   <ul>
                     {responsibilities.list.map((item, i) => (
-                      <li key={i} className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between">
-                        {item} <X onClick={() => responsibilities.removeItem(item)} className="size-4 cursor-pointer" />
+                      <li
+                        key={i}
+                        className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between"
+                      >
+                        {item}{" "}
+                        <X
+                          onClick={() => responsibilities.removeItem(item)}
+                          className="size-4 cursor-pointer"
+                        />
                       </li>
                     ))}
                   </ul>
@@ -217,12 +310,44 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                       <SelectItem key={item.key}>{item.label}</SelectItem>
                     ))}
                   </Select>
+                  <div
+                    className="w-24 h-24 rounded-full border-2 border-dashed border-gray-400 cursor-pointer hover:border-primary flex items-center justify-center overflow-hidden"
+                    onClick={handleImageClick}
+                  >
+                    {selectedImage ? (
+                      <img
+                        src={
+                          typeof selectedImage === "string"
+                            ? selectedImage
+                            : URL.createObjectURL(selectedImage)
+                        }
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                        // disabled={isPending}
+                      />
+                    ) : (
+                      <span className="text-sm text-gray-400 text-center px-2">
+                        Click to upload
+                      </span>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setSelectedImage(e.target.files[0])}
+                      className="hidden"
+                    />
+                  </div>
                 </div>
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
-              <Button color="primary" onPress={handleSubmit}>Post Job</Button>
+              <Button color="danger" variant="light" onPress={onClose}>
+                Cancel
+              </Button>
+              <Button color="primary" onPress={handleSubmit}>
+                Post Job
+              </Button>
             </ModalFooter>
           </>
         )}

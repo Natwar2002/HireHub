@@ -99,6 +99,9 @@ export const RecruiterSignUpCard = () => {
             <p className='text-sm text-muted-foreground mt-4'>
                 Already have an account? 
                 <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signin')}> - recruiter sign in</span>
+                <br />
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/auth/signin')}>user sign in</span>
+
             </p>
         </div>
     )
