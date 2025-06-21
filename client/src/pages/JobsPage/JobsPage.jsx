@@ -1,24 +1,27 @@
 import { useState } from "react";
 import JobCard from "../../component/JobCard/JobCard";
 import { tags } from "../../utils/constants";
-import store from "../../redux/store";
+import { useGetAllJobs } from "../../hooks/jobPost/useGetAllJobs";
 
 export default function JobsPage() {
   const [selectedTag, setSelectedTag] = useState("All");
-  
-  const jobs = store.getState().jobs;
-  console.log(jobs);
-  
-  
-  const filteredJobs = selectedTag === "All" ? jobs : jobs.filter((job) => job.tag === selectedTag);
-  console.log(filteredJobs);
-  
+
+  const { jobs } = useGetAllJobs();
+
+
+  const filteredJobs =
+    selectedTag === "All"
+      ? jobs
+      : jobs.filter((jobs) => jobs.tag === selectedTag);
+
   return (
     <div className="min-h-screen px-4 py-10 text-white">
-      <h1 className="text-2xl font-bold text-center mb-10">Explore Opportunities at HireHub</h1>
+      <h1 className="text-2xl font-bold text-center mb-10">
+        Explore Opportunities at HireHub
+      </h1>
 
       <div className="flex justify-center flex-wrap gap-4 mb-8">
-        {tags.map((tag) => (
+        {tags?.map((tag) => (
           <span
             key={tag}
             onClick={() => setSelectedTag(tag)}
@@ -34,8 +37,10 @@ export default function JobsPage() {
       </div>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-        {jobs.map(job => (
-          <JobCard key={job?.id} job={job} />
+        {filteredJobs?.map((job) => (
+          <div className="" key={job?.id}>
+            <JobCard job={job} />
+          </div>
         ))}
       </div>
     </div>

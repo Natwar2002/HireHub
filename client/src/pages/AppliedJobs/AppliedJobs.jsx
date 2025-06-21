@@ -65,12 +65,13 @@ export const AppliedJobs = () => {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [app, setApp] = useState(null);
     
-    const { isError, isFetching, applications } = useGetApplications();
+    const { applications, isError } = useGetApplications();
 
     function handleClick(application) {
         setApp(application);
         onOpen();
-    }
+    };
+    console.log(applications)
 
     // if(isFetching){
     //     return(
@@ -101,18 +102,18 @@ export const AppliedJobs = () => {
                 <h1 className="m-6 text-4xl">Applications</h1>
                 <div>
                     {
-                        Applications.map(application => (
+                        applications?.map(application => (
                             <div 
-                                key={application?.id}
+                                key={application?.jobDetails._id}
                                 className="border-2 rounded-xl p-5 m-5 flex justify-between items-center"
                             >
-                                <div className="flex gap-4 items-center justify-between">
+                                <div className="w-full flex gap-4 items-center justify-between pr-10">
                                     <div className="flex gap-4">
-                                        <Avatar size="lg" src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
+                                        <Avatar size="lg" src={application?.jobDetails?.logo} />
                                         <div className="text-sm text-muted-foreground">
-                                            <p className="text-lg text-white">{application.company}</p>
-                                            <p>{application.title}</p>
-                                            <p>{application.location}</p>
+                                            <p className="text-lg text-white">{application?.jobDetails.company}</p>
+                                            <p>{application?.jobDetails.jobTitle}</p>
+                                            <p>{application?.jobDetails.location}</p>
                                         </div>
                                     </div>
                                     <Chip 
@@ -125,7 +126,7 @@ export const AppliedJobs = () => {
                                 </div>
                                 <AiOutlineRight 
                                     size={20} 
-                                    onClick={() => handleClick(application)}
+                                    onClick={() => handleClick(application.jobDetails)}
                                     className="cursor-pointer hover:animate-wiggle"
                                 />
                             </div>

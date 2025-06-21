@@ -10,7 +10,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateUser } from '../../hooks/user/useUpdateUser'
-import { LucideLoader } from "lucide-react";
+
 
 export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) {
   const [username, setUsername] = useState(userDetails?.username);

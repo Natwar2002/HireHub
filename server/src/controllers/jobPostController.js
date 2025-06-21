@@ -5,6 +5,7 @@ import {
   getAllJobPost,
   getJobPost,
   getJobPostByHR,
+  getJobsForDashboard,
   updateJobPost,
 } from "../services/jobPostService.js";
 import { customErrorResponse } from "../utils/common/customErrorResponse.js";
@@ -135,6 +136,29 @@ export const getAllJobPostByHRController = async (req, res) => {
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job posts fetched successfully"));
+  } catch (error) {
+    console.log(error.message);
+    if (error.message) {
+      return res
+        .status(error.status)
+        .json(customErrorResponse(error.message, error));
+    }
+    return res.status(500).json({
+      success: false,
+      data: {},
+      error: error.message,
+    });
+  }
+};
+
+
+
+export const getDashboardDataController = async (req, res) => {
+  try {
+    const response = await getJobsForDashboard(req.user.id);
+    return res
+      .status(201)
+      .json(customSuccessResponse(response, "Job posts data fetched successfully"));
   } catch (error) {
     console.log(error.message);
     if (error.message) {

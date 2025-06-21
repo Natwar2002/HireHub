@@ -2,7 +2,7 @@ import axiosConfig from "../../config/axiosConfig";
 
 export const createApplicationRequest = async (token, jobId) => {
   try {
-    const response = await axiosConfig.post(`/appliedJobs/${jobId}`, {
+    const response = await axiosConfig.post(`/appliedJobs/${jobId}`,{}, {
       headers: {
         "x-access-token" : token,
       }
@@ -22,7 +22,7 @@ export const getApplicationsRequest = async (token) => {
         "x-access-token" : token,
       }
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error);
     throw error.response.data;

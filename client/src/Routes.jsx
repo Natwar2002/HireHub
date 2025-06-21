@@ -18,6 +18,8 @@ import { AppliedJobs } from "./pages/AppliedJobs/AppliedJobs"
 import ManageJobPosts from "./component/PostedJobs/PostedJobs"
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard/AdminDashboard"
 import { ProtectedRoute } from "./component/ProtectedRoute/ProtectedRoute"
+import { Resume } from "./component/resume/Resume"
+
 
 export const AppRoutes = () => {
   return (

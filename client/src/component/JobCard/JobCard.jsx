@@ -4,9 +4,10 @@ import { JobDetails } from "../JobDetails/JobDetails";
 import { useDisclosure } from "@heroui/modal";
 import { IoBag } from "react-icons/io5";
 import { MdCurrencyRupee } from "react-icons/md";
+import store from "../../redux/store";
 
 export default function JobCard({ job }) {
-
+  const { user } = store.getState().auth;
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   
   return (
@@ -26,7 +27,7 @@ export default function JobCard({ job }) {
         <p className="text-sm text-gray-300">{job?.company} • {job?.location} • {job?.jobType}</p>
         <div className="mt-3 text-gray-400 text-sm">
           <ul className="flex gap-1">
-            {job?.tags.map((tag, i) => (
+            {job?.tags?.map((tag, i) => (
               <span key={i} className="bg-[#44476A] text-white px-2 py-1 rounded-md text-xs">{tag}</span>
             ))}
           </ul>
@@ -37,8 +38,9 @@ export default function JobCard({ job }) {
             <p className="flex items-center gap-2"><MdCurrencyRupee /> <span>{job?.salary}</span></p>
           </div>
           <CommonButton 
-            text={"Apply"}
             onClickHandler={onOpen}
+            isApplied={job.applications.includes(user.id)}
+            text={job.applications.includes(user.id)? "Applied":"Apply"}
           />
         </div>
       </div>

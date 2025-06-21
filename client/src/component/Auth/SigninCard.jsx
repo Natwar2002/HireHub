@@ -63,6 +63,8 @@ export const SigninCard = ({ signinForm, setSigninForm, onSigninFormSubmit, isPe
             <p className='text-sm text-muted-foreground mt-4'>
                 Don't have an account? 
                 <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/auth/signup')}> Sign Up</span>
+                <br />
+                <span className='text-sky-600 hover:underline cursor-pointer' onClick={()=> navigate('/recruiter/signin')}>recruiter sign in</span>
             </p>
         </div>
     )

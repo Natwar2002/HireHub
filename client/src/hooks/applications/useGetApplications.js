@@ -7,7 +7,7 @@ export const useGetApplications = () => {
 
     const { isFetching, isSuccess, error, data: applications, isError } = useQuery({
         queryFn: () => getApplicationsRequest(token),
-        queryKey: ['GetJobs']
+        queryKey: ['GetApplication']
     });
 
     return {
