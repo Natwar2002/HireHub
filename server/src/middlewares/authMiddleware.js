@@ -62,7 +62,6 @@ export const isAuthenticatedRecruiter = async (req, res, next) => {
         }
 
         const user = await userRepository.getById(response.id);
-        console.log(response)
         if (!user) {
             return res.status(400).json({
                 explanation: "Invalid data sent from the client",

@@ -71,15 +71,6 @@ export const AppliedJobs = () => {
         setApp(application);
         onOpen();
     };
-    console.log(applications)
-
-    // if(isFetching){
-    //     return(
-    //         <div className='h-full flex-1 flex items-center justify-center'>
-    //             <LoaderIcon className='size-5 animate-spin text-muted-foreground' />
-    //         </div>
-    //     );
-    // }
 
     if(isError) {
         return(
@@ -98,7 +89,7 @@ export const AppliedJobs = () => {
                 job={app}
                 isVisible={false}
             />
-            <div className="mx-[200px]">
+            <div className="lg:mx-[200px] mx-28">
                 <h1 className="m-6 text-4xl">Applications</h1>
                 <div>
                     {

@@ -33,8 +33,7 @@ export const createApplicationService = async (userId, jobId) => {
                 status: 404
             });
         }
-        const existingApplication = await appliedJobsRepository.findApplication({ userId:userId, jobDetails: jobId });
-        console.log(existingApplication)
+        const existingApplication = await appliedJobsRepository.findApplication({ userId: userId, jobDetails: jobId });
         if (existingApplication) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
@@ -42,7 +41,7 @@ export const createApplicationService = async (userId, jobId) => {
                 status: 400
             });
         }
-        const application = await appliedJobsRepository.create({ userId, status: 'Applied', jobDetails: jobId, recruiterId:job.postedBy });
+        const application = await appliedJobsRepository.create({ userId, status: 'Applied', jobDetails: jobId, recruiterId: job.postedBy });
 
         job.applications.push(userId);
         await job.save();

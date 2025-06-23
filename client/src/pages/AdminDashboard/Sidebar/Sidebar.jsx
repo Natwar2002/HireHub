@@ -26,7 +26,10 @@ import {
   Avatar,
   useDisclosure,
 } from "@heroui/react"
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
+import store from '../../../redux/store'
+import { logout } from "../../../redux/actions/authAction"
+
 
 // Hook to detect dark mode properly
 function useDarkMode() {
@@ -67,8 +70,9 @@ function useDarkMode() {
   return isDark;
 }
 
-function UserProfilePopup({ isOpen, onOpenChange, userDetails, onEditProfile, onLogout }) {
+function UserProfilePopup({ isOpen, onOpenChange, userDetails, onEditProfile }) {
   const isDark = useDarkMode();
+  const navigate = useNavigate();
   
   return (
     <Modal 
@@ -137,7 +141,8 @@ function UserProfilePopup({ isOpen, onOpenChange, userDetails, onEditProfile, on
                 color="danger" 
                 startContent={<LogOut size={16} />}
                 onPress={() => {
-                  onLogout?.();
+                  store.dispatch(logout());
+                  navigate('/home');
                   onClose();
                 }}
                 className={isDark ? "text-red-400" : "text-red-600"}
@@ -340,7 +345,7 @@ function SidebarItem({ icon, label, collapsed, onClickHandler }) {
 }
 
 // Main Sidebar Component
-export default function Sidebar({ children, userDetails, onUpdateProfile, onLogout }) {
+export default function Sidebar({ children, userDetails, onUpdateProfile }) {
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
   const { isOpen: isProfileOpen, onOpen: onProfileOpen, onOpenChange: onProfileOpenChange } = useDisclosure()
@@ -447,7 +452,6 @@ export default function Sidebar({ children, userDetails, onUpdateProfile, onLogo
         onOpenChange={onProfileOpenChange}
         userDetails={userDetails}
         onEditProfile={handleEditProfile}
-        onLogout={onLogout}
       />
 
       <EditProfileModal

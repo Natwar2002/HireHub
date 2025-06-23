@@ -19,7 +19,7 @@ export const Home = () => {
   const [filteredJobs, setFilteredJobs] = useState([]);
   const { user, token } = store.getState().auth;
 
-  const { jobs } = useGetAllJobs();
+  const { jobs } = useGetAllJobs({ enabled: !!token });
 
   useEffect(()=>{
     const filter = selectedTag === "All" ? jobs : jobs?.filter((job) => job.tags.includes(selectedTag));
@@ -37,7 +37,7 @@ export const Home = () => {
   function handleHireFromUsClick() {
       navigate('/recruiter/signin');
   }
-  console.log(filteredJobs)
+  
   return (
     <>
       <div className="w-full h-screen mt-12 flex flex-col items-center justify-center relative">

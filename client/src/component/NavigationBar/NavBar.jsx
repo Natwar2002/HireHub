@@ -13,7 +13,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const { user, token } = store.getState().auth;
   const {isOpen, onOpen, onClose} = useDisclosure();
-  const { userDetails } = useGetUserDetails();
+  const { userDetails } = useGetUserDetails({ enabled: !!token });
 
   function handleAppliedJobsClick() {
     if(!user && !token) {

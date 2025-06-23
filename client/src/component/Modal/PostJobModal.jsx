@@ -89,7 +89,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
     { key: "Freelance", label: "Freelance" },
   ];
 
-  const { createJobMutation } = useCreateJob();
+  const { createJobMutation, isPending } = useCreateJob();
 
   const handleSubmit = async () => {
     if (
@@ -101,6 +101,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
       !deadlineDate ||
       !selectedJobType ||
       !jobDesc.trim() ||
+      !selectedImage ||
       tags.list.length === 0 ||
       skills.list.length === 0 ||
       responsibilities.list.length === 0
@@ -117,7 +118,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
       deadlineDate.day
     );
 
-    await createJobMutation({
+    const payload = {
       company,
       jobTitle: title,
       location,
@@ -129,7 +130,10 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
       tags: tags.list.map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
       requiredSkills: skills.list,
       responsibilities: responsibilities.list,
-    });
+      logo: selectedImage
+    }
+    
+    await createJobMutation(payload);
     onOpenChange(false);
     navigate("/jobs");
   };
@@ -156,6 +160,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     variant="bordered"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
+                    disabled={isPending}
                   />
                   <Input
                     label="Job Title"
@@ -163,6 +168,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     variant="bordered"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    disabled={isPending}
                   />
                   <Input
                     label="Job Description"
@@ -170,13 +176,15 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     variant="bordered"
                     value={jobDesc}
                     onChange={(e) => setJobDesc(e.target.value)}
+                    disabled={isPending}
                   />
 
                   <Input
                     label="Tags"
-                    placeholder="Enter tag (no need for #)"
+                    placeholder="Select tag"
                     variant="bordered"
                     value={tags.value}
+                    disabled={isPending}
                     endContent={
                       <PlusIcon
                         onClick={tags.addItem}
@@ -192,7 +200,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                         key={i}
                         className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2"
                       >
-                        #{item.replace(/^#/, "")}
+                        {item.replace(/^#/, "")}
                         <X
                           onClick={() => tags.removeItem(item)}
                           className="size-4 cursor-pointer"
@@ -235,6 +243,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     placeholder="Enter Location"
                     variant="bordered"
                     value={location}
+                    disabled={isPending}
                     onChange={(e) => setLocation(e.target.value)}
                   />
                   <Input
@@ -242,6 +251,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     placeholder="Enter Salary (e.g. 12 LPA)"
                     variant="bordered"
                     value={salary}
+                    disabled={isPending}
                     onChange={(e) => setSalary(e.target.value)}
                   />
                 </div>
@@ -252,6 +262,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     placeholder="Enter Experience"
                     variant="bordered"
                     value={experience}
+                    disabled={isPending}
                     onChange={(e) => setExperience(e.target.value)}
                   />
 
@@ -259,6 +270,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     label="Responsibilities"
                     placeholder="Enter Responsibility"
                     variant="bordered"
+                    disabled={isPending}
                     value={responsibilities.value}
                     endContent={
                       <PlusIcon
@@ -291,6 +303,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     className="max-w-[284px]"
                     label="Deadline Date"
                     value={deadlineDate}
+                    disabled={isPending}
                     onChange={setDeadlineDate}
                   />
                   <Select
@@ -298,6 +311,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                     labelPlacement="inside"
                     placeholder="Select Job Type"
                     selectorIcon={<SelectorIcon />}
+                    disabled={isPending}
                     selectedKeys={[selectedJobType]}
                     onSelectionChange={(keys) => {
                       const key = Array.from(keys)[0];
@@ -323,7 +337,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                         }
                         alt="Profile"
                         className="w-full h-full object-cover"
-                        // disabled={isPending}
+                        disabled={isPending}
                       />
                     ) : (
                       <span className="text-sm text-gray-400 text-center px-2">
@@ -342,11 +356,11 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="danger" variant="light" onPress={onClose} disabled={isPending}>
                 Cancel
               </Button>
-              <Button color="primary" onPress={handleSubmit}>
-                Post Job
+              <Button color="primary" onPress={handleSubmit} disabled={isPending}>
+                { isPending ? "Posting..." : "Post" }
               </Button>
             </ModalFooter>
           </>

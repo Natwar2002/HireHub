@@ -116,7 +116,6 @@ export const getAllJobPostController = async (req, res) => {
       .status(201)
       .json(customSuccessResponse(response, "Job posts fetched successfully"));
   } catch (error) {
-    console.log(error.message);
     if (error.message) {
       return res
         .status(error.status)
@@ -137,7 +136,6 @@ export const getAllJobPostByHRController = async (req, res) => {
       .status(201)
       .json(customSuccessResponse(response, "Job posts fetched successfully"));
   } catch (error) {
-    console.log(error.message);
     if (error.message) {
       return res
         .status(error.status)
@@ -160,7 +158,6 @@ export const getDashboardDataController = async (req, res) => {
       .status(201)
       .json(customSuccessResponse(response, "Job posts data fetched successfully"));
   } catch (error) {
-    console.log(error.message);
     if (error.message) {
       return res
         .status(error.status)

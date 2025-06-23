@@ -2,9 +2,10 @@ import axiosConfig from "../../config/axiosConfig";
 
 export const createJobPostRequest = async (jobData, token) => {
   try {
-    const response = await axiosConfig.post("/jobs/", jobData , {
+    const response = await axiosConfig.post("/jobs/post", jobData , {
       headers: {
         "x-access-token" : token,
+        'Content-Type': 'multipart/form-data'
       }
     });
     return response.data;

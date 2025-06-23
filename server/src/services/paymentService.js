@@ -26,7 +26,6 @@ export const updatePaymentStatus = async (orderId, status, paymentId, signature)
             const shaResponse = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET).update(`${orderId}|${paymentId}`).digest('hex');
             if (shaResponse === signature) {
                 const payment = await paymentRepository.updateOrder(orderId, { status, paymentId });
-                console.log(payment);
                 return payment;
             } else {
                 throw new Error('Payment varification failed');

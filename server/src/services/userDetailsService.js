@@ -39,13 +39,6 @@ export const getUserDetails = async (userid) => {
                 status: 400
             });
         }
-        // if (!user.userDetails) {
-        //     throw new ClientError({
-        //         message: "Invalid request",
-        //         explanation: "User details not found for this user",
-        //         status: 400
-        //     });
-        // }
         return user;
     } catch (error) {
         console.log('Error in get user details service: ', error);
