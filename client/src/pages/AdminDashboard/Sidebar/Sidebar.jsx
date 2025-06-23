@@ -29,6 +29,8 @@ import {
 import { Navigate, useNavigate } from "react-router-dom"
 import store from '../../../redux/store'
 import { logout } from "../../../redux/actions/authAction"
+import { useUpdateRecruiter } from '../../../hooks/admin/useUpdateRecruiter'
+import { useQueryClient } from "@tanstack/react-query"
 
 
 // Hook to detect dark mode properly
@@ -179,15 +181,14 @@ function UserProfilePopup({ isOpen, onOpenChange, userDetails, onEditProfile }) 
 // Edit Profile Modal Component
 function EditProfileModal({ isOpen, onOpenChange, userDetails, onSave }) {
   const [username, setUsername] = useState(userDetails?.username || "")
-  const [email, setEmail] = useState(userDetails?.email || "")
   const fileInputRef = useRef(null)
   const [selectedImage, setSelectedImage] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const isDark = useDarkMode()
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setUsername(userDetails?.username || "")
-    setEmail(userDetails?.email || "")
     setSelectedImage(userDetails?.avatar)
   }, [userDetails])
 
@@ -197,7 +198,6 @@ function EditProfileModal({ isOpen, onOpenChange, userDetails, onSave }) {
 
   const resetForm = () => {
     setUsername(userDetails?.username || "")
-    setEmail(userDetails?.email || "")
     setSelectedImage(userDetails?.avatar)
   }
 
@@ -211,13 +211,13 @@ function EditProfileModal({ isOpen, onOpenChange, userDetails, onSave }) {
     
     const payload = {
       username,
-      email,
       avatar: selectedImage,
     }
 
     try {
       await onSave?.(payload)
       onOpenChange(false)
+      queryClient.invalidateQueries('get-recruiter-details');
       resetForm()
     } catch (error) {
       console.error("Error updating profile:", error)
@@ -249,19 +249,6 @@ function EditProfileModal({ isOpen, onOpenChange, userDetails, onSave }) {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                classNames={{
-                  input: isDark ? "text-white" : "text-gray-900",
-                  label: isDark ? "text-gray-300" : "text-gray-700",
-                }}
-              />
-              
-              <Input
-                label="Email"
-                disabled={isPending}
-                placeholder="Enter your email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 classNames={{
                   input: isDark ? "text-white" : "text-gray-900",
                   label: isDark ? "text-gray-300" : "text-gray-700",
@@ -345,12 +332,13 @@ function SidebarItem({ icon, label, collapsed, onClickHandler }) {
 }
 
 // Main Sidebar Component
-export default function Sidebar({ children, userDetails, onUpdateProfile }) {
+export default function Sidebar({ children, userDetails }) {
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
   const { isOpen: isProfileOpen, onOpen: onProfileOpen, onOpenChange: onProfileOpenChange } = useDisclosure()
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure()
   const isDark = useDarkMode()
+  const { updateRecruiterMutation } = useUpdateRecruiter()
 
   const handleEditProfile = () => {
     onEditOpen()
@@ -358,8 +346,8 @@ export default function Sidebar({ children, userDetails, onUpdateProfile }) {
 
   const handleSaveProfile = async (profileData) => {
     try {
-      await onUpdateProfile?.(profileData)
-      // You can add success notification here
+      const res = await updateRecruiterMutation(profileData);
+      console.log("Successfully updated recruiter details", res);
     } catch (error) {
       // Handle error
       console.error("Failed to update profile:", error)

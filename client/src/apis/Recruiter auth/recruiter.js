@@ -23,40 +23,33 @@ export const recruiterSignInRequest = async ({ email, password }) => {
   }
 };
 
-export const recruiterUpdateRequest = async ({ token, data }) => {
-  try {
-    const response = axiosConfig.post(
-      "/recruiter/update",
-      { data },
-      {
-        headers: {
-          "x-access-token": token,
-        },
-      }
-    );
-    console.log("Update user request", response);
-    return response?.data?.data;
-  } catch (error) {
-    console.log("Error in update user request", error);
-    throw error;
-  }
-};
+export const updateRequiterRequest = async (token, data) => {
+    try {
+        const response = await axiosConfig.put('/recruiter', data, {
+            headers: {
+              "x-access-token": token,
+              'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log("Update recruiter request", response);
+        return response?.data?.data;
+    } catch (error) {
+        console.log('Error in update recruiter request: ', error?.response?.data?.error);
+        throw error;
+    }
+}
 
-export const recruiterActionRequest = async ({ token, data }) => {
-  try {
-    const response = axiosConfig.post(
-      "/recruiter/update",
-      { data },
-      {
-        headers: {
-          "x-access-token": token,
-        },
-      }
-    );
-    console.log("Update user request", response);
-    return response?.data?.data;
-  } catch (error) {
-    console.log("Error in update user request", error);
-    throw error;
-  }
-};
+export const getRecruiterDetails = async (token) => {
+    try {
+        const response = await axiosConfig.get('/recruiter', {
+            headers: {
+              "x-access-token": token,
+            }
+        });
+        console.log("Get recruiter request", response.data.data);
+        return response?.data?.data;
+    } catch (error) {
+        console.log('Error in get recruiter request: ', error?.response?.data?.error);
+        throw error;
+    }
+}

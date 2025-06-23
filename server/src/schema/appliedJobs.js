@@ -5,13 +5,13 @@ const appliedJobSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    recruiterId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+    recruiterId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     status: {
         type: String,
-        enum: ['Applied', 'Seen', 'Rejected', 'Accepted'],
+        enum: ['Applied', 'Rejected', 'Accepted'],
     },
     jobDetails: {
         type: mongoose.Schema.Types.ObjectId,

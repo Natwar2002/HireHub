@@ -56,3 +56,20 @@ export const recruiterSignInService = async (data) => {
     throw error
   }
 };
+
+export const getRecruiterDetails = async (recruiterId) => {
+  try {
+    const user = await userRepository.getById(recruiterId);
+    if (!user) {
+      throw new ClientError({
+        explanation: "Invalid data sent from the client",
+        message: "Recruiter not found",
+        status: 400
+      });
+    }
+    return user;
+  } catch (error) {
+    console.log('Error in get recruiter service', error);
+    throw error;
+  }
+}
