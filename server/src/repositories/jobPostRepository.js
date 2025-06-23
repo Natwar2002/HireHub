@@ -9,7 +9,8 @@ const jobPostRepository = {
     const jobs = await JobPost.find()
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .populate("postedBy", "username email avatar");
     return jobs;
   },
   getJobsPostedByHR: async function (page, limit, userId) {

@@ -111,14 +111,14 @@ export const getJobPostController = async (req, res) => {
 
 export const getAllJobPostController = async (req, res) => {
   try {
-    const response = await getAllJobPost(req.user);
+    const response = await getAllJobPost();
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job posts fetched successfully"));
   } catch (error) {
     if (error.message) {
       return res
-        .status(error.status)
+        .status(error.status || 400)
         .json(customErrorResponse(error.message, error));
     }
     return res.status(500).json({

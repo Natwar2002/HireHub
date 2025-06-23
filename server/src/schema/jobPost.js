@@ -48,11 +48,11 @@ const jobPostSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    logo:{
-        type:String
+    logo: {
+        type: String
     },
-     public_key:{
-        type:String, // to store cloudinary key 
+    public_key: {
+        type: String, // to store cloudinary key 
     },
     jobType: {
         type: String,

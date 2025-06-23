@@ -3,7 +3,6 @@ import { AppRoutes } from './Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import store from './redux/store';
 import { initializeAuth } from './redux/actions/authAction';
-import Modal from './component/Modal/Modal';
 
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppRoutes />
-      <Modal/>
     </QueryClientProvider>
   )
 }

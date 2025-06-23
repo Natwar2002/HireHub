@@ -123,10 +123,22 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
             </DrawerBody>
             <DrawerFooter>
               <div className="w-full flex justify-between items-center">
-                <div className="text-sm">
-                  <p>
-                    Posted By: <span>{job?.posted_by || "Natwar"}</span>
-                  </p>
+                <div className="text-sm flex items-center gap-2 border-2 px-4 rounded-lg cursor-not-allowed">
+                  <span>Posted By</span>
+                  <Avatar
+                    src={job?.postedBy?.avatar}
+                    alt={job?.postedBy?.username}
+                    className="w-8 h-8"
+                    name={job?.postedBy?.username?.charAt(0)?.toUpperCase()}
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium truncate max-w-[150px]">
+                      {job?.postedBy?.username || "User"}
+                    </span>
+                    <span className="text-xs text-gray-400 truncate max-w-[150px]">
+                      {job?.postedBy?.email || "No email"}
+                    </span>
+                  </div>
                 </div>
                 {isVisible && (
                   <CommonButton

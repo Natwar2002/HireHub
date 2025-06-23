@@ -181,7 +181,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
 
                   <Input
                     label="Tags"
-                    placeholder="Select tag"
+                    placeholder="Select tag (eg. Frontend, Backend)"
                     variant="bordered"
                     value={tags.value}
                     disabled={isPending}
@@ -200,7 +200,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                         key={i}
                         className="text-sm px-2 border m-1 p-0.5 rounded-md flex justify-between items-center gap-2"
                       >
-                        {item.replace(/^#/, "")}
+                        {item}
                         <X
                           onClick={() => tags.removeItem(item)}
                           className="size-4 cursor-pointer"
@@ -337,7 +337,6 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                         }
                         alt="Profile"
                         className="w-full h-full object-cover"
-                        disabled={isPending}
                       />
                     ) : (
                       <span className="text-sm text-gray-400 text-center px-2">
@@ -348,6 +347,7 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
                       ref={fileInputRef}
                       type="file"
                       accept="image/*"
+                      disabled={isPending}
                       onChange={(e) => setSelectedImage(e.target.files[0])}
                       className="hidden"
                     />
