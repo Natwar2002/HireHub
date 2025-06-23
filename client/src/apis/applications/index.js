@@ -28,3 +28,17 @@ export const getApplicationsRequest = async (token) => {
     throw error.response.data;
   }
 };
+
+export const updateApplicationRequest = async (token, jobId, jobdata) => {
+  try {
+    const response = await axiosConfig.put(`/appliedJobs/${jobId}`, jobdata , {
+      headers: {
+        "x-access-token" : token,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error.response.data;
+  }
+};

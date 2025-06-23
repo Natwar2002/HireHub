@@ -21,6 +21,8 @@ import {
 import PostJobModal from "../../../component/Modal/PostJobModal";
 import { Resume } from "../../../component/resume/Resume";
 import { useDashboardData } from "../../../hooks/jobPost/useDashboardData";
+import { useUpdateApplication } from '../../../hooks/applications/useUpdateApplication';
+import { useQueryClient } from "@tanstack/react-query";
 
 export const columns = [
   { name: "No", uid: "id", sortable: true },
@@ -147,6 +149,8 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]); // Changed to state instead of hardcoded array
   const { HrJobs } = useDashboardData();
+  const { updateApplicationMutation } = useUpdateApplication();
+  const queryClient = useQueryClient();
   
   // Process API data when HrJobs changes
   useEffect(() => {
@@ -161,17 +165,38 @@ export default function AdminDashboard() {
         role: job.jobDetails.jobTitle,
         status: job.status,
         resume: job.userId.resume || "", // Add resume field if available
+        jobId: job._id
       }));
       setUsers(candidates);
     }
   }, [HrJobs]);
 
+  async function handleAccept(user) {
+    if(user.status == "Accepted") return;
+    try {
+      const res = await updateApplicationMutation({jobId: user.jobId, data: {status: "Accepted" }});
+      queryClient.invalidateQueries("get-job-dashboard");
+      console.log(res);
+    } catch (error) {
+      console.log("Error in handle accept", error);
+    }
+  }
+
+  async function handleReject(user,) {
+    if(user.status == "Rejected") return;
+    try {
+      const res = await updateApplicationMutation({jobId: user.jobId, data: {status: "Rejected" }});
+      queryClient.invalidateQueries("get-job-dashboard");
+      console.log(res);
+    } catch (error) {
+      console.log("Error in handle accept", error);
+    }
+  }
+
   const [filterValue, setFilterValue] = React.useState("");
   const { isOpen, onOpenChange } = useDisclosure();
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
-  // eslint-disable-next-line no-unused-vars
-  const [jobsFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: "id",
@@ -297,8 +322,8 @@ export default function AdminDashboard() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="accept">Accept</DropdownItem>
-                <DropdownItem key="reject">Reject</DropdownItem>
+                <DropdownItem key="accept" onPress={() => handleAccept(user)}>Accept</DropdownItem>
+                <DropdownItem key="reject" onPress={() => handleReject(user)}>Reject</DropdownItem>
                 <DropdownItem key="view">View Details</DropdownItem>
               </DropdownMenu>
             </Dropdown>

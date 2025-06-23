@@ -55,3 +55,38 @@ export const createApplicationService = async (userId, jobId) => {
         throw error;
     }
 }
+
+export const updateApplicationService = async (recruiterId, jobdata, applicationId) => {
+    try {
+        const application = await appliedJobsRepository.getById(applicationId);
+        if (!application) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "Application not found",
+                status: 404
+            });
+        }
+        const job = await jobPostRepository.getById(application.jobDetails);
+        if (!job) {
+            throw new ClientError({
+                message: "Invalid data sent from the client",
+                explanation: "Job not found",
+                status: 404
+            });
+        }
+
+        if (job.postedBy.toString() != recruiterId._id) {
+            throw new ClientError({
+                message: "Unauthorized to edit this",
+                explanation: "Only recruiter who posted the job can change status",
+                status: 403
+            });
+        }
+
+        const newApplication = await appliedJobsRepository.update(applicationId, jobdata);
+        return newApplication;
+    } catch (error) {
+        console.log("Error in update application status service: ", error);
+        throw error;
+    }
+}

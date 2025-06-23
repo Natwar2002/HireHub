@@ -22,8 +22,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
   const [skills, setSkills] = useState([]);
   const [responsibilities, setResponsibilities] = useState([]);
   const { user } = store.getState().auth;
-  const { createApplicationMutation, error, isSuccess } =
-    useCreateApplication();
+  const { createApplicationMutation, error, isSuccess } = useCreateApplication();
   const queryClient = useQueryClient();
 
   useEffect(() => {
