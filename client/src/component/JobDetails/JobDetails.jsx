@@ -38,10 +38,20 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
       console.log("something is wrong");
     }
     if (isSuccess) {
+      console.log('query invalidate')
       queryClient.invalidateQueries("GetJobs");
     }
-  }
+  };
 
+  useEffect(()=>{
+          if (error) {
+        console.log("something is wrong");
+      }
+      if (isSuccess) {
+        console.log("query invalidate");
+        queryClient.invalidateQueries("GetJobs");
+      }
+  },[error, isSuccess, queryClient])
   return (
     <Drawer
       isOpen={isOpen}
