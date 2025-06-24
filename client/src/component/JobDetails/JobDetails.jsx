@@ -9,10 +9,9 @@ import {
 } from "@heroui/drawer";
 import { IoBag } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
-import { Chip } from "@heroui/react";
+import { addToast, Button, Chip } from "@heroui/react";
 import { MdCurrencyRupee } from "react-icons/md";
-import { FaUsers, FaUserTie } from "react-icons/fa";
-import CommonButton from "../Button/Button";
+import { FaUsers } from "react-icons/fa";
 import { useCreateApplication } from "../../hooks/applications/useCreateApplication";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -22,7 +21,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
   const [skills, setSkills] = useState([]);
   const [responsibilities, setResponsibilities] = useState([]);
   const { user } = store.getState().auth;
-  const { createApplicationMutation, error, isSuccess } = useCreateApplication();
+  const { createApplicationMutation } = useCreateApplication();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -33,13 +32,23 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
   }, [job]);
 
   async function handleApply(jobId) {
-    await createApplicationMutation(jobId);
-    if (error) {
-      console.log("something is wrong");
+    if(!user?.userDetails) {
+      addToast({
+        title: "Error in applying",
+        description: "Please enter the user details before applying",
+        color: "danger"
+      })
+      onOpenChange(false);
+      return;
     }
-    if (isSuccess) {
-      queryClient.invalidateQueries("GetJobs");
+    try {
+      const res = await createApplicationMutation(jobId);
+      console.log("Successfully applied: ", res);
+    } catch (error) {
+      console.log("Failed to apply: ", error);
     }
+    queryClient.invalidateQueries("GetJobs");
+    onOpenChange(false);
   }
 
   return (
@@ -47,7 +56,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       size="xl"
-      placement="bottom"
+      placement="right"
       backdrop="opaque"
     >
       <DrawerContent>
@@ -141,13 +150,13 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
                   </div>
                 </div>
                 {isVisible && (
-                  <CommonButton
-                    text={
-                      job.applications.includes(user.id) ? "Applied" : "Apply"
-                    }
-                    onClickHandler={() => handleApply(job?._id)}
-                    isApplied={job.applications.includes(user.id)}
-                  />
+                  <Button
+                    variant="shadow"
+                    className="bg-[#9353D3]"
+                    onPress={() => handleApply(job?._id)}
+                  >
+                    {job.applications.includes(user.id) ? "Applied" : "Apply"}
+                  </Button>
                 )}
               </div>
             </DrawerFooter>

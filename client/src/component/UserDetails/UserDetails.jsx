@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
-import { FaEllipsisVertical } from "react-icons/fa6";
+import { FaEllipsisVertical, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Plus, X } from "lucide-react";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { FaPowerOff } from "react-icons/fa6";
@@ -25,6 +25,8 @@ import EditProfileModal from "../Modal/EditProfileModal";
 import { FaTrashRestore } from "react-icons/fa";
 import { useDeleteProject } from '../../hooks/projects/useDeleteProject';
 import { useQueryClient } from "@tanstack/react-query";
+import { Resume } from '../resume/Resume'
+import { MdWork } from "react-icons/md";
 
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
@@ -162,7 +164,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
                                 <div>
                                     <h3 className="font-semibold mb-1">Contact Info</h3>
-                                    <p>Phone: {userDetails.userDetails?.phoneNo}</p>
+                                    <p>Phone: {userDetails?.userDetails?.phoneNo}</p>
                                     <p>Location: {userDetails.userDetails?.location?.city}, {userDetails.userDetails?.location?.state}</p>
                                 </div>
 
@@ -170,38 +172,48 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
 
                                 <div>
                                     <h3 className="font-semibold mb-1">Links</h3>
-                                    <ul className="space-y-1 text-blue-600 flex items-center gap-3">
-                                    {userDetails.userDetails?.linkedinLink && (
-                                        <li>
-                                        <a href={userDetails.userDetails?.linkedinLink} target="_blank" rel="noopener noreferrer">
-                                            LinkedIn
-                                        </a>
-                                        </li>
+                                    <ul className="space-y-1 flex items-center gap-3">
+                                    {userDetails?.userDetails?.linkedinLink && (
+                                        <>
+                                            <li className="flex items-center gap-1">
+                                                <span><FaLinkedin /></span>
+                                                <a href={userDetails.userDetails?.linkedinLink} target="_blank" rel="noopener noreferrer">
+                                                    LinkedIn
+                                                </a>
+                                            </li>
+                                            <Divider orientation="vertical" />
+                                        </>
                                     )}
-                                    {userDetails.userDetails?.gitHubLink && (
-                                        <li>
-                                        <a href={userDetails.userDetails?.gitHubLink} target="_blank" rel="noopener noreferrer">
-                                            GitHub
-                                        </a>
-                                        </li>
+                                    {userDetails?.userDetails?.gitHubLink && (
+                                        <>
+                                            <li className="flex items-center gap-1">
+                                                <span><FaGithub /></span>
+                                                <a href={userDetails.userDetails?.gitHubLink} target="_blank" rel="noopener noreferrer">
+                                                    GitHub
+                                                </a>
+                                            </li>
+                                            <Divider orientation="vertical" />
+                                        </>
                                     )}
-                                    {userDetails.userDetails?.portfolioLink && (
-                                        <li>
-                                        <a href={userDetails.userDetails?.portfolioLink} target="_blank" rel="noopener noreferrer">
-                                            Portfolio
-                                        </a>
-                                        </li>
+                                    {userDetails?.userDetails?.portfolioLink && (
+                                        <>
+                                            <li className="flex items-center gap-1">
+                                                <span><MdWork /></span>
+                                                <a href={userDetails.userDetails?.portfolioLink} target="_blank" rel="noopener noreferrer">
+                                                    Portfolio
+                                                </a>
+                                            </li>
+                                            <Divider orientation="vertical" />                                           
+                                        </>
                                     )}
-                                    {userDetails.resume && (
+                                    {userDetails?.userDetails?.resume && (
                                         <li>
-                                        <a href={userDetails.userDetails?.resume} target="_blank" rel="noopener noreferrer">
-                                            Resume
-                                        </a>
+                                            <Resume user={userDetails} />
                                         </li>
                                     )}
                                     </ul>
                                 </div>
-
+                                <Divider />
                             <div>
                                 <h3 className="font-semibold mb-1">Projects</h3>
                                 {userDetails?.userDetails?.projects?.length > 0 ? (

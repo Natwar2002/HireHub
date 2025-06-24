@@ -52,7 +52,8 @@ const userDetailsSchema = new mongoose.Schema({
         type: String,
     },
     resume: {
-        type: String
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 

@@ -263,7 +263,7 @@ export default function AdminDashboard() {
       case "resume":
         return (
           <div>
-            <Resume userId={user._id} />
+            <Resume userId={user?.resume} />
           </div>
         );
       case "role":

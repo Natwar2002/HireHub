@@ -4,7 +4,7 @@ import ClientError from "../utils/erros/clientError.js";
 
 export const createUserDetails = async (id, userDetailsData) => {
     try {
-        const user = await userRepository.getById(id);
+        const user = await userRepository.getUserWithDetails(id);
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",
@@ -48,7 +48,7 @@ export const getUserDetails = async (userid) => {
 
 export const updateUserDetails = async (id, userDetailsData) => {
     try {
-        const user = await userRepository.getById(id);
+        const user = await userRepository.getUserWithDetails(id);
         if (!user) {
             throw new ClientError({
                 message: "Invalid data sent from the client",

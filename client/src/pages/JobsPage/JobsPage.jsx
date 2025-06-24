@@ -7,8 +7,6 @@ export default function JobsPage() {
   const [selectedTag, setSelectedTag] = useState("All");
 
   const { jobs } = useGetAllJobs();
-console.log(jobs);
-
 
   const filteredJobs =
     selectedTag === "All"

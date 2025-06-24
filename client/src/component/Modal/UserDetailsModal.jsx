@@ -166,7 +166,7 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
           <>
             <ModalHeader>{userDetails ? "Edit User Details" : "Enter User Details"}</ModalHeader>
             <ModalBody>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isCreatePending || isUpdatePending ? 'opacity-50 pointer-events-none' : ''}`}>
                 <Select
                   label="Qualification"
                   selectedKeys={qualification ? [qualification] : []}

@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { FileText, X, Download, ExternalLink } from "lucide-react";
 
 const ResumePreview = ({
-  cloudinaryUrl = "https://res.cloudinary.com/demo/image/upload/sample.pdf",
+  cloudinaryUrl,
   name = "John Doe",
-  position = "Software Developer",
 }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -12,8 +11,8 @@ const ResumePreview = ({
   useEffect(() => {
     // Check if dark class exists on html element
     const checkDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    };
+    setIsDark(document.documentElement.classList.contains('dark'));
+  };
     
     checkDarkMode();
     
@@ -77,9 +76,6 @@ const ResumePreview = ({
                   <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>
                     {name}'s Resume
                   </h3>
-                  <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                    {position}
-                  </p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -146,18 +142,16 @@ const ResumePreview = ({
   );
 };
 
-export const Resume = () => {
+export const Resume = ({ user }) => {
   const candidate = {
-    name: "Alice Johnson",
-    position: "Frontend Developer",
-    cloudinaryUrl: "https://res.cloudinary.com/demo/image/upload/sample.pdf",
-  };
+    name: user?.username,
+    cloudinaryUrl: user?.userDetails?.resume,
+  }; 
 
   return (
     <ResumePreview
       key={12}
       name={candidate.name}
-      position={candidate.position}
       cloudinaryUrl={candidate.cloudinaryUrl}
     />
   );
