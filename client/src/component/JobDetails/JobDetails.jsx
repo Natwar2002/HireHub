@@ -20,7 +20,7 @@ import store from "../../redux/store";
 export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
   const [skills, setSkills] = useState([]);
   const [responsibilities, setResponsibilities] = useState([]);
-  const { user } = store.getState().auth;
+  const { user, userDetails } = store.getState().auth;
   const { createApplicationMutation } = useCreateApplication();
   const queryClient = useQueryClient();
 
@@ -30,11 +30,11 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
       setResponsibilities(job.responsibilities);
     }
   }, [job]);
-
+  
   async function handleApply(jobId) {
-    if(!user?.userDetails) {
+    if(!userDetails?.userDetails) {
       addToast({
-        title: "Error in applying",
+        title: "Error while applying",
         description: "Please enter the user details before applying",
         color: "danger"
       })

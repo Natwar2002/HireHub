@@ -16,7 +16,7 @@ import { useCreateUserDetails } from "../../hooks/user/useCreateUserDetails";
 import { useQueryClient } from "@tanstack/react-query";
 
 const qualifications = ["BTech", "MTech", "BCA", "MCA", "BCom", "MCom", "Other"];
-const completionYears = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028"];
+const completionYears = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028"];
 
 const useListInput = (initial = "", minLength = 1) => {
   const [value, setValue] = useState(initial);

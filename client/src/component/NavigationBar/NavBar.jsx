@@ -7,6 +7,7 @@ import { NavItem } from './NavItem'
 import { useDisclosure } from "@heroui/modal";
 import { UserDetails } from "../UserDetails/UserDetails";
 import { useGetUserDetails } from "../../hooks/user/useGetUserDetails"
+import { setUserDetails } from "../../redux/actions/authAction";
 
 export default function NavBar() {
 
@@ -14,6 +15,7 @@ export default function NavBar() {
   const { user, token } = store.getState().auth;
   const {isOpen, onOpen, onClose} = useDisclosure();
   const { userDetails } = useGetUserDetails({ enabled: !!token });
+  store.dispatch(setUserDetails(userDetails));
 
   function handleAppliedJobsClick() {
     if(!user && !token) {

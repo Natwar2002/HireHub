@@ -10,7 +10,7 @@ export const useCreateApplication = () => {
         mutationFn: (jobId) => createApplicationRequest(token, jobId),
         onSuccess: (data) => {
             addToast({
-                title: "Successfully Applied",
+                title: "Applied Successfully",
                 color: "primary"
             })
             console.log('Applied Successfully: ', data);

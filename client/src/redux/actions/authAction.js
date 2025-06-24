@@ -1,4 +1,4 @@
-import { LOGOUT, SET_AUTH } from "../constants/authConstants"
+import { LOGOUT, SET_AUTH, SET_USER_DETAILS } from "../constants/authConstants"
 
 export const setAuth = (user, token) => {
     return {
@@ -6,6 +6,13 @@ export const setAuth = (user, token) => {
         payload: { user, token }
     };
 };
+
+export const setUserDetails = (userDetails) => {
+    return {
+        type: SET_USER_DETAILS,
+        payload: { userDetails: userDetails}
+    }
+}
 
 export const logout = () => {
     localStorage.removeItem('user');
