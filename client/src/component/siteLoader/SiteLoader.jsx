@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {  Progress } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 
-export default function SiteLoader() {
+export const SiteLoader = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
 
