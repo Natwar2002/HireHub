@@ -3,7 +3,7 @@ import { Auth } from "./pages/Auth/Auth"
 import { SignupContainer } from "./component/Auth/SignupContainer"
 import { SigninContainer } from "./component/Auth/SigninContainer"
 import { Home } from "./pages/Home/Home"
-import SiteLoader from "./component/SiteLoader/SiteLoader"
+import Loader from './component/SiteLoader/SiteLoader'
 import { AdminLayout } from "./pages/AdminDashboard/AdminLayout"
 import NotFound from "./pages/NotFound/NotFound"
 import QuizContestPage from "./pages/ContestPage/ContestPage"
@@ -23,7 +23,7 @@ import { ProtectedRoute } from "./component/ProtectedRoute/ProtectedRoute"
 export const AppRoutes = () => {
   return (
     <Routes>
-        <Route path='/' element={<SiteLoader />} />
+        <Route path='/' element={<Loader />} />
         <Route path='/auth/signup' element={<Auth><SignupContainer /></Auth>} />
         <Route path='/auth/signin' element={<Auth><SigninContainer /></Auth>} />
         <Route path='/recruiter/signin' element={<Auth><RecruiterSigninCard /></Auth>} />
