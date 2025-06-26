@@ -30,7 +30,7 @@ export const isAuthenticated = async (req, res, next) => {
                 message: "The user no longer exists."
             });
         }
-        req.user = user.id;
+        req.user = user;
         next();
     } catch (error) {
         console.log('Auth middleware error', error);

@@ -4,9 +4,12 @@ import { customSuccessResponse } from "../utils/common/customSuccessResponse.js"
 
 export const createUserDetailsController = async (req, res) => {
     try {
-        req.body.resume = req.file.path;
-        req.body.public_key = req.file.filename;
-        const response = await createUserDetails(req.user, req.body);
+        if (req.file?.filename) {
+            const publicId = req.file.filename;
+            req.body.resume = req.file.path;
+            req.body.public_key = publicId;
+        }
+        const response = await createUserDetails(req.user.id, req.body);
         return res.status(201).json(customSuccessResponse(response, 'User details added successfully'));
     } catch (error) {
         if (error.message) {
@@ -22,7 +25,7 @@ export const createUserDetailsController = async (req, res) => {
 
 export const getUserDetailsController = async (req, res) => {
     try {
-        const response = await getUserDetails(req.user);
+        const response = await getUserDetails(req.user.id);
         return res.status(201).json(customSuccessResponse(response, 'Successfully got user details'));
     } catch (error) {
         if (error.message) {
@@ -38,11 +41,13 @@ export const getUserDetailsController = async (req, res) => {
 
 export const updateUserDetailsController = async (req, res) => {
     try {
-        if (req.file) {
+        console.log(req.file);
+        if (req.file?.filename) {
+            const publicId = req.file.filename;
             req.body.resume = req.file.path;
-            req.body.public_key = req.file.filename;
+            req.body.public_key = publicId;
         }
-        const response = await updateUserDetails(req.user, req.body);
+        const response = await updateUserDetails(req.user.id, req.body);
         return res.status(201).json(customSuccessResponse(response, 'User details updated successfully'));
     } catch (error) {
         if (error.message) {
@@ -58,7 +63,7 @@ export const updateUserDetailsController = async (req, res) => {
 
 export const deleteUserDetailsController = async (req, res) => {
     try {
-        const response = await deleteUserDetails(req.user);
+        const response = await deleteUserDetails(req.user.id);
         return res.status(201).json(customSuccessResponse(response, 'User details deleted successfully'));
     } catch (error) {
         if (error.message) {

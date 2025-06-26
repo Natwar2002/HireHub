@@ -25,8 +25,8 @@ import EditProfileModal from "../Modal/EditProfileModal";
 import { FaTrashRestore } from "react-icons/fa";
 import { useDeleteProject } from '../../hooks/projects/useDeleteProject';
 import { useQueryClient } from "@tanstack/react-query";
-import { Resume } from '../resume/Resume'
 import { MdWork } from "react-icons/md";
+import ResumePreview from "../resume/Resume";
 
 
 export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
@@ -38,6 +38,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
     const { isOpen: isProjectModalOpen, onOpenChange: onOpenChangeOfProjectModal } = useDisclosure();
     const { isOpen: isEditProfileModalOpen, onOpenChange: onOpenChangeOfEditProfileModal } = useDisclosure();
     const queryClient = useQueryClient();
+
+    
 
     useEffect(() => {}, [userDetails]);
 
@@ -54,10 +56,8 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
             onClose();
         }
         if (confirmAction === "delete" && project) {
-            console.log("Deleting project:", project);
-            const res = await deleteProjectMutation(project?._id);
+            await deleteProjectMutation(project?._id);
             queryClient.invalidateQueries('get-user-details');
-            console.log(res);
         }
         setConfirmAction("");
         setProject(null);
@@ -208,7 +208,7 @@ export const UserDetails = ({ isOpen, onOpenChange, onClose, userDetails }) => {
                                     )}
                                     {userDetails?.userDetails?.resume && (
                                         <li>
-                                            <Resume user={userDetails} />
+                                            <ResumePreview cloudinaryUrl={userDetails?.userDetails?.resume} name={userDetails?.username} />
                                         </li>
                                     )}
                                     </ul>

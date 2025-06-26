@@ -45,8 +45,7 @@ export default function EditProfileModal({ isOpen, onOpenChange, userDetails }) 
     };
 
     try {
-      const res = await updateUserMutation(payload);
-      console.log("Submitted: ", res);
+      await updateUserMutation(payload);
     } catch (error) {
       console.log(error);
     }

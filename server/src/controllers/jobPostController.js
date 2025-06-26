@@ -47,7 +47,7 @@ export const updateJobPostController = async (req, res) => {
     req.body.public_key = req.file.filename;
   }
   try {
-    const response = await updateJobPost(req.user, req.params.jobId, req.body);
+    const response = await updateJobPost(req.user.id, req.params.jobId, req.body);
     return res
       .status(202)
       .json(customSuccessResponse(response, "Job post updated successfully"));
@@ -71,7 +71,7 @@ export const updateJobPostController = async (req, res) => {
 
 export const deleteJobPostController = async (req, res) => {
   try {
-    const response = await deleteJobPost(req.user, req.params.jobId);
+    const response = await deleteJobPost(req.user.id, req.params.jobId);
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job post deleted successfully"));
@@ -91,7 +91,7 @@ export const deleteJobPostController = async (req, res) => {
 
 export const getJobPostController = async (req, res) => {
   try {
-    const response = await getJobPost(req.user, req.params.jobId);
+    const response = await getJobPost(req.user.id, req.params.jobId);
     return res
       .status(201)
       .json(customSuccessResponse(response, "Job post fetched successfully"));

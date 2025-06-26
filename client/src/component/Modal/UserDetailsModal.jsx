@@ -55,8 +55,8 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
 
   const skills = useListInput("", 2);
   const queryClient = useQueryClient();
-  const { updateUserDetailsMutation, isPending: isUpdatePending, isSuccess: isUpdateSuccess } = useUpdateUserDetails();
-  const { createUserDetailsMutation, isPending: isCreatePending, isSuccess: isCreateSuccess } = useCreateUserDetails();
+  const { updateUserDetailsMutation, isPending: isUpdatePending } = useUpdateUserDetails();
+  const { createUserDetailsMutation, isPending: isCreatePending } = useCreateUserDetails();
 
   useEffect(() => {
     if (isOpen && userDetails) {
@@ -140,15 +140,13 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
 
     if (userDetails) {
       try {
-        const res = await updateUserDetailsMutation(payload);
-        console.log(res);
+        await updateUserDetailsMutation(payload);
       } catch (error) {
         console.log("Error in updateUserDetailsMutation: ", error);
       }
     } else {
       try {
-        const res = await createUserDetailsMutation(payload);
-        console.log(res);
+        await createUserDetailsMutation(payload);
       } catch (error) {
         console.log("Error in createUserDetailsMutation: ", error);
       }
@@ -337,9 +335,9 @@ export default function UserDetailsModal({ isOpen, onOpenChange, userDetails }) 
                 disabled={isCreatePending || isUpdatePending}
               >
                 { userDetails ? (
-                  isUpdatePending || isUpdateSuccess ? 'Updating...' : 'Save'
+                  isUpdatePending ? 'Updating...' : 'Save'
                 ) : (
-                  isCreatePending || isCreateSuccess ? 'Creating...' : 'Save'
+                  isCreatePending ? 'Creating...' : 'Save'
                 ) }
 
               </Button>

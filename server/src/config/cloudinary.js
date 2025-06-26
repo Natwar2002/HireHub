@@ -17,10 +17,15 @@ const storage = new CloudinaryStorage({
 
 const storageResume = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-        folder: "resumes",
-        resource_type: "raw",
-        allowedFormats: ["pdf"],
+    params: async (req) => {
+        return {
+            folder: "resumes",
+            resource_type: "raw",
+            public_id: `${req?.user?.username}_resume.pdf`,
+            use_filename: false,
+            format: "pdf",
+            allowed_formats: ["pdf"]
+        };
     },
 });
 

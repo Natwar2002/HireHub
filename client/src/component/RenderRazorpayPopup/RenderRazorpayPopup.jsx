@@ -6,7 +6,6 @@ const loadRazorpayScript = (src) => {
         const script = document.createElement('script');
         script.src = src;
         script.onload = () => {
-            console.log('Razorpay script loaded');
             res(true);
         }
         script.onerror = () => {
@@ -51,7 +50,6 @@ export const RenderRazorpayPopup = ({ orderId, keyId, currency, amount }) => {
             desciption: 'Test transaction',
             order_id: orderId,
             handler: async(response) => {
-                console.log("Payment success: ", response);
                 await captureOrderMutation({
                     orderId,
                     status: 'Success',

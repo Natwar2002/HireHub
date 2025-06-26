@@ -7,8 +7,6 @@ export const useRecruiterSignUp = () => {
     const { isPending, isSuccess, error, mutateAsync: adminSignUp } = useMutation({
         mutationFn: (email,username,password)=>recruiterSingUpRequest(email,username,password),
         onSuccess: (data) => {
-            console.log('Successfully updated', data);
-             console.log('Successfully send invite  ', data);
             const userObject = JSON.stringify(data)
             
             localStorage.setItem('user', userObject);

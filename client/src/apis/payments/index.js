@@ -9,7 +9,6 @@ export const createOrderRequest = async({ token, amount}) => {
                 "x-access-token": token,
             }
         });
-        console.log(response);
         return response?.data?.data;
     } catch (error) {
         console.log('Error in creating order:', error);
@@ -24,7 +23,6 @@ export const capturePaymentRequest = async ({ token, orderId, paymentId, status,
                 'x-access-token': token
             }
         });
-        console.log(response);
         return response?.data?.data;
     } catch (error) {
         console.log('Error in capturing order', error);

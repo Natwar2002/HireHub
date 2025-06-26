@@ -18,12 +18,10 @@ export const SigninContainer = () => {
         try {
             if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(signinForm.email)) {
                 setValidationError({ message: 'Please enter a valid email' });
-                console.log("Validation Error: Invalid email");
                 return;
             }
             if(signinForm.password.length <= 3) {
                 setValidationError({ message: 'Password should be at least 3 characters long' });
-                console.log("Password should be at least 4 characters long");
                 return;               
             }
             await signinMutation({

@@ -9,8 +9,6 @@ export default function ManageJobPosts() {
 
   const { HrJobs } = useGetHRJobs();
 
-  console.log(HrJobs);
-
   useEffect(() => {
     if (HrJobs) {
       setJobs(HrJobs);

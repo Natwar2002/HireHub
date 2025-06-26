@@ -42,8 +42,7 @@ export const JobDetails = ({ job, isOpen, onOpenChange, isVisible = true }) => {
       return;
     }
     try {
-      const res = await createApplicationMutation(jobId);
-      console.log("Successfully applied: ", res);
+      await createApplicationMutation(jobId);
     } catch (error) {
       console.log("Failed to apply: ", error);
     }

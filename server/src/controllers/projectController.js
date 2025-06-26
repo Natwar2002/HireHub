@@ -4,7 +4,7 @@ import { customErrorResponse } from '../utils/common/customErrorResponse.js';
 
 export const createProjectController = async (req, res) => {
     try {
-        const response = await createProjectService(req.user, req.body);
+        const response = await createProjectService(req.user.id, req.body);
         return res.status(201).json(customSuccessResponse(response, "Project added successfully"));
     } catch (error) {
         console.log(error);
@@ -22,7 +22,7 @@ export const createProjectController = async (req, res) => {
 
 export const updateProjectController = async (req, res) => {
     try {
-        const response = await updateProjectService(req.user, req.params.id, req.body);
+        const response = await updateProjectService(req.user.id, req.params.id, req.body);
         return res.status(201).json(customSuccessResponse(response, "Project updated successfully"));
     } catch (error) {
         if (error.message) {
@@ -38,7 +38,7 @@ export const updateProjectController = async (req, res) => {
 
 export const deleteProjectController = async (req, res) => {
     try {
-        const response = await deleteProjectService(req.user, req.params.id);
+        const response = await deleteProjectService(req.user.id, req.params.id);
         return res.status(201).json(customSuccessResponse(response, "Project deleted successfully"));
     } catch (error) {
         if (error.message) {

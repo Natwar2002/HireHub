@@ -53,18 +53,15 @@ export default function ProjectDetailsModal({ isOpen, onOpenChange, project}) {
       githubLink, 
       liveLink: liveLink || " " 
     }
-    console.log("Projects Payload:", payload);
     if(!project?._id) {
       try {
-        const res = await createProjectMutation(payload);
-        console.log(res);
+        await createProjectMutation(payload);
       } catch (error) {
         console.log("Error in createProjectMutation: ", error);
       }
     } else {
       try {
-        const res = await updateProjectMutation(payload, project?._id);
-        console.log(res);
+        await updateProjectMutation(payload, project?._id);
       } catch (error) {
         console.log("Error in updateProjectMutation: ", error);
       }

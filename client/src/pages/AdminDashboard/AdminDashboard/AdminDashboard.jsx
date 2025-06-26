@@ -19,10 +19,10 @@ import {
   Chip,
 } from "@heroui/react";
 import PostJobModal from "../../../component/Modal/PostJobModal";
-import { Resume } from "../../../component/resume/Resume";
 import { useDashboardData } from "../../../hooks/jobPost/useDashboardData";
 import { useUpdateApplication } from '../../../hooks/applications/useUpdateApplication';
 import { useQueryClient } from "@tanstack/react-query";
+import ResumePreview from "../../../component/resume/Resume";
 
 export const columns = [
   { name: "No", uid: "id", sortable: true },
@@ -263,7 +263,7 @@ export default function AdminDashboard() {
       case "resume":
         return (
           <div>
-            <Resume userId={user?.resume} />
+            <ResumePreview cloudinaryUrl={user?.resume} name={user.name} />
           </div>
         );
       case "role":

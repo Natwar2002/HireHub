@@ -22,7 +22,6 @@ export const createUserDetailsRequest = async(token, data) => {
                 'Content-Type': 'multipart/form-data'
             }
         })
-        console.log("Create user details request",response);
         return response?.data?.data;
     } catch (error) {
         console.log('Error in create user details request: ', error?.response?.data?.error);
@@ -38,7 +37,6 @@ export const updateUserDetailsRequest = async(token, data) => {
                 'Content-Type': 'multipart/form-data'
             }
         })
-        console.log("Update user details request",response);
         return response?.data?.data;
     } catch (error) {
         console.log('Error in update user details request: ', error?.response?.data?.error);
@@ -54,7 +52,6 @@ export const updateUserRequest = async (token, data) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        console.log("Update user request", response);
         return response?.data?.data;
     } catch (error) {
         console.log('Error in update user request: ', error?.response?.data?.error);
