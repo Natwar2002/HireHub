@@ -151,6 +151,9 @@ export default function AdminDashboard() {
   const { HrJobs } = useDashboardData();
   const { updateApplicationMutation } = useUpdateApplication();
   const queryClient = useQueryClient();
+
+  console.log(HrJobs);
+  
   
   // Process API data when HrJobs changes
   useEffect(() => {
@@ -164,7 +167,7 @@ export default function AdminDashboard() {
         avatar: job.userId.avatar,
         role: job.jobDetails.jobTitle,
         status: job.status,
-        resume: job.userId.resume || "", // Add resume field if available
+        resume: job?.userId?.userDetails?.resume || "",
         jobId: job._id
       }));
       setUsers(candidates);

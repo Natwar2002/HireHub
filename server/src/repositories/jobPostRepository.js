@@ -1,6 +1,7 @@
 import crudRepository from "./crudRepository.js";
 import JobPost from "../schema/jobPost.js";
 import AppliedJobs from "../schema/appliedJobs.js";
+import { populate } from "dotenv";
 
 
 const jobPostRepository = {
@@ -27,9 +28,15 @@ const jobPostRepository = {
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
-      .populate("userId", "avatar email username")
+      .populate({
+        path: "userId",
+        select: "avatar email username userDetails",
+        populate: {
+          path: "userDetails",
+          model: "UserDetails"
+        }
+      })
       .populate("jobDetails", "jobTitle");
-
     return jobs;
   },
 };

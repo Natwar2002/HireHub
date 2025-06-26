@@ -152,8 +152,8 @@ export default function PostJobModal({ isOpen, onOpenChange }) {
               Post New Job
             </ModalHeader>
             <ModalBody>
-              <div className="flex gap-2 flex-col md:flex-row">
-                <div className="w-full flex flex-col gap-4">
+              <div className="flex gap-2 flex-col md:flex-row w-full">
+                <div className="w-full basis-1/2 max-w-[50%] flex flex-col gap-4 flex-wrap">
                   <Input
                     label="Company"
                     placeholder="Enter Company Name"

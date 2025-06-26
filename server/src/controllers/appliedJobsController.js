@@ -4,7 +4,7 @@ import { customSuccessResponse } from '../utils/common/customSuccessResponse.js'
 
 export const getApplicationsController = async (req, res) => {
     try {
-        const response = await getApplicationService(req.user.id);
+        const response = await getApplicationService(req.user);
         return res.status(201).json(customSuccessResponse(response, 'Applications fetched successfully'));
     } catch (error) {
         if (error.message) {
@@ -20,7 +20,7 @@ export const getApplicationsController = async (req, res) => {
 
 export const createApplicationController = async (req, res) => {
     try {
-        const response = await createApplicationService(req.user.id, req.params.jobId);
+        const response = await createApplicationService(req.user, req.params.jobId);
         return res.status(201).json(customSuccessResponse(response, 'Applied successfully'));
     } catch (error) {
         if (error.message) {
@@ -36,7 +36,7 @@ export const createApplicationController = async (req, res) => {
 
 export const updateApplicationController = async (req, res) => {
     try {
-        const response = await updateApplicationService(req.user.id, req.body, req.params.jobId);
+        const response = await updateApplicationService(req.user, req.body, req.params.jobId);
         return res.status(201).json(customSuccessResponse(response, 'Successfully updated the status'));
     } catch (error) {
         if (error.message) {
